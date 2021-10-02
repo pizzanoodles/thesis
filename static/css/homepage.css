@@ -1,0 +1,11 @@
+body {
+    background-image: url("/static/images/Law.webp");
+    background-color: #fafafa;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: top;
+    padding: 20 px;
+    height: 100%;
+    weight: 100%;
+    margin-bottom: 10px;
+  }
