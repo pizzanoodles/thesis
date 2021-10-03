@@ -5,6 +5,8 @@ import plotly
 import plotly.express as px
 import matplotlib.ticker as ticker
 import numpy as np
+import plotly.graph_objects as go
+
 
 from flask import Flask
 
@@ -37,7 +39,7 @@ def test():
 
     # caloocan2017
     # print(laspinas2017)
-
+    ncrcities=['Caloocan','Las Piñas','Taguig','San Juan','Quezon','Pasig','Pasay','Parañaque','Navotas','Muntinlupa','Marikina','Manila','Mandaluyong','Malabon','Makati','Valenzuela']
     #####CALOOCAN#####
     taxrev = caloocan2017.iloc[0:3, 1]
     nontrev = caloocan2017.iloc[5:8, 1]
@@ -57,7 +59,7 @@ def test():
     cx.set_xticks([0, 1, 2], minor=False)
     cx.set_xticklabels(comblbls)
 
-    fig = px.bar(
+    fig3 = px.bar(
         combined,
         y=['Caloocan', 'Las Piñas'],
         x=comblbls,
@@ -71,11 +73,34 @@ def test():
         #title="Explicit color sequence"
 
     )
+    years = ['2016','2017','2018','2019','2020']
+    phsurplusexcel = pd.ExcelFile('C:/Users/Jens/Desktop/PythonVisualizationTest/TOTALS.xlsx')
+    surplusperyear = pd.read_excel(phsurplusexcel,usecols='T')
+    surpvals = surplusperyear.iloc[0:5,0]
+    waterfvals = []
+
+    for i in range(len(surpvals)-1):
+        if i == 0:
+            waterfvals.append(surpvals[i])
+            waterfvals.append(surpvals[i+1] - surpvals[i])
+        else:
+            waterfvals.append(surpvals[i+1] - surpvals[i])
+    print(waterfvals)
+    fig = go.Figure(go.Waterfall(
+        name = "Surplus Adventures of Philippines", orientation = "v",
+        measure = ["relative", "relative", "relative", "relative", "relative", "relative"],
+        x = ['2016','2017','2018','2019','2020'],
+        textposition = "outside",
+        text = ["2016 SURPLUS", str(waterfvals[1]),str(waterfvals[2]) ,str(waterfvals[3]) ,str(waterfvals[4])],
+        y = waterfvals,
+        connector = {"line":{"color":"rgb(63, 63, 63)"}},
+))
     fig2 = px.bar(df, x="nation", y=[
                   'gold', 'silver', 'bronze'], title="Thesis2")
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/test.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON)
+    return render_template("/test.html", title="Thesis", graph1JSON=graph1JSON, graph3JSON=graph3JSON, graph2JSON=graph2JSON)
 
 
 if __name__ == "__main__":
