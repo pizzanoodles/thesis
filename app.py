@@ -12,6 +12,55 @@ from flask import Flask
 
 app = Flask(__name__)
 
+armm = ['Isabela', 'Lamitan', 'Marawi']
+car = ['Baguio', 'Tabuk']
+ncr = ['Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong', 'Manila', 'Marikina',
+       'Muntinlupa', 'Navotas', 'Parañaque', 'Pasay', 'Pasig', 'Quezon', 'San Juan', 'Taguig', 'Valenzuela']
+nir = ['Bacolod', 'Bago', 'Bais', 'Bayawan', 'Cadiz', 'Canlaon', 'Dumaguete', 'Escalante', 'Guihulngan',
+       'Himamaylan', 'Kabankalan', 'Sagay', 'San Carlos', 'Sipalay', 'Talisay', 'Tanjay', 'Victorias']
+
+region1 = ['Batac', 'Laoag', 'Alaminos', 'Dagupan',
+           'San Carlos', 'Urdaneta', 'San Fernando', 'Candon', 'Vigan']
+
+region2 = ['Tuguegarao', 'Cauayan', 'Ilagan', 'Santiago']
+
+region3 = ['Balanga', 'Malolos', 'Meycauayan', 'San Jose Del Monte', 'Cabanatuan', 'Gapan',
+           'Muñoz', 'Palayan', 'San Jose', 'Angeles', 'San Fernando', 'Mabalacat', 'Tarlac', 'Olongapo']
+
+region4a = ['Batangas', 'Lipa', 'Santo Tomas', 'Tanauan', 'Bacoor', 'Cavite', 'Dasmariñas', 'General Trias', 'Imus', 'Tagaytay',
+            'Trece Martires', 'Biñan', 'Cabuyao', 'Calamba', 'San Pablo', 'San Pedro', 'Santa Rosa', 'Lucena', 'Tayabas', 'Antipolo']
+
+region4b = ['Calapan', 'Puerto Princesa']
+
+region5 = ['Legazpi', 'Ligao', 'Tabaco',
+           'Iriga', 'Naga', 'Masbate', 'Sorsogon']
+
+region6 = ['Iloilo', 'Passi', 'Passi']
+
+region7 = ['Tagbilaran', 'Carcar', 'Bogo', 'Cebu', 'Danao',
+           'Lapu-lapu', 'Mandaue', 'Naga', 'Toledo', 'Talisay']
+
+region8 = ['Calbayog', 'Baybay', 'Borongan',
+           'Catbalogan', 'Maasin', 'Ormoc', 'Tacloban']
+
+region9 = ['Zamboanga', 'Dapitan', 'Dipolog', 'Pagadian']
+
+region10 = ['Tangub', 'Cagayan de Oro', 'El Salvador', 'Gingoog',
+            'Iligan', 'Malaybalay', 'Oroquieta', 'Ozamiz', 'Valencia']
+
+region11 = ['Digos', 'Davao', 'Samal', 'Panabo', 'Mati', 'Tagum']
+
+region12 = ['Koronadal', 'Cotabato', 'General Santos', 'Kidapawan', 'Tacurong']
+
+region13 = ['Bayugan', 'Bislig', 'Butuan', 'Cabadbaran', 'Surigao', 'Tandag']
+
+cities = [armm, car, ncr, nir,  region1, region2, region3, region4a, region4b,
+          region5, region6, region7, region8, region9, region10, region11, region12, region13]
+
+region = ['ARMM', 'CAR', 'NCR', 'NIR', 'Region 1', 'Region 2', 'Region 3', 'Region 4A', 'Region 4B',
+          'Region 5', 'Region 6', 'Region 7', 'Region 8', 'Region 9', 'Region 10', 'Region 11', 'Region 12', 'Region 13']
+year = [2016, 2017, 2018, 2019, 2020]
+
 
 @ticker.FuncFormatter
 def million_formatter(x, pos):
@@ -29,56 +78,11 @@ def index():
 
 @app.route("/test")
 def test():
-    # Graph One
+    # Graph One WATERFALL CHART
     df = px.data.medals_wide()
-    ncr2017 = pd.ExcelFile('SCBAA/2017/NCR.xlsx')
-    caloocan2017 = pd.read_excel(
-        ncr2017, "Caloocan", skiprows=range(1, 10), usecols="D:E")
-    laspinas2017 = pd.read_excel(
-        ncr2017, "Las Piñas", skiprows=range(1, 10), usecols="D:E")
-
-    # caloocan2017
-    # print(laspinas2017)
-    ncrcities=['Caloocan','Las Piñas','Taguig','San Juan','Quezon','Pasig','Pasay','Parañaque','Navotas','Muntinlupa','Marikina','Manila','Mandaluyong','Malabon','Makati','Valenzuela']
-    #####CALOOCAN#####
-    taxrev = caloocan2017.iloc[0:3, 1]
-    nontrev = caloocan2017.iloc[5:8, 1]
-    ext = (caloocan2017.iloc[10:26, 1])
-    ext = ext.dropna()
-    ypos = np.arange(len(taxrev))
-    #####LAS PINAS#####
-    lptaxrev = laspinas2017.iloc[0:3, 1]
-    lpnontrev = laspinas2017.iloc[5:8, 1]
-    lpext = (laspinas2017.iloc[10:26, 1])
-    lpext = lpext.dropna()
-    lpypos = np.arange(len(lptaxrev))
-    combined = pd.DataFrame({'Caloocan': taxrev, 'Las Piñas': lptaxrev})
-    comblbls = [s.strip() for s in caloocan2017.iloc[0:3, 0].str.strip()]
-    cx = combined.plot.bar(rot=0)
-    cx.yaxis.set_major_formatter(billion_formatter)
-    cx.set_xticks([0, 1, 2], minor=False)
-    cx.set_xticklabels(comblbls)
-
-    fig3 = px.bar(
-        combined,
-        y=['Caloocan', 'Las Piñas'],
-        x=comblbls,
-        title='Tax Revenue',
-        barmode='group',
-        opacity=0.7,
-        animation_frame=[100,200,300],
-        animation_group=[100,200,300],
-        # color=['red','blue','green'],
-        # color_discrete_map="identity"
-        color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                 "blue", "goldenrod", "magenta"],
-        #title="Explicit color sequence"
-
-    )
-    years = ['2016','2017','2018','2019','2020']
-    phsurplusexcel = pd.ExcelFile('C:/Users/Jens/Desktop/PythonVisualizationTest/TOTALS.xlsx')
-    surplusperyear = pd.read_excel(phsurplusexcel,usecols='T')
-    surpvals = surplusperyear.iloc[0:5,0]
+    phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
+    surplusperyear = pd.read_excel(phsurplusexcel, usecols='T')
+    surpvals = surplusperyear.iloc[0:5, 0]
     waterfvals = []
 
     for i in range(len(surpvals)-1):
@@ -89,21 +93,22 @@ def test():
             waterfvals.append(surpvals[i+1] - surpvals[i])
     print(waterfvals)
     fig = go.Figure(go.Waterfall(
-        name = "Surplus Adventures of Philippines", orientation = "v",
-        measure = ["relative", "relative", "relative", "relative", "relative", "relative"],
-        x = ['2016','2017','2018','2019','2020'],
-        textposition = "outside",
-        text = ["2016 SURPLUS", str(waterfvals[1]),str(waterfvals[2]) ,str(waterfvals[3]) ,str(waterfvals[4])],
-        y = waterfvals,
-        connector = {"line":{"color":"rgb(63, 63, 63)"}},
-))
+        name="Surplus Adventures of Philippines", orientation="v",
+        measure=["relative", "relative", "relative",
+                 "relative", "relative", "relative"],
+        x=['2016', '2017', '2018', '2019', '2020'],
+        textposition="outside",
+        text=["2016 SURPLUS", str(waterfvals[1]), str(
+            waterfvals[2]), str(waterfvals[3]), str(waterfvals[4])],
+        y=waterfvals,
+        connector={"line": {"color": "rgb(63, 63, 63)"}},
+    ))
     fig2 = px.bar(df, x="nation", y=[
                   'gold', 'silver', 'bronze'], title="Thesis2")
 
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/test.html", title="Thesis", graph1JSON=graph1JSON, graph3JSON=graph3JSON, graph2JSON=graph2JSON)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON)
 
 
 if __name__ == "__main__":
