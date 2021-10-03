@@ -61,24 +61,11 @@ region = ['ARMM', 'CAR', 'NCR', 'NIR', 'Region 1', 'Region 2', 'Region 3', 'Regi
           'Region 5', 'Region 6', 'Region 7', 'Region 8', 'Region 9', 'Region 10', 'Region 11', 'Region 12', 'Region 13']
 year = [2016, 2017, 2018, 2019, 2020]
 
-
-@ticker.FuncFormatter
-def million_formatter(x, pos):
-    return "%.1f M" % (x/1E6)
+# GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
+# function generate
 
 
-def billion_formatter(x, pos):
-    return "%.1f B" % (x/1E9)
-
-
-@app.route("/")
-def index():
-    return render_template("/index.html")
-
-
-@app.route("/test")
-def test():
-    # Graph One WATERFALL CHART
+def get_surplus():
     df = px.data.medals_wide()
     phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
     surplusperyear = pd.read_excel(phsurplusexcel, usecols='T')
@@ -103,12 +90,72 @@ def test():
         y=waterfvals,
         connector={"line": {"color": "rgb(63, 63, 63)"}},
     ))
-    fig2 = px.bar(df, x="nation", y=[
-                  'gold', 'silver', 'bronze'], title="Thesis2")
+    return fig
+
+# GRAPH 2: DEFAULT ANIMATED BAR CHART: ALL OF THE REGION'S APPROPRIATIONS AND REVENUES IN 2016-2020
+# function generate
+
+
+def get_reg_app_rev():
+    reg_app_rev = {"Region": [], "Year": [],
+                   "Revenue": [], "Appropriations": []}
+    for y in year:
+        i = 0
+        for r in region:
+            region_reven = 0
+            region_app = 0
+            link_init = "SCBAA/" + str(y) + "/" + r + ".xlsx"
+            reg_init = pd.ExcelFile(link_init)
+            for c in cities[i]:
+                city_init = pd.read_excel(
+                    reg_init, c)
+                rev_init = city_init.iloc[35, 4]
+                app_init = city_init.iloc[110, 4]
+                region_app = region_app + app_init
+                region_reven = region_reven + rev_init
+            i = i + 1
+            reg_app_rev['Region'].append(r)
+            reg_app_rev['Year'].append(y)
+            reg_app_rev['Revenue'].append(region_reven)
+            reg_app_rev['Appropriations'].append(region_app)
+    df = pd.DataFrame(data=reg_app_rev)
+    fig = px.bar(df, x="Region", y=["Appropriations", "Revenue"],
+                 animation_frame="Year", animation_group="Region", barmode='group')
+    return fig
+
+
+@ticker.FuncFormatter
+def million_formatter(x, pos):
+    return "%.1f M" % (x/1E6)
+
+
+def billion_formatter(x, pos):
+    return "%.1f B" % (x/1E9)
+
+
+@app.route("/")
+def index():
+    return render_template("/index.html")
+
+
+@app.route("/test")
+def test():
+    # Graph 1 WATERFALL CHART function call
+    fig = get_surplus()
+
+    # Graph 2 BAR CHART function call
+    fig2 = get_reg_app_rev()
+
+    # Graph 3 Sample
+    long_df = px.data.medals_long()
+
+    fig3 = px.bar(long_df, x="nation", y="count",
+                  color="medal", title="Long-Form Input")
 
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON)
+    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON)
 
 
 if __name__ == "__main__":
