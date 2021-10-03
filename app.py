@@ -66,6 +66,8 @@ def test():
         title='Tax Revenue',
         barmode='group',
         opacity=0.7,
+        animation_frame=[100,200,300],
+        animation_group=[100,200,300],
         # color=['red','blue','green'],
         # color_discrete_map="identity"
         color_discrete_sequence=["#6a0c0b", "#b97d10",
@@ -97,6 +99,7 @@ def test():
 ))
     fig2 = px.bar(df, x="nation", y=[
                   'gold', 'silver', 'bronze'], title="Thesis2")
+
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
