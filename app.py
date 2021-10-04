@@ -124,7 +124,54 @@ def get_reg_app_rev():
     return fig
 
 def dropdownchart():
-    np.random.seed(42)
+    ncr2016 = pd.ExcelFile('SCBAA/2016/NCR.xlsx')
+    caloocan2016 = pd.read_excel(ncr2016,"Caloocan",skiprows = range(1,10), usecols = "D:E")
+    laspinas2016 = pd.read_excel(ncr2016,"Las Piñas",skiprows = range(1,10), usecols = "D:E")
+    taxrev = caloocan2016.iloc[0:3, 1]
+    nontrev = caloocan2016.iloc[5:8, 1]
+    ext = (caloocan2016.iloc[10:26, 1])
+    ext = ext.dropna()
+    lptaxrev = laspinas2016.iloc[0:3,1]
+    lpnontrev = laspinas2016.iloc[5:8,1]
+    lpext = (laspinas2016.iloc[10:26,1])
+    lpext = lpext.dropna()
+
+    caloocantotaltax = caloocan2016.iloc[3,1]
+    caloocantotalnontax = caloocan2016.iloc[8,1]
+    caloocanextdf = pd.DataFrame(ext)
+    caloocanextdf.astype('float_')
+    caloocantotalext = np.nansum(caloocanextdf)
+    revs = [caloocantotaltax, caloocantotalnontax, caloocantotalext]
+    combined = pd.DataFrame({'Caloocan':taxrev,'Las Pinas':lptaxrev})
+    comblbls = [s.strip() for s in caloocan2016.iloc[0:3,0].str.strip()]
+
+    fig = px.bar(
+        combined,
+        y = ['Caloocan','Las Pinas'],
+        x = comblbls,
+        title = 'Tax Revenue',
+        barmode='group',
+        opacity=0.7,
+        #color=['red','blue','green'],
+        #color_discrete_map="identity"
+        color_discrete_sequence=["#6a0c0b", "#b97d10", "blue", "goldenrod", "magenta"],
+        #title="Explicit color sequence"
+        # 
+    )
+
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                active=0,
+                buttons=list([
+                    dict(label="Both", method="update", args=[{"visible":[True, True]}, {"title": "Caloocan and Las Piñas"}]),
+                    dict(label="Caloocan", method="update", args=[{"visible":[True, False]}, {"title": "Caloocan Revenue"}]),
+                    dict(label="Las Piñas", method="update", args=[{"visible":[False, True]}, {"title":"Las Piñas Revenue"}])
+                ])
+            )
+        ]
+    )
+    """ np.random.seed(42)
     random_x = np.random.randint(1, 101, 100)
     random_y = np.random.randint(1, 101, 100)
     x = ['A', 'B', 'C', 'D']
@@ -154,7 +201,7 @@ def dropdownchart():
                             }]),
             ]),
         )
-    ])
+    ]) """
     return fig
 
 @ticker.FuncFormatter
