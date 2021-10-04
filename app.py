@@ -35,7 +35,7 @@ region4b = ['Calapan', 'Puerto Princesa']
 region5 = ['Legazpi', 'Ligao', 'Tabaco',
            'Iriga', 'Naga', 'Masbate', 'Sorsogon']
 
-region6 = ['Iloilo', 'Passi', 'Passi']
+region6 = ['Iloilo', 'Passi', 'Roxas']
 
 region7 = ['Tagbilaran', 'Carcar', 'Bogo', 'Cebu', 'Danao',
            'Lapu-lapu', 'Mandaue', 'Naga', 'Toledo', 'Talisay']
@@ -265,7 +265,7 @@ def test():
     jens dito mo ilalagay yung mga graph sa def datavis():
 """
 
-
+#
 @app.route("/<dt>/<rt>/<ct>/<yt>")
 def datavis(dt, rt, ct, yt):
     return render_template("/datavis.html", dt=dt, rt=rt, ct=ct, yt=yt)
