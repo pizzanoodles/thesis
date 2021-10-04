@@ -38,6 +38,12 @@
                         </div>
                     </div>
                 </div>
+                <div class="card m-auto" style="width:90%;">
+                    <div class="card-body">
+                        <div id="chart4">
+                        </div>
+                    </div>
+                </div>
             </div>
 
         </div>
@@ -50,6 +56,8 @@
         Plotly.plot("chart2", graph2, {})
         var graph3 = {{ graph3JSON | safe}};
         Plotly.plot("chart3", graph3, {})
+        var graph4 = {{ graph4JSON | safe}};
+        Plotly.plot("chart4", graph4, {})
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"

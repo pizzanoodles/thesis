@@ -123,6 +123,39 @@ def get_reg_app_rev():
                  animation_frame="Year", animation_group="Region", barmode='group')
     return fig
 
+def dropdownchart():
+    np.random.seed(42)
+    random_x = np.random.randint(1, 101, 100)
+    random_y = np.random.randint(1, 101, 100)
+    x = ['A', 'B', 'C', 'D']
+    fig = px.bar(
+        x=x,
+        y=[[100,200,500,673],[56,123,982,213]],
+        barmode='group'
+    )
+    fig.update_layout(
+    updatemenus=[
+        dict(
+            active=0,
+            buttons=list([
+                dict(label="Both",
+                     method="update",
+                     args=[{"visible": [True, True]},
+                           {"title": "Both"}]),
+                dict(label="Data 1",
+                     method="update",
+                     args=[{"visible": [True, False]},
+                           {"title": "Data 1",
+                            }]),
+                dict(label="Data 2",
+                     method="update",
+                     args=[{"visible": [False, True]},
+                           {"title": "Data 2",
+                            }]),
+            ]),
+        )
+    ])
+    return fig
 
 @ticker.FuncFormatter
 def million_formatter(x, pos):
@@ -151,11 +184,13 @@ def test():
 
     fig3 = px.bar(long_df, x="nation", y="count",
                   color="medal", title="Long-Form Input")
+    fig4 = dropdownchart()
 
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON)
+    graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON)
 
 
 if __name__ == "__main__":
