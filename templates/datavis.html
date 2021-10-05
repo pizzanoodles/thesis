@@ -5,14 +5,104 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/homepage.css') }}">
     <title>Document</title>
 </head>
 
 <body>
-    <h1>{{dt}}</h1><br>
-    <h1>{{rt}}</h1><br>
-    <h1>{{ct}}</h1><br>
-    <h1>{{yt}}</h1>
+    <div class="p-3 mb-2 text-white">
+        <div class="row align-items-start">
+            <div class="col">
+                <h6>{{dt}} > {{rt}} > {{ct}} > {{yt}}</h6>
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            {% if dt == "Revenue" %}
+            <a href="#lcl">Local Sources</a>
+            <br>
+            <a href="#ext">External Sources</a>
+            <br>
+            <a href="#rec">Receipts from Borrowings</a>
+            {% else %}
+            <a href="#curapp">Current Appropriations</a>
+            <br>
+            <a href="#conapp">Continuing Appropriations</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="container text-white">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, nobis dolorem! Id voluptatibus maxime
+            sunt
+            magnam, nihil eveniet fugit ea reprehenderit facere. Perferendis eaque libero quia voluptas consequuntur
+            assumenda excepturi?
+            Asperiores optio, voluptatibus eligendi velit adipisci ullam eius voluptates facere dolor quas, sunt
+            maxime qui
+            magnam consectetur fuga tempore, architecto accusantium cumque vero ipsa natus molestias. Temporibus rem
+            quia
+            doloremque.
+            Ea, quia ex assumenda repellendus adipisci reprehenderit atque natus veritatis dolorem inventore maxime
+            praesentium delectus alias illum dolorum architecto, rerum cumque optio quod nobis. Nulla dolores iste
+            suscipit
+            qui facere.
+            Quo laborum voluptatum assumenda nisi ad minus, vel, eligendi qui maiores quas nemo ex fuga repellat,
+            consequatur repellendus aliquid dolor laboriosam perspiciatis eius sapiente numquam dolorum aspernatur.
+            Veritatis, assumenda dolorem?
+            Nihil quo iusto ad adipisci voluptatum corporis nobis nesciunt? Eveniet, sunt nesciunt corporis iusto
+            consequuntur adipisci officia numquam laborum inventore ad assumenda deserunt repudiandae est? Quia
+            accusantium
+            laboriosam quo blanditiis?</p>
+
+        {% if dt == "Revenue" %}
+        <div id="lcl">
+            <p><strong>Local Sources</strong>
+            <div class="row p-4">
+                <div class="col-4">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            <div id="ext">
+                <p><strong>External Sources</strong>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            <div id="rec">
+                <p><strong>Receipts From Borrowings</strong>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            {% else %}
+            <div id="curapp">
+                <p><strong>Current Appropri ations</strong>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            <div id="conapp">
+                <p><strong>Continuing Appropriations Sources</strong>
+                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+                </p>
+            </div>
+            {% endif %}
+        </div>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+            var graph1 = {{ graph1JSON | safe}};
+            Plotly.plot("chart1", graph1, {})
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>
