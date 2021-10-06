@@ -7,54 +7,27 @@ import matplotlib.ticker as ticker
 import numpy as np
 import plotly.graph_objects as go
 
-armm = ['Isabela', 'Lamitan', 'Marawi']
-car = ['Baguio', 'Tabuk']
-ncr = ['Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong', 'Manila', 'Marikina',
-       'Muntinlupa', 'Navotas', 'Parañaque', 'Pasay', 'Pasig', 'Quezon', 'San Juan', 'Taguig', 'Valenzuela']
-nir = ['Bacolod', 'Bago', 'Bais', 'Bayawan', 'Cadiz', 'Canlaon', 'Dumaguete', 'Escalante', 'Guihulngan',
-       'Himamaylan', 'Kabankalan', 'Sagay', 'San Carlos', 'Sipalay', 'Talisay', 'Tanjay', 'Victorias']
-
-region1 = ['Batac', 'Laoag', 'Alaminos', 'Dagupan',
-           'San Carlos', 'Urdaneta', 'San Fernando', 'Candon', 'Vigan']
-
-region2 = ['Tuguegarao', 'Cauayan', 'Ilagan', 'Santiago']
-
-region3 = ['Balanga', 'Malolos', 'Meycauayan', 'San Jose Del Monte', 'Cabanatuan', 'Gapan',
-           'Muñoz', 'Palayan', 'San Jose', 'Angeles', 'San Fernando', 'Mabalacat', 'Tarlac', 'Olongapo']
-
-region4a = ['Batangas', 'Lipa', 'Santo Tomas', 'Tanauan', 'Bacoor', 'Cavite', 'Dasmariñas', 'General Trias', 'Imus', 'Tagaytay',
-            'Trece Martires', 'Biñan', 'Cabuyao', 'Calamba', 'San Pablo', 'San Pedro', 'Santa Rosa', 'Lucena', 'Tayabas', 'Antipolo']
-
-region4b = ['Calapan', 'Puerto Princesa']
-
-region5 = ['Legazpi', 'Ligao', 'Tabaco',
-           'Iriga', 'Naga', 'Masbate', 'Sorsogon']
-
-region6 = ['Iloilo', 'Passi', 'Roxas']
-
-region7 = ['Tagbilaran', 'Carcar', 'Bogo', 'Cebu', 'Danao',
-           'Lapu-lapu', 'Mandaue', 'Naga', 'Toledo', 'Talisay']
-
-region8 = ['Calbayog', 'Baybay', 'Borongan',
-           'Catbalogan', 'Maasin', 'Ormoc', 'Tacloban']
-
-region9 = ['Zamboanga', 'Dapitan', 'Dipolog', 'Pagadian']
-
-region10 = ['Tangub', 'Cagayan de Oro', 'El Salvador', 'Gingoog',
-            'Iligan', 'Malaybalay', 'Oroquieta', 'Ozamiz', 'Valencia']
-
-region11 = ['Digos', 'Davao', 'Samal', 'Panabo', 'Mati', 'Tagum']
-
-region12 = ['Koronadal', 'Cotabato', 'General Santos', 'Kidapawan', 'Tacurong']
-
-region13 = ['Bayugan', 'Bislig', 'Butuan', 'Cabadbaran', 'Surigao', 'Tandag']
-
-cities = [armm, car, ncr, nir,  region1, region2, region3, region4a, region4b,
-          region5, region6, region7, region8, region9, region10, region11, region12, region13]
-
-region = ['ARMM', 'CAR', 'NCR', 'NIR', 'Region 1', 'Region 2', 'Region 3', 'Region 4A', 'Region 4B',
-          'Region 5', 'Region 6', 'Region 7', 'Region 8', 'Region 9', 'Region 10', 'Region 11', 'Region 12', 'Region 13']
-year = [2016, 2017, 2018, 2019, 2020]
+dict_scbaa = {"Region": {
+    "ARMM": ['Isabela', 'Lamitan', 'Marawi'],
+    "CAR": ['Baguio', 'Tabuk'],
+    "NCR": ['Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong', 'Manila', 'Marikina', 'Muntinlupa', 'Navotas', 'Parañaque', 'Pasay', 'Pasig', 'Quezon', 'San Juan', 'Taguig', 'Valenzuela'],
+    "NIR": ['Bacolod', 'Bago', 'Bais', 'Bayawan', 'Cadiz', 'Canlaon', 'Dumaguete', 'Escalante', 'Guihulngan', 'Himamaylan', 'Kabankalan', 'Sagay', 'San Carlos', 'Sipalay', 'Talisay', 'Tanjay', 'Victorias'],
+    "Region 1": ['Batac', 'Laoag', 'Alaminos', 'Dagupan', 'San Carlos', 'Urdaneta', 'San Fernando', 'Candon', 'Vigan'],
+    "Region 2": ['Tuguegarao', 'Cauayan', 'Ilagan', 'Santiago'],
+    "Region 3": ['Balanga', 'Malolos', 'Meycauayan', 'San Jose Del Monte', 'Cabanatuan', 'Gapan', 'Muñoz', 'Palayan', 'San Jose', 'Angeles', 'San Fernando', 'Mabalacat', 'Tarlac', 'Olongapo'],
+    "Region 4A": ['Batangas', 'Lipa', 'Santo Tomas', 'Tanauan', 'Bacoor', 'Cavite', 'Dasmariñas', 'General Trias', 'Imus', 'Tagaytay', 'Trece Martires', 'Biñan', 'Cabuyao', 'Calamba', 'San Pablo', 'San Pedro', 'Santa Rosa', 'Lucena', 'Tayabas', 'Antipolo'],
+    "Region 4B": ['Calapan', 'Puerto Princesa'],
+    "Region 5": ['Legazpi', 'Ligao', 'Tabaco', 'Iriga', 'Naga', 'Masbate', 'Sorsogon'],
+    "Region 6": ['Iloilo', 'Passi', 'Passi'],
+    "Region 7": ['Tagbilaran', 'Carcar', 'Bogo', 'Cebu', 'Danao', 'Lapu-lapu', 'Mandaue', 'Naga', 'Toledo', 'Talisay'],
+    "Region 8": ['Calbayog', 'Baybay', 'Borongan', 'Catbalogan', 'Maasin', 'Ormoc', 'Tacloban'],
+    "Region 9": ['Zamboanga', 'Dapitan', 'Dipolog', 'Pagadian'],
+    "Region 10": ['Tangub', 'Cagayan de Oro', 'El Salvador', 'Gingoog', 'Iligan', 'Malaybalay', 'Oroquieta', 'Ozamiz', 'Valencia'],
+    "Region 11": ['Digos', 'Davao', 'Samal', 'Panabo', 'Mati', 'Tagum'],
+    "Region 12": ['Koronadal', 'Cotabato', 'General Santos', 'Kidapawan', 'Tacurong'],
+    "Region 13": ['Bayugan', 'Bislig', 'Butuan', 'Cabadbaran', 'Surigao', 'Tandag']},
+    "Year": [2016, 2017, 2018, 2019, 2020]
+}
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
 # function generate
@@ -94,14 +67,14 @@ def get_surplus():
 def get_reg_app_rev():
     reg_app_rev = {"Region": [], "Year": [],
                    "Revenue": [], "Appropriations": []}
-    for y in year:
+    for y in dict_scbaa['Year']:
         i = 0
-        for r in region:
+        for r in dict_scbaa['Region']:
             region_reven = 0
             region_app = 0
             link_init = "SCBAA/" + str(y) + "/" + r + ".xlsx"
             reg_init = pd.ExcelFile(link_init)
-            for c in cities[i]:
+            for c in dict_scbaa['Region'][r]:
                 city_init = pd.read_excel(
                     reg_init, c)
                 rev_init = city_init.iloc[35, 4]

@@ -6,6 +6,49 @@ import plotly.express as px
 import matplotlib.ticker as ticker
 import numpy as np
 import plotly.graph_objects as go
+from defaultfigure import dict_scbaa
+
+# EXTRA FUNCTIONS > check list zeros
+
+
+def check_list_zero(dataframe, arr):
+    if(np.sum(arr) == 0):
+        fig = px.bar(dataframe, x="Label", y="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
+                                                                              "blue", "goldenrod", "magenta"])
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    active=0,
+                    buttons=list([
+                        dict(label="Bar", method="restyle",
+                             args=["type", "bar"]),
+                        dict(label="Pie", method="restyle",
+                             args=["type", "pie"]),
+                    ]),
+                    direction="down"
+                )
+            ]
+        )
+    else:
+        fig = px.pie(dataframe, names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
+                                                                                       "blue", "goldenrod", "magenta"],)
+        fig.update_layout(
+            updatemenus=[
+                dict(
+                    active=0,
+                    buttons=list([
+                        dict(label="Pie", method="restyle",
+                             args=["type", "pie"]),
+                        dict(label="Bar", method="restyle",
+                             args=["type", "bar"]),
+                    ]),
+                    direction="down"
+                )
+            ]
+        )
+    return fig
+
+# GENERATE FIGURE REVENUES
 
 
 def generate_fig_rev(excel, dt, rt, ct, yt):
@@ -13,12 +56,18 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     fig_ntr = generate_fig_rev_ntr(excel)
     fig_ext = generate_fig_rev_ext(excel)
     fig_ext_ntc = generate_fig_rev_ext_ntc(excel)
+    fig_ext_or = generate_fig_rev_ext_or(excel)
+    fig_ext_cir = generate_fig_rev_ext_cir(excel)
+    fig_rb = generate_fig_rev_rb(rt, ct)
     graph1JSON = json.dumps(fig_tr, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_ntr, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ext, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig_ext_ntc, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, dt=dt, rt=rt, ct=ct, yt=yt)
-#LOCAL SOURCES#########
+    graph5JSON = json.dumps(fig_ext_or, cls=plotly.utils.PlotlyJSONEncoder)
+    graph6JSON = json.dumps(fig_ext_cir, cls=plotly.utils.PlotlyJSONEncoder)
+    graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+# GENERATE FIGURE REVENUES > Tax Revenue
 
 
 def generate_fig_rev_tr(excel):
@@ -27,9 +76,9 @@ def generate_fig_rev_tr(excel):
     taxrev = excel.iloc[9:12, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = px.pie(df, names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                                                            "blue", "goldenrod", "magenta"],)
+    fig = check_list_zero(df, taxrev)
     return fig
+# GENERATE FIGURE REVENUES > Non-Tax Revenue
 
 
 def generate_fig_rev_ntr(excel):
@@ -38,12 +87,10 @@ def generate_fig_rev_ntr(excel):
     taxrev = excel.iloc[14:17, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = px.pie(df, names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                                                            "blue", "goldenrod", "magenta"],)
+    fig = check_list_zero(df, taxrev)
     return fig
-######################
 
-#EXTERNAL SOURCES#################
+# GENERATE FIGURE REVENUES > External Sources
 
 
 def generate_fig_rev_ext(excel):
@@ -58,9 +105,10 @@ def generate_fig_rev_ext(excel):
     taxrev.extend(lastrev)
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = px.pie(df, names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                                                            "blue", "goldenrod", "magenta"])
+    fig = check_list_zero(df, taxrev)
     return fig
+
+# GENERATE FIGURE REVENUES > External Sources > National Tax Collections
 
 
 def generate_fig_rev_ext_ntc(excel):
@@ -69,13 +117,51 @@ def generate_fig_rev_ext_ntc(excel):
     taxrev = excel.iloc[22:26, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = px.pie(df, names="Label", values="Data",
-                 color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                          "blue", "goldenrod", "magenta"])
+    fig = check_list_zero(df, taxrev)
     return fig
-################
 
-##############################################################################################
+# GENERATE FIGURE REVENUES > External Sources > Other Receipts
+
+
+def generate_fig_rev_ext_or(excel):
+    dict_fig = {"Label": ["Grants and Donations", "Other Subsidy Income"]}
+    taxrev = excel.iloc[27:29, 4].values.tolist()
+    dict_fig['Data'] = taxrev
+    df = pd.DataFrame(data=dict_fig)
+    fig = check_list_zero(df, taxrev)
+    return fig
+
+# GENERATE FIGURE REVENUES > External Sources > Capital/Investment Receipts
+
+
+def generate_fig_rev_ext_cir(excel):
+    dict_fig = {"Label": ["Sale of Capital Assets", "Sale of Investments",
+                          "Proceeds from Collections of Loans Receivable"]}
+    taxrev = excel.iloc[31:34, 4].values.tolist()
+    dict_fig['Data'] = taxrev
+    df = pd.DataFrame(data=dict_fig)
+    fig = check_list_zero(df, taxrev)
+    return fig
+
+# GENERATE FIGURE REVENUES > Receipts from Borrowings
+
+
+def generate_fig_rev_rb(rt, ct):
+    dict1 = {"Year": [], "Receipts": []}
+    for y in dict_scbaa['Year']:
+        i = 0
+        link_init = "SCBAA/" + str(y) + "/" + rt + ".xlsx"
+        reg_init = pd.ExcelFile(link_init)
+        city_init = pd.read_excel(
+            reg_init, ct)
+        rev_init = city_init.iloc[34, 4]
+        dict1['Year'].append(y)
+        dict1['Receipts'].append(rev_init)
+    df = pd.DataFrame(data=dict1)
+    fig = px.line(df, x="Year", y="Receipts",
+                  color_discrete_sequence=["#FF4136", "#3D9970"],)
+    fig.update_xaxes(type='category')
+    return fig
 
 
 def generate_fig_app(excel, dt, rt, ct, yt):
@@ -136,17 +222,20 @@ def generate_fig_app_con(excel):
         ]
     )
     return fig
+
+
 def generate_others_g2(excel):
     firstval = 76
     firstval2 = 78
-    labels = ["Maintenance and Other Operating Expenses","Capital Outlay"]
-    categories = ["LDRRMF","20% Development Fund","Share from National Wealth","Allocation for Senior Citizens and PWD"]
-    values=[]
-    for i in range(0,4):
-        values.append(list(excel.iloc[firstval:firstval2,4].values.tolist()))
+    labels = ["Maintenance and Other Operating Expenses", "Capital Outlay"]
+    categories = ["LDRRMF", "20% Development Fund",
+                  "Share from National Wealth", "Allocation for Senior Citizens and PWD"]
+    values = []
+    for i in range(0, 4):
+        values.append(list(excel.iloc[firstval:firstval2, 4].values.tolist()))
         firstval += 3
         firstval2 += 3
-    appdict={}
+    appdict = {}
     for i in range(0, 4):
         appdict[categories[i]] = values[i]
     df = pd.DataFrame(appdict)
@@ -161,11 +250,16 @@ def generate_others_g2(excel):
             dict(
                 active=0,
                 buttons=list([
-                    dict(label="All Categories",method="update",args=[{"visible":[True, True, True, True]}, {"title":"All Other Categories"}]),
-                    dict(label="LDRRMF",method="update",args=[{"visible":[True, False, False, False]}, {"title":"All Other Categories"}]),
-                    dict(label="20% Development Fund",method="update",args=[{"visible":[False, True, False, False]}, {"title":"20% Development Fund"}]),
-                    dict(label="Share from National Wealth",method="update",args=[{"visible":[False, False, True, False]}, {"title":"Share from National Wealth"}]),
-                    dict(label="Allocation for Senior Citizens and PWD",method="update",args=[{"visible":[False, False, False, True]}, {"title":"Allocation for Senior Citizens and PWD"}]),
+                    dict(label="All Categories", method="update", args=[
+                         {"visible": [True, True, True, True]}, {"title": "All Other Categories"}]),
+                    dict(label="LDRRMF", method="update", args=[
+                         {"visible": [True, False, False, False]}, {"title": "All Other Categories"}]),
+                    dict(label="20% Development Fund", method="update", args=[
+                         {"visible": [False, True, False, False]}, {"title": "20% Development Fund"}]),
+                    dict(label="Share from National Wealth", method="update", args=[{"visible": [
+                         False, False, True, False]}, {"title": "Share from National Wealth"}]),
+                    dict(label="Allocation for Senior Citizens and PWD", method="update", args=[{"visible": [
+                         False, False, False, True]}, {"title": "Allocation for Senior Citizens and PWD"}]),
                 ])
             )
         ]

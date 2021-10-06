@@ -91,7 +91,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row-2 p-4">
+            <div class="row p-4">
                 <div class="col-4">
                     <div class="card mx-10">
                         <div class="card-body">
@@ -100,12 +100,38 @@
                         </div>
                     </div>
                 </div>
+                <div class="col-4">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart5">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-2 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart6">
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div id="rec">
-            <p><strong>Receipts From Borrowings</strong>
-                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-            </p>
+            <p><strong>Receipts From Borrowings</strong></p>
+            <div class="row-2 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart7">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         {% else %}
         <div id="curapp">
@@ -149,6 +175,12 @@
         Plotly.plot("chart3", graph3, {})
         var graph4 = {{ graph4JSON | safe}};
         Plotly.plot("chart4", graph4, {})
+        var graph5 = {{ graph5JSON | safe}};
+        Plotly.plot("chart5", graph5, {})
+        var graph6 = {{ graph6JSON | safe}};
+        Plotly.plot("chart6", graph6, {})
+        var graph7 = {{ graph7JSON | safe}};
+        Plotly.plot("chart7", graph7, {})
     </script>
     {% else %}
     <script>
