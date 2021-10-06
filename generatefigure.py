@@ -97,7 +97,6 @@ def generate_overview_rev(excel):
     rev_init.extend(rev_init1)
     dict_samp['Data'] = rev_init
     df = pd.DataFrame(dict_samp)
-    print(df)
     fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data')
     return fig
 
