@@ -59,6 +59,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     fig_ext_or = generate_fig_rev_ext_or(excel)
     fig_ext_cir = generate_fig_rev_ext_cir(excel)
     fig_rb = generate_fig_rev_rb(rt, ct)
+    fig_ov = generate_overview_rev(excel)
     graph1JSON = json.dumps(fig_tr, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_ntr, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ext, cls=plotly.utils.PlotlyJSONEncoder)
@@ -66,7 +67,41 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph5JSON = json.dumps(fig_ext_or, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_ext_cir, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+
+# GENERATE FIGURE OVERVIEW REVENUES
+
+
+def generate_overview_rev(excel):
+    dict_samp = {"Sources": ["Local Sources", "Local Sources", "Local Sources", "Local Sources", "Local Sources", "Local Sources", "External Sources",
+                             "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "External Sources", "Receipt from Borrowings"],
+                 "Label1": ["Tax Revenue", "Tax Revenue", "Tax Revenue", "Non-Tax Revenue", "Non-Tax Revenue", "Non-Tax Revenue",
+                            " Share from the National Internal Revenue Taxes (IRA)", "Share from GOCCs", "Other Shares from National Tax Collections", "Other Shares from National Tax Collections", "Other Shares from National Tax Collections", "Other Shares from National Tax Collections", "Other Receipts", "Other Receipts", "Inter-local Transfer", "Capital/Investment Receipts", "Capital/Investment Receipts", "Capital/Investment Receipts", " "],
+                 "Label2": ["Tax Revenue - Property", "Tax Reveue - Goods and Services", "Other Local Taxes", "Service Income", "Business Income", "Other Income and Receipts",
+                            " ", " ", "Share from Ecozone", "Share from EVAT", "Share from National Wealth", "Share from Tobacco Excise Tax", "Grants and Donations", "Other Subsidy Income", " ", "Sale of Capital Assets", "Sale of Investments", "Proceeds from Collections of Loans Receivable", " "]}
+    rev_init = excel.iloc[9:12, 4].values.tolist()
+    rev_init1 = excel.iloc[14:17, 4].values.tolist()
+    rev_init2 = excel.iloc[19:21, 4].values.tolist()
+    rev_init3 = excel.iloc[22:26, 4].values.tolist()
+    rev_init4 = excel.iloc[27:29, 4].values.tolist()
+    rev_init5 = excel.iloc[29, 4]
+    rev_init6 = excel.iloc[31:34, 4].values.tolist()
+    rev_init7 = excel.iloc[34, 4]
+    rev_init4.append(rev_init5)
+    rev_init6.append(rev_init7)
+    rev_init4.extend(rev_init6)
+    rev_init3.extend(rev_init4)
+    rev_init2.extend(rev_init3)
+    rev_init1.extend(rev_init2)
+    rev_init.extend(rev_init1)
+    dict_samp['Data'] = rev_init
+    df = pd.DataFrame(dict_samp)
+    print(df)
+    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data')
+    return fig
+
+
 # GENERATE FIGURE REVENUES > Tax Revenue
 
 

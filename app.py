@@ -37,24 +37,8 @@ def test():
         year = request.form["yr_select"]
         return redirect(url_for("datavis", dt=data, rt=reg, ct=city, yt=year))
     else:
-        # Graph 1 WATERFALL CHART function call
-        fig = get_surplus()
-
-        # Graph 2 BAR CHART function call
-        #fig2 = get_reg_app_rev()
-
-        # Graph 3 Sample
-        long_df = px.data.medals_long()
-
-        fig3 = px.bar(long_df, x="nation", y="count",
-                      color="medal", title="Long-Form Input")
-        fig4 = dropdownchart()
-
-        graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-       # graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-        graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
-        graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-        return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON)
+        default_template = generate_default_figs()
+        return default_template
 
 
 @app.route("/<dt>/<rt>/<ct>/<yt>")

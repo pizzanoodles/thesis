@@ -36,27 +36,22 @@
         </div>
     </div>
     <div class="container text-white">
-        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Corporis, nobis dolorem! Id voluptatibus maxime
-            sunt
-            magnam, nihil eveniet fugit ea reprehenderit facere. Perferendis eaque libero quia voluptas consequuntur
-            assumenda excepturi?
-            Asperiores optio, voluptatibus eligendi velit adipisci ullam eius voluptates facere dolor quas, sunt
-            maxime qui
-            magnam consectetur fuga tempore, architecto accusantium cumque vero ipsa natus molestias. Temporibus rem
-            quia
-            doloremque.
-            Ea, quia ex assumenda repellendus adipisci reprehenderit atque natus veritatis dolorem inventore maxime
-            praesentium delectus alias illum dolorum architecto, rerum cumque optio quod nobis. Nulla dolores iste
-            suscipit
-            qui facere.
-            Quo laborum voluptatum assumenda nisi ad minus, vel, eligendi qui maiores quas nemo ex fuga repellat,
-            consequatur repellendus aliquid dolor laboriosam perspiciatis eius sapiente numquam dolorum aspernatur.
-            Veritatis, assumenda dolorem?
-            Nihil quo iusto ad adipisci voluptatum corporis nobis nesciunt? Eveniet, sunt nesciunt corporis iusto
-            consequuntur adipisci officia numquam laborum inventore ad assumenda deserunt repudiandae est? Quia
-            accusantium
-            laboriosam quo blanditiis?</p>
-
+        {% if dt == "Revenue" %}
+        <div id="overview">
+            <p><strong>Overview</strong></p>
+            <div class="row-4 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart8">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        {% endif %}
         {% if dt == "Revenue" %}
         <div id="lcl">
             <p><strong>Local Sources</strong></p>
@@ -181,6 +176,8 @@
         Plotly.plot("chart6", graph6, {})
         var graph7 = {{ graph7JSON | safe}};
         Plotly.plot("chart7", graph7, {})
+        var graph8 = {{ graph8JSON | safe}};
+        Plotly.plot("chart8", graph8, {})
     </script>
     {% else %}
     <script>

@@ -28,6 +28,25 @@ dict_scbaa = {"Region": {
     "Region 13": ['Bayugan', 'Bislig', 'Butuan', 'Cabadbaran', 'Surigao', 'Tandag']},
     "Year": [2016, 2017, 2018, 2019, 2020]
 }
+# GENERATE DEFAULT FIGURES FUNCTION
+
+
+def generate_default_figs():
+    # Graph 1 WATERFALL CHART function call
+    fig = get_surplus()
+    # Graph 2 BAR CHART function call
+    fig2 = get_reg_app_rev()
+    # Graph 3 Sample
+    long_df = px.data.medals_long()
+    fig3 = px.bar(long_df, x="nation", y="count",
+                  color="medal", title="Long-Form Input")
+    fig4 = dropdownchart()
+    graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+    graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON)
+
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
 # function generate
@@ -65,28 +84,7 @@ def get_surplus():
 
 
 def get_reg_app_rev():
-    reg_app_rev = {"Region": [], "Year": [],
-                   "Revenue": [], "Appropriations": []}
-    for y in dict_scbaa['Year']:
-        i = 0
-        for r in dict_scbaa['Region']:
-            region_reven = 0
-            region_app = 0
-            link_init = "SCBAA/" + str(y) + "/" + r + ".xlsx"
-            reg_init = pd.ExcelFile(link_init)
-            for c in dict_scbaa['Region'][r]:
-                city_init = pd.read_excel(
-                    reg_init, c)
-                rev_init = city_init.iloc[35, 4]
-                app_init = city_init.iloc[110, 4]
-                region_app = region_app + app_init
-                region_reven = region_reven + rev_init
-            i = i + 1
-            reg_app_rev['Region'].append(r)
-            reg_app_rev['Year'].append(y)
-            reg_app_rev['Revenue'].append(region_reven)
-            reg_app_rev['Appropriations'].append(region_app)
-    df = pd.DataFrame(data=reg_app_rev)
+    df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
     fig = px.bar(df, x="Region", y=["Appropriations", "Revenue"],
                  animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#FF4136", "#3D9970"],)
     return fig
