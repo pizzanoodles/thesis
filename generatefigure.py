@@ -77,6 +77,7 @@ def generate_fig_rev_ext_ntc(excel):
 
 ##############################################################################################
 
+
 def generate_fig_app(excel, dt, rt, ct, yt):
     fig_con = generate_fig_app_con(excel)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
