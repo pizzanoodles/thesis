@@ -80,8 +80,10 @@ def generate_fig_rev_ext_ntc(excel):
 
 def generate_fig_app(excel, dt, rt, ct, yt):
     fig_con = generate_fig_app_con(excel)
+    fig_others_g2 = generate_others_g2(excel)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    graph2JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, dt=dt, rt=rt, ct=ct, yt=yt)
 
 
 def generate_fig_app_con(excel):
@@ -129,6 +131,41 @@ def generate_fig_app_con(excel):
                         {"visible": [False, False, False, False, False, False, True, False]}, {"title": "Economic Services"}]),
                     dict(label="Other Services Sector", method="update", args=[
                         {"visible": [False, False, False, False, False, False, False, True]}, {"title": "Other Services Sector"}]),
+                ])
+            )
+        ]
+    )
+    return fig
+def generate_others_g2(excel):
+    firstval = 76
+    firstval2 = 78
+    labels = ["Maintenance and Other Operating Expenses","Capital Outlay"]
+    categories = ["LDRRMF","20% Development Fund","Share from National Wealth","Allocation for Senior Citizens and PWD"]
+    values=[]
+    for i in range(0,4):
+        values.append(list(excel.iloc[firstval:firstval2,4].values.tolist()))
+        firstval += 3
+        firstval2 += 3
+    appdict={}
+    for i in range(0, 4):
+        appdict[categories[i]] = values[i]
+    df = pd.DataFrame(appdict)
+    fig = px.bar(
+        df,
+        y=categories,
+        x=labels,
+        barmode='group'
+    )
+    fig.update_layout(
+        updatemenus=[
+            dict(
+                active=0,
+                buttons=list([
+                    dict(label="All Categories",method="update",args=[{"visible":[True, True, True, True]}, {"title":"All Other Categories"}]),
+                    dict(label="LDRRMF",method="update",args=[{"visible":[True, False, False, False]}, {"title":"All Other Categories"}]),
+                    dict(label="20% Development Fund",method="update",args=[{"visible":[False, True, False, False]}, {"title":"20% Development Fund"}]),
+                    dict(label="Share from National Wealth",method="update",args=[{"visible":[False, False, True, False]}, {"title":"Share from National Wealth"}]),
+                    dict(label="Allocation for Senior Citizens and PWD",method="update",args=[{"visible":[False, False, False, True]}, {"title":"Allocation for Senior Citizens and PWD"}]),
                 ])
             )
         ]
