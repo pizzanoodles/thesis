@@ -59,7 +59,57 @@
 
         {% if dt == "Revenue" %}
         <div id="lcl">
-            <p><strong>Local Sources</strong>
+            <p><strong>Local Sources</strong></p>
+            <div class="row p-4">
+                <div class="col-4">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-4">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="ext">
+            <p><strong>External Sources</strong></p>
+            <div class="row-3 p-4">
+                <div class="col-12">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row-2 p-4">
+                <div class="col-4">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart4">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="rec">
+            <p><strong>Receipts From Borrowings</strong>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </p>
+        </div>
+        {% else %}
+        <div id="curapp">
+            <p><strong>Current Appropriations</strong></p>
             <div class="row-10 p-4">
                 <div class="col-15">
                     <div class="card mx-10">
@@ -69,40 +119,36 @@
                         </div>
                     </div>
                 </div>
-                <br><br><br><br><br><br><br><br><br><br><br>
-                </p>
             </div>
-            <div id="ext">
-                <p><strong>External Sources</strong>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </p>
-            </div>
-            <div id="rec">
-                <p><strong>Receipts From Borrowings</strong>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </p>
-            </div>
-            {% else %}
-            <div id="curapp">
-                <p><strong>Current Appropri ations</strong>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </p>
-            </div>
-            <div id="conapp">
-                <p><strong>Continuing Appropriations Sources</strong>
-                    <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-                </p>
-            </div>
-            {% endif %}
         </div>
-        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-        <script>
-            var graph1 = {{ graph1JSON | safe}};
-            Plotly.plot("chart1", graph1, {})
-        </script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-            crossorigin="anonymous"></script>
+        <div id="conapp">
+            <p><strong>Continuing Appropriations</strong>
+                <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+            </p>
+        </div>
+        {% endif %}
+    </div>
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    {% if dt == "Revenue" %}
+    <script>
+        var graph1 = {{ graph1JSON | safe}};
+        Plotly.plot("chart1", graph1, {})
+        var graph2 = {{ graph2JSON | safe}};
+        Plotly.plot("chart2", graph2, {})
+        var graph3 = {{ graph3JSON | safe}};
+        Plotly.plot("chart3", graph3, {})
+        var graph4 = {{ graph4JSON | safe}};
+        Plotly.plot("chart4", graph4, {})
+    </script>
+    {% else %}
+    <script>
+        var graph1 = {{ graph1JSON | safe}};
+        Plotly.plot("chart1", graph1, {})
+    </script>
+    {% endif %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
 </body>
 
 </html>

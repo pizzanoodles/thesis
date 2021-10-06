@@ -66,8 +66,9 @@ def datavis(dt, rt, ct, yt):
     if dt == "Revenue":
         rev_template = generate_fig_rev(city_excel, dt=dt, rt=rt, ct=ct, yt=yt)
         return rev_template
-    elif dt == "Appropriations":
-        return render_template("/datavis.html", dt=dt, rt=rt, ct=ct, yt=yt)
+    else:
+        app_template = generate_fig_app(city_excel, dt=dt, rt=rt, ct=ct, yt=yt)
+        return app_template
 
 
 if __name__ == "__main__":
