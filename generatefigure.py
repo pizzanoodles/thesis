@@ -206,12 +206,14 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     fig_others_g1 = generate_others_debt(excel)
     fig_others_g2 = generate_others_social(excel)
     fig_others_g3 = generate_others_others(excel)
+    fig_cont_app = generate_continuing_app(excel)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_others_g1, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,graph4JSON=graph4JSON,graph5JSON=graph5JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,graph4JSON=graph4JSON,graph5JSON=graph5JSON,graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -341,7 +343,15 @@ def generate_others_social(excel):
 
 def generate_others_others(excel):
     dict_fig = {"Label": ["Personnel Services","Maintenance and Other Expenses","Capital Outlay"]}
-    values=excel.iloc[88:91,4].values.tolist()
+    values=list(excel.iloc[88:91,4].values.tolist())
+    dict_fig['Data'] = values
+    df = pd.DataFrame(data = dict_fig)
+    fig = check_list_zero(df, values)
+    return fig
+
+def generate_continuing_app(excel):
+    dict_fig = {"Label":["General Public Services", "Education", "Health, Nutrition, and Population Control", "Labor and Employment", "Housing and Community Development", "Social Services and Welfare", "Economic Services", "Other Purposes"]}
+    values = list(excel.iloc[94:109:2,4])
     dict_fig['Data'] = values
     df = pd.DataFrame(data = dict_fig)
     fig = check_list_zero(df, values)
