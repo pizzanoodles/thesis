@@ -202,12 +202,16 @@ def generate_fig_rev_rb(rt, ct):
 
 def generate_fig_app(excel, dt, rt, ct, yt):
     fig_con = generate_fig_app_curr(excel)
-    fig_others_g2 = generate_others_g2(excel)
     fig_ov = generate_overview_app(excel)
+    fig_others_g1 = generate_others_debt(excel)
+    fig_others_g2 = generate_others_social(excel)
+    fig_others_g3 = generate_others_others(excel)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
-    graph2JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
+    graph2JSON = json.dumps(fig_others_g1, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    graph4JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
+    graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,graph4JSON=graph4JSON,graph5JSON=graph5JSON, dt=dt, rt=rt, ct=ct, yt=yt)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -286,8 +290,14 @@ def generate_fig_app_curr(excel):
     )
     return fig
 
-
-def generate_others_g2(excel):
+def generate_others_debt(excel):
+    dict_fig = {"Label": ["Financial Expense","Amortization"]}
+    values=excel.iloc[73:75,4].values.tolist()
+    dict_fig['Data'] = values
+    df = pd.DataFrame(data = dict_fig)
+    fig = check_list_zero(df, values)
+    return fig
+def generate_others_social(excel):
     firstval = 76
     firstval2 = 78
     labels = ["Maintenance and Other Operating Expenses", "Capital Outlay"]
@@ -327,4 +337,12 @@ def generate_others_g2(excel):
             )
         ]
     )
+    return fig
+
+def generate_others_others(excel):
+    dict_fig = {"Label": ["Personnel Services","Maintenance and Other Expenses","Capital Outlay"]}
+    values=excel.iloc[88:91,4].values.tolist()
+    dict_fig['Data'] = values
+    df = pd.DataFrame(data = dict_fig)
+    fig = check_list_zero(df, values)
     return fig
