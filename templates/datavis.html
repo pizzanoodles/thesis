@@ -51,6 +51,19 @@
             </div>
         </div>
         {% else %}
+        <div id="overview">
+            <p><strong>Overview</strong></p>
+            <div class="row-4 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart3">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
         {% if dt == "Revenue" %}
         <div id="lcl">
@@ -185,6 +198,8 @@
         Plotly.plot("chart1", graph1, {})
         var graph2 = {{ graph2JSON | safe}};
         Plotly.plot("chart2", graph2, {})
+        var graph3 = {{ graph3JSON | safe}};
+        Plotly.plot("chart3", graph3, {})
     </script>
     {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"

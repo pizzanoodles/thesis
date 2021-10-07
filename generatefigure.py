@@ -197,16 +197,45 @@ def generate_fig_rev_rb(rt, ct):
     fig.update_xaxes(type='category')
     return fig
 
+# GENERATE APPROPRIATIONS
+
 
 def generate_fig_app(excel, dt, rt, ct, yt):
-    fig_con = generate_fig_app_con(excel)
+    fig_con = generate_fig_app_curr(excel)
     fig_others_g2 = generate_others_g2(excel)
+    fig_ov = generate_overview_app(excel)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+
+# GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
 
-def generate_fig_app_con(excel):
+def generate_overview_app(excel):
+    dict_samp = {"Sources": ["Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Current Appropriations", "Continuing Appropriations", "Continuing Appropriations", "Continuing Appropriations", "Continuing Appropriations", "Continuing Appropriations", "Continuing Appropriations", "Continuing Appropriations", "Continuing Appropriations", ],
+                 "Label1": ["General Public Services", "General Public Services", "General Public Services", "Education", "Education", "Education", "Health, Nutrition and Population Control", "Health, Nutrition and Population Control", "Health, Nutrition and Population Control", "Labor and Employment", "Labor and Employment", "Labor and Employment", "Housing and Community Development", "Housing and Community Development", "Housing and Community Development", "Social Services and Social Welfare", "Social Services and Social Welfare", "Social Services and Social Welfare", "Economic Services", "Economic Services", "Economic Services", "Other Services Sector", "Other Services Sector", "Other Services Sector", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "Other Purposes", "General Public Services", "Education", "Health, Nutrition and Population Control", "Labor and Employment",
+                            "Housing and Community Development", "Social Services and Social Welfare", "Economic Services", "Other Purposes"],
+                 "Label2": ["Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personnel Services", "Maintenance and Other Operating Expenses", "Capital Outlay", "Debt Service", "Debt Service", "LDRRMF", "LDRRMF", "20% Development Fund", "20% Development Fund", "Share from National Wealth", "Share from National Wealth", "Allocation for Senior Citizens and PWD",
+                            "Allocation for Senior Citizens and PWD", "Others", "Others", "Others", "Capital Outlay", "Capital Outlay", "Capital Outlay", "Capital Outlay", "Capital Outlay", "Capital Outlay", "Capital Outlay", "Capital Outlay"],
+                 "Label3": [None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, None, "Financial Expense", "Amortization", "Maintenance and Other Operating Expenses", "Capital Outlay", "Maintenance and Other Operating Expenses", "Capital Outlay", "Maintenance and Other Operating Expenses",
+                            "Capital Outlay", "Maintenance and Other Operating Expenses", "Capital Outlay", "Personal Services", "Maintenance and Other Operating Expenses", "Capital Outlay", None, None, None, None, None, None, None, None]
+                 }
+    rev_init = excel.iloc[40:91, 4].values.tolist()
+    cleanedList = [x for x in rev_init if str(x) != 'nan']
+    rev_init2 = excel.iloc[94:109, 4].values.tolist()
+    cleanedList2 = [x for x in rev_init2 if str(x) != 'nan']
+    cleanedList.extend(cleanedList2)
+    dict_samp['Data'] = cleanedList
+    df = pd.DataFrame(dict_samp)
+    fig = px.sunburst(df, path=['Sources', 'Label1',
+                                'Label2', 'Label3'], values='Data')
+    return fig
+
+# GENERATE FIGURE CURRENT APPROPRIATIONS
+
+
+def generate_fig_app_curr(excel):
     firstval = 40
     firstval2 = 43
     labels = ["Personnel Services",
