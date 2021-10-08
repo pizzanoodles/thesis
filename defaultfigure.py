@@ -37,15 +37,14 @@ def generate_default_figs():
     # Graph 2 BAR CHART function call
     fig2 = get_reg_app_rev()
     # Graph 3 Sample
-    long_df = px.data.medals_long()
-    fig3 = px.bar(long_df, x="nation", y="count",
-                  color="medal", title="Long-Form Input")
-    fig4 = dropdownchart()
+    #long_df = px.data.medals_long()
+    #fig3 = px.bar(long_df, x="nation", y="count",color="medal", title="Long-Form Input")
+    #fig4 = dropdownchart()
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
-    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
-    graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON)
+    #graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+    #graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON)
 
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
@@ -65,9 +64,8 @@ def get_surplus():
             waterfvals.append(surpvals[i+1] - surpvals[i])
         else:
             waterfvals.append(surpvals[i+1] - surpvals[i])
-    print(waterfvals)
     fig = go.Figure(go.Waterfall(
-        name="Surplus Adventures of Philippines", orientation="v",
+        orientation="v",
         measure=["relative", "relative", "relative",
                  "relative", "relative", "relative"],
         x=['2016', '2017', '2018', '2019', '2020'],
@@ -77,6 +75,9 @@ def get_surplus():
         y=waterfvals,
         connector={"line": {"color": "rgb(63, 63, 63)"}},
     ))
+    fig.update_layout(
+        title = "Surplus Values from 2016 to 2020"
+    )
     return fig
 
 # GRAPH 2: DEFAULT ANIMATED BAR CHART: ALL OF THE REGION'S APPROPRIATIONS AND REVENUES IN 2016-2020
@@ -86,14 +87,15 @@ def get_surplus():
 def get_reg_app_rev():
     df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
     fig = px.bar(df, x="Region", y=["Appropriations", "Revenue"],
-                 animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#FF4136", "#3D9970"],)
+                 animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#FF4136", "#3D9970"],
+                 title="Revenue and Appropriations per Region 2016 to 2020")
     return fig
 
 # GRAPH 4: DROPDOWN CHART: SAMPLE
 # function generate
 
 
-def dropdownchart():
+""" def dropdownchart():
     ncr2016 = pd.ExcelFile('SCBAA/2016/NCR.xlsx')
     caloocan2016 = pd.read_excel(
         ncr2016, "Caloocan", skiprows=range(1, 10), usecols="D:E")
@@ -147,7 +149,7 @@ def dropdownchart():
             )
         ]
     )
-    """ np.random.seed(42)
+    np.random.seed(42)
     random_x = np.random.randint(1, 101, 100)
     random_y = np.random.randint(1, 101, 100)
     x = ['A', 'B', 'C', 'D']
@@ -177,5 +179,5 @@ def dropdownchart():
                             }]),
             ]),
         )
-    ]) """
-    return fig
+    ]) 
+    return fig """

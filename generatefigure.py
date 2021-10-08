@@ -11,9 +11,9 @@ from defaultfigure import dict_scbaa
 # EXTRA FUNCTIONS > check list zeros
 
 
-def check_list_zero(dataframe, arr):
+def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
-        fig = px.bar(dataframe, x="Label", y="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
+        fig = px.bar(dataframe, title = title,x="Label", y="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
                                                                               "blue", "goldenrod", "magenta"])
         fig.update_layout(
             updatemenus=[
@@ -30,8 +30,8 @@ def check_list_zero(dataframe, arr):
             ]
         )
     else:
-        fig = px.pie(dataframe, names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                                                                       "blue", "goldenrod", "magenta"],)
+        fig = px.pie(dataframe, title = title,names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
+                                                                                       "blue", "goldenrod", "magenta"],)                                                                               
         fig.update_layout(
             updatemenus=[
                 dict(
@@ -97,7 +97,7 @@ def generate_overview_rev(excel):
     rev_init.extend(rev_init1)
     dict_samp['Data'] = rev_init
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data')
+    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data', title="Overview of Revenues")
     return fig
 
 
@@ -107,10 +107,11 @@ def generate_overview_rev(excel):
 def generate_fig_rev_tr(excel):
     dict_fig = {"Label": ["Tax Revenue - Property",
                           "Tax Revenue - Goods and Services", "Other Local Taxes"]}
+    title = "Tax Revenues"
     taxrev = excel.iloc[9:12, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = check_list_zero(df, taxrev)
+    fig = check_list_zero(df, taxrev, title)
     return fig
 # GENERATE FIGURE REVENUES > Non-Tax Revenue
 
@@ -118,10 +119,11 @@ def generate_fig_rev_tr(excel):
 def generate_fig_rev_ntr(excel):
     dict_fig = {"Label": ["Service Income",
                           "Business Income", "Other Income and Receipts"]}
+    title = "Non-Tax Revenues"                          
     taxrev = excel.iloc[14:17, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = check_list_zero(df, taxrev)
+    fig = check_list_zero(df, taxrev, title)
     return fig
 
 # GENERATE FIGURE REVENUES > External Sources
@@ -130,6 +132,7 @@ def generate_fig_rev_ntr(excel):
 def generate_fig_rev_ext(excel):
     dict_fig = {"Label": ["Share from the National Internal Revenue Taxes (IRA)", "Share from GOCCs",
                           "Other Shares from National Tax Collections", "Other Receipts", "Inter-local Transfer", "Capital/Investment Receipts"]}
+    title = "External Sources"                          
     taxrev = excel.iloc[19:21, 4].values.tolist()
     taxrev1 = sum(excel.iloc[22:26, 4].values.tolist())
     taxrev2 = sum(excel.iloc[27:29, 4].values.tolist())
@@ -139,7 +142,7 @@ def generate_fig_rev_ext(excel):
     taxrev.extend(lastrev)
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = check_list_zero(df, taxrev)
+    fig = check_list_zero(df, taxrev, title)
     return fig
 
 # GENERATE FIGURE REVENUES > External Sources > National Tax Collections
@@ -148,10 +151,11 @@ def generate_fig_rev_ext(excel):
 def generate_fig_rev_ext_ntc(excel):
     dict_fig = {"Label": ["Share from Ecozone", "Share from EVAT",
                 "Share from National Wealth", "Share from Tobacco Excise Tax"]}
+    title="Other Shares from National Tax Collections"                
     taxrev = excel.iloc[22:26, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = check_list_zero(df, taxrev)
+    fig = check_list_zero(df, taxrev, title)
     return fig
 
 # GENERATE FIGURE REVENUES > External Sources > Other Receipts
@@ -159,10 +163,11 @@ def generate_fig_rev_ext_ntc(excel):
 
 def generate_fig_rev_ext_or(excel):
     dict_fig = {"Label": ["Grants and Donations", "Other Subsidy Income"]}
+    title="Other Receipts"
     taxrev = excel.iloc[27:29, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = check_list_zero(df, taxrev)
+    fig = check_list_zero(df, taxrev, title)
     return fig
 
 # GENERATE FIGURE REVENUES > External Sources > Capital/Investment Receipts
@@ -171,10 +176,11 @@ def generate_fig_rev_ext_or(excel):
 def generate_fig_rev_ext_cir(excel):
     dict_fig = {"Label": ["Sale of Capital Assets", "Sale of Investments",
                           "Proceeds from Collections of Loans Receivable"]}
+    title = "Capital/Investment Receipts"                          
     taxrev = excel.iloc[31:34, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
-    fig = check_list_zero(df, taxrev)
+    fig = check_list_zero(df, taxrev, title)
     return fig
 
 # GENERATE FIGURE REVENUES > Receipts from Borrowings
@@ -234,7 +240,7 @@ def generate_overview_app(excel):
     cleanedList.extend(cleanedList2)
     dict_samp['Data'] = cleanedList
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, path=['Sources', 'Label1',
+    fig = px.sunburst(df, title="Overview of Expenditures",path=['Sources', 'Label1',
                                 'Label2', 'Label3'], values='Data')
     return fig
 
@@ -259,6 +265,7 @@ def generate_fig_app_curr(excel):
     df = pd.DataFrame(appdict)
     fig = px.bar(
         df,
+        title="Current Appropriations",
         y=categories,
         x=labels,
         barmode='group'
@@ -294,10 +301,11 @@ def generate_fig_app_curr(excel):
 
 def generate_others_debt(excel):
     dict_fig = {"Label": ["Financial Expense","Amortization"]}
+    title = "Debt Services"
     values=excel.iloc[73:75,4].values.tolist()
     dict_fig['Data'] = values
     df = pd.DataFrame(data = dict_fig)
-    fig = check_list_zero(df, values)
+    fig = check_list_zero(df, values, title)
     return fig
 def generate_others_social(excel):
     firstval = 76
@@ -316,6 +324,7 @@ def generate_others_social(excel):
     df = pd.DataFrame(appdict)
     fig = px.bar(
         df,
+        title="Social Expenditures",
         y=categories,
         x=labels,
         barmode='group'
@@ -343,16 +352,18 @@ def generate_others_social(excel):
 
 def generate_others_others(excel):
     dict_fig = {"Label": ["Personnel Services","Maintenance and Other Expenses","Capital Outlay"]}
+    title="Other Purposes"
     values=list(excel.iloc[88:91,4].values.tolist())
     dict_fig['Data'] = values
     df = pd.DataFrame(data = dict_fig)
-    fig = check_list_zero(df, values)
+    fig = check_list_zero(df, values, title)
     return fig
 
 def generate_continuing_app(excel):
     dict_fig = {"Label":["General Public Services", "Education", "Health, Nutrition, and Population Control", "Labor and Employment", "Housing and Community Development", "Social Services and Welfare", "Economic Services", "Other Purposes"]}
+    title="Continuing Appropriations"
     values = list(excel.iloc[94:109:2,4])
     dict_fig['Data'] = values
     df = pd.DataFrame(data = dict_fig)
-    fig = check_list_zero(df, values)
+    fig = check_list_zero(df, values, title)
     return fig
