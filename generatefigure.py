@@ -13,11 +13,11 @@ from defaultfigure import dict_scbaa
 
 def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
-        fig = px.bar(dataframe, title = title,x="Label", y="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
-                                                                                            "#FEE1E8","#FED7C3"])
+        fig = px.bar(dataframe, title=title, x="Label", y="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                           "#FEE1E8", "#FED7C3"])
     else:
-        fig = px.pie(dataframe, title = title,names="Label", values="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
-                                                                                            "#FEE1E8","#FED7C3"])                                                                               
+        fig = px.pie(dataframe, title=title, names="Label", values="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                    "#FEE1E8", "#FED7C3"])
     return fig
 
 # GENERATE FIGURE REVENUES
@@ -69,9 +69,9 @@ def generate_overview_rev(excel):
     rev_init.extend(rev_init1)
     dict_samp['Data'] = rev_init
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data', title="Overview of Revenues", 
-                        color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
-                                                                                            "#FEE1E8","#FED7C3"])
+    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data', title="Overview of Revenues",
+                      color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                               "#FEE1E8", "#FED7C3"])
     return fig
 
 
@@ -93,7 +93,7 @@ def generate_fig_rev_tr(excel):
 def generate_fig_rev_ntr(excel):
     dict_fig = {"Label": ["Service Income",
                           "Business Income", "Other Income and Receipts"]}
-    title = "Non-Tax Revenues"                          
+    title = "Non-Tax Revenues"
     taxrev = excel.iloc[14:17, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
@@ -106,7 +106,7 @@ def generate_fig_rev_ntr(excel):
 def generate_fig_rev_ext(excel):
     dict_fig = {"Label": ["Share from the National Internal Revenue Taxes (IRA)", "Share from GOCCs",
                           "Other Shares from National Tax Collections", "Other Receipts", "Inter-local Transfer", "Capital/Investment Receipts"]}
-    title = "External Sources"                          
+    title = "External Sources"
     taxrev = excel.iloc[19:21, 4].values.tolist()
     taxrev1 = sum(excel.iloc[22:26, 4].values.tolist())
     taxrev2 = sum(excel.iloc[27:29, 4].values.tolist())
@@ -125,7 +125,7 @@ def generate_fig_rev_ext(excel):
 def generate_fig_rev_ext_ntc(excel):
     dict_fig = {"Label": ["Share from Ecozone", "Share from EVAT",
                 "Share from National Wealth", "Share from Tobacco Excise Tax"]}
-    title="Other Shares from National Tax Collections"                
+    title = "Other Shares from National Tax Collections"
     taxrev = excel.iloc[22:26, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
@@ -137,7 +137,7 @@ def generate_fig_rev_ext_ntc(excel):
 
 def generate_fig_rev_ext_or(excel):
     dict_fig = {"Label": ["Grants and Donations", "Other Subsidy Income"]}
-    title="Other Receipts"
+    title = "Other Receipts"
     taxrev = excel.iloc[27:29, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
@@ -150,7 +150,7 @@ def generate_fig_rev_ext_or(excel):
 def generate_fig_rev_ext_cir(excel):
     dict_fig = {"Label": ["Sale of Capital Assets", "Sale of Investments",
                           "Proceeds from Collections of Loans Receivable"]}
-    title = "Capital/Investment Receipts"                          
+    title = "Capital/Investment Receipts"
     taxrev = excel.iloc[31:34, 4].values.tolist()
     dict_fig['Data'] = taxrev
     df = pd.DataFrame(data=dict_fig)
@@ -173,8 +173,8 @@ def generate_fig_rev_rb(rt, ct):
         dict1['Receipts'].append(rev_init)
     df = pd.DataFrame(data=dict1)
     fig = px.line(df, x="Year", y="Receipts",
-                  color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
-                                                                                            "#FEE1E8","#FED7C3"])
+                  color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                           "#FEE1E8", "#FED7C3"])
     fig.update_xaxes(type='category')
     return fig
 
@@ -194,7 +194,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph4JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,graph4JSON=graph4JSON,graph5JSON=graph5JSON,graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -215,9 +215,9 @@ def generate_overview_app(excel):
     cleanedList.extend(cleanedList2)
     dict_samp['Data'] = cleanedList
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, title="Overview of Expenditures",path=['Sources', 'Label1',
-                                'Label2', 'Label3'], values='Data', color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
-                                                                                            "#FEE1E8","#FED7C3"])
+    fig = px.sunburst(df, title="Overview of Expenditures", path=['Sources', 'Label1',
+                                                                  'Label2', 'Label3'], values='Data', color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                                               "#FEE1E8", "#FED7C3"])
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
@@ -245,7 +245,8 @@ def generate_fig_app_curr(excel):
         y=categories,
         x=labels,
         barmode='group',
-        color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA","#FEE1E8","#FED7C3"]
+        color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5",
+                                 "#FFCCB6", "#F3B0C3", "#C6DBDA", "#FEE1E8", "#FED7C3"]
     )
     fig.update_layout(
         updatemenus=[
@@ -276,14 +277,17 @@ def generate_fig_app_curr(excel):
     )
     return fig
 
+
 def generate_others_debt(excel):
-    dict_fig = {"Label": ["Financial Expense","Amortization"]}
+    dict_fig = {"Label": ["Financial Expense", "Amortization"]}
     title = "Debt Services"
-    values=excel.iloc[73:75,4].values.tolist()
+    values = excel.iloc[73:75, 4].values.tolist()
     dict_fig['Data'] = values
-    df = pd.DataFrame(data = dict_fig)
+    df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
     return fig
+
+
 def generate_others_social(excel):
     firstval = 76
     firstval2 = 78
@@ -305,7 +309,8 @@ def generate_others_social(excel):
         y=categories,
         x=labels,
         barmode='group',
-        color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA","#FEE1E8","#FED7C3"]
+        color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5",
+                                 "#FFCCB6", "#F3B0C3", "#C6DBDA", "#FEE1E8", "#FED7C3"]
     )
     fig.update_layout(
         updatemenus=[
@@ -328,20 +333,24 @@ def generate_others_social(excel):
     )
     return fig
 
+
 def generate_others_others(excel):
-    dict_fig = {"Label": ["Personnel Services","Maintenance and Other Expenses","Capital Outlay"]}
-    title="Other Purposes"
-    values=list(excel.iloc[88:91,4].values.tolist())
+    dict_fig = {"Label": ["Personnel Services",
+                          "Maintenance and Other Expenses", "Capital Outlay"]}
+    title = "Other Purposes"
+    values = list(excel.iloc[88:91, 4].values.tolist())
     dict_fig['Data'] = values
-    df = pd.DataFrame(data = dict_fig)
+    df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
     return fig
 
+
 def generate_continuing_app(excel):
-    dict_fig = {"Label":["General Public Services", "Education", "Health, Nutrition, and Population Control", "Labor and Employment", "Housing and Community Development", "Social Services and Welfare", "Economic Services", "Other Purposes"]}
-    title="Continuing Appropriations"
-    values = list(excel.iloc[94:109:2,4])
+    dict_fig = {"Label": ["General Public Services", "Education", "Health, Nutrition, and Population Control", "Labor and Employment",
+                          "Housing and Community Development", "Social Services and Welfare", "Economic Services", "Other Purposes"]}
+    title = "Continuing Appropriations"
+    values = list(excel.iloc[94:109:2, 4])
     dict_fig['Data'] = values
-    df = pd.DataFrame(data = dict_fig)
+    df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
     return fig
