@@ -15,37 +15,9 @@ def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
         fig = px.bar(dataframe, title = title,x="Label", y="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
                                                                                             "#FEE1E8","#FED7C3"])
-        fig.update_layout(
-            updatemenus=[
-                dict(
-                    active=0,
-                    buttons=list([
-                        dict(label="Bar", method="restyle",
-                             args=["type", "bar"]),
-                        dict(label="Pie", method="restyle",
-                             args=["type", "pie"]),
-                    ]),
-                    direction="down"
-                )
-            ]
-        )
     else:
         fig = px.pie(dataframe, title = title,names="Label", values="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
                                                                                             "#FEE1E8","#FED7C3"])                                                                               
-        fig.update_layout(
-            updatemenus=[
-                dict(
-                    active=0,
-                    buttons=list([
-                        dict(label="Pie", method="restyle",
-                             args=["type", "pie"]),
-                        dict(label="Bar", method="restyle",
-                             args=["type", "bar"]),
-                    ]),
-                    direction="down"
-                )
-            ]
-        )
     return fig
 
 # GENERATE FIGURE REVENUES
