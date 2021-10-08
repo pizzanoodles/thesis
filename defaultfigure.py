@@ -73,6 +73,8 @@ def get_surplus():
         text=["2016 SURPLUS", str(waterfvals[1]), str(
             waterfvals[2]), str(waterfvals[3]), str(waterfvals[4])],
         y=waterfvals,
+        increasing = {"marker":{"color":"#ABDEE6"}},
+        decreasing = {"marker":{"color":"#CBAACB"}},
         connector={"line": {"color": "rgb(63, 63, 63)"}},
     ))
     fig.update_layout(
@@ -87,7 +89,7 @@ def get_surplus():
 def get_reg_app_rev():
     df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
     fig = px.bar(df, x="Region", y=["Appropriations", "Revenue"],
-                 animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#FF4136", "#3D9970"],
+                 animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#ABDEE6", "#CBAACB"],
                  title="Revenue and Appropriations per Region 2016 to 2020")
     return fig
 

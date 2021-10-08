@@ -13,8 +13,8 @@ from defaultfigure import dict_scbaa
 
 def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
-        fig = px.bar(dataframe, title = title,x="Label", y="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                                                              "blue", "goldenrod", "magenta"])
+        fig = px.bar(dataframe, title = title,x="Label", y="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
+                                                                                            "#FEE1E8","#FED7C3"])
         fig.update_layout(
             updatemenus=[
                 dict(
@@ -30,8 +30,8 @@ def check_list_zero(dataframe, arr, title):
             ]
         )
     else:
-        fig = px.pie(dataframe, title = title,names="Label", values="Data", color_discrete_sequence=["#6a0c0b", "#b97d10",
-                                                                                       "blue", "goldenrod", "magenta"],)                                                                               
+        fig = px.pie(dataframe, title = title,names="Label", values="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
+                                                                                            "#FEE1E8","#FED7C3"])                                                                               
         fig.update_layout(
             updatemenus=[
                 dict(
@@ -97,7 +97,9 @@ def generate_overview_rev(excel):
     rev_init.extend(rev_init1)
     dict_samp['Data'] = rev_init
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data', title="Overview of Revenues")
+    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data', title="Overview of Revenues", 
+                        color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
+                                                                                            "#FEE1E8","#FED7C3"])
     return fig
 
 
@@ -199,7 +201,8 @@ def generate_fig_rev_rb(rt, ct):
         dict1['Receipts'].append(rev_init)
     df = pd.DataFrame(data=dict1)
     fig = px.line(df, x="Year", y="Receipts",
-                  color_discrete_sequence=["#FF4136", "#3D9970"],)
+                  color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
+                                                                                            "#FEE1E8","#FED7C3"])
     fig.update_xaxes(type='category')
     return fig
 
@@ -241,7 +244,8 @@ def generate_overview_app(excel):
     dict_samp['Data'] = cleanedList
     df = pd.DataFrame(dict_samp)
     fig = px.sunburst(df, title="Overview of Expenditures",path=['Sources', 'Label1',
-                                'Label2', 'Label3'], values='Data')
+                                'Label2', 'Label3'], values='Data', color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA",
+                                                                                            "#FEE1E8","#FED7C3"])
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
@@ -268,7 +272,8 @@ def generate_fig_app_curr(excel):
         title="Current Appropriations",
         y=categories,
         x=labels,
-        barmode='group'
+        barmode='group',
+        color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA","#FEE1E8","#FED7C3"]
     )
     fig.update_layout(
         updatemenus=[
@@ -327,7 +332,8 @@ def generate_others_social(excel):
         title="Social Expenditures",
         y=categories,
         x=labels,
-        barmode='group'
+        barmode='group',
+        color_discrete_sequence=["#ABDEE6", "#CBAACB","#FFFFB5","#FFCCB6","#F3B0C3","#C6DBDA","#FEE1E8","#FED7C3"]
     )
     fig.update_layout(
         updatemenus=[
