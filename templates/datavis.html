@@ -13,11 +13,25 @@
 
 <body>
     <div class="p-3 mb-2 text-white">
-        <div class="row align-items-start">
-            <div class="col">
-                <h6>{{dt}} > {{rt}} > {{ct}} > {{yt}}</h6>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+            <div class="container-fluid">
+
+                <a class="navbar-brand " href="index.html"> <img
+                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-white.png') }}" class="rounded"
+                        alt="about width=40" height="40" style="float:left">
+                    <h6 style="float:right">{{dt}} > {{rt}} > {{ct}} > {{yt}}</h6>
+                </a>
+                <div class="mr-auto">
+                    <a href="/test" type="button" class="btn btn-outline-light" style="margin:5px;">
+                        DATA VISUALIZATION</a>
+                    <a href="/forecast" type="button" class="btn btn-outline-light" style="margin:5px;">
+                        FORECASTING</a>
+                    <a href="about.html" type="button" class="btn btn-outline-light" style="margin:5px;">
+                        ABOUT</a>
+                </div>
+
             </div>
-        </div>
+        </nav>
     </div>
 
     <div class="card">

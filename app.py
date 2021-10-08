@@ -8,6 +8,7 @@ import numpy as np
 import plotly.graph_objects as go
 from defaultfigure import *
 from generatefigure import *
+from forecast import *
 
 from flask import Flask
 
@@ -53,6 +54,19 @@ def datavis(dt, rt, ct, yt):
     else:
         app_template = generate_fig_app(city_excel, dt=dt, rt=rt, ct=ct, yt=yt)
         return app_template
+
+
+@app.route("/forecast", methods=["POST", "GET"])
+def forecast():
+    if request.method == "POST":
+        output = forecasting(request.form["inp1"])
+        return redirect(url_for("results", output=output))
+    return render_template("/forecastinput.html")
+
+
+@app.route("/results/<output>")
+def results(output):
+    return render_template("/forecastoutput.html", output=output)
 
 
 if __name__ == "__main__":
