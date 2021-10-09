@@ -59,14 +59,17 @@ def datavis(dt, rt, ct, yt):
 @app.route("/forecast", methods=["POST", "GET"])
 def forecast():
     if request.method == "POST":
-        output = forecasting(request.form["inp1"])
-        return redirect(url_for("results", output=output))
+        reg = request.form["reg_select"]
+        city = request.form["cit_select"]
+        input = request.form["inp1"]
+        return redirect(url_for("results", inp=input, rt=reg, ct=city))
     return render_template("/forecastinput.html")
 
 
-@app.route("/results/<output>")
-def results(output):
-    return render_template("/forecastoutput.html", output=output)
+@ app.route("/results/<rt>/<ct>/<inp>")
+def results(inp, rt, ct):
+    forecast_template = forecasting(inp, rt, ct)
+    return forecast_template
 
 
 if __name__ == "__main__":

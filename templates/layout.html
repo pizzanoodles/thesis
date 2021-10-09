@@ -7,7 +7,7 @@
     <meta name="viewport" content="wnameth=device-wnameth, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/homepage.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/datavis.css') }}">
     {% if title %}
     <title>Thesis1-{{title}}</title>
     {% else %}
@@ -107,103 +107,104 @@
 </head>
 
 <body>
-    <main>
 
-        <div class="p-3 mb-2 text-white">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-                <div class="container-fluid">
 
-                    <a class="navbar-brand " href="index.html"> <img
-                            src="{{ url_for('static', filename='/images/aninaw-tech-logo-white.png') }}" class="rounded"
-                            alt="about width=40" height="40" style="float:left">
-                        <h6 style="float:right">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm</h6>
-                    </a>
-                    <div class="mr-auto">
-                        <a href="/test" type="button" class="btn btn-outline-light" style="margin:5px;">
-                            DATA VISUALIZATION</a>
-                        <a href="/forecast" type="button" class="btn btn-outline-light" style="margin:5px;">
-                            FORECASTING</a>
-                        <a href="about.html" type="button" class="btn btn-outline-light" style="margin:5px;">
-                            ABOUT</a>
-                    </div>
+    <div class="p-3 mb-2 text-white">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+            <div class="container-fluid">
 
-                </div>
-            </nav>
-            <br><br><br>
-            <div class="row align-items-end">
-                <div class="col-4">
-                    <form action="#" method="POST">
-                        <!-- DATA MENU -->
-                        <select class="form-select mb-3" name="data_select" required>
-                            <option selected disabled>DATA</option>
-                            <option value="Revenue">Revenue</option>
-                            <option value="Appropriations">Appropriations</option>
-                        </select>
-                        <!-- REGION MENU-->
-                        <select class="form-select mb-3" name="reg_select" id='idReg'
-                            onchange="populate(this.id,'idCities')" required>
-                            <option selected disabled>REGION</option>
-                            <option value="NCR">NCR</option>
-                            <option value="CAR">CAR</option>
-                            <option value="Region 1">Region I</option>
-                            <option value="Region 2">Region II</option>
-                            <option value="Region 3">Region III</option>
-                            <option value="Region 4A">Region IV-A</option>
-                            <option value="Region 4B">Region IV-B</option>
-                            <option value="Region 5">Region V</option>
-                            <option value="Region 6">Region VI</option>
-                            <option value="Region 7">Region VII</option>
-                            <option value="Region 8">Region VIII</option>
-                            <option value="Region 9">Region IX</option>
-                            <option value="Region 10">Region X</option>
-                            <option value="Region 11">Region XI</option>
-                            <option value="Region 12">Region XII</option>
-                            <option value="Region 13">Region XIII</option>
-                            <option value="ARMM">ARMM</option>
-                            <option value="NIR">NIR</option>
-                        </select>
-                        <!-- CITY MENU-->
-                        <select class="form-select mb-3" name="cit_select" id='idCities' required>
-                            <option selected disabled>CITIES</option>
-                        </select>
-
-                        <!-- YEAR MENU-->
-                        <select class="form-select mb-3" name="yr_select" required>
-                            <option selected disabled>YEAR</option>
-                            <option value="2016">2016</option>
-                            <option value="2017">2017</option>
-                            <option value="2018">2018</option>
-                            <option value="2019">2019</option>
-                            <option value="2020">2020</option>
-                        </select>
-                        <button type="submit" class="btn btn-primary">Submit</button>
-                    </form>
+                <a class="navbar-brand " href="index.html"> <img
+                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-white.png') }}" class="rounded"
+                        alt="about width=40" height="40" style="float:left">
+                    <h6 style="float:right">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm</h6>
+                </a>
+                <div class="mr-auto">
+                    <a href="/test" type="button" class="btn btn-outline-light" style="margin:5px;">
+                        DATA VISUALIZATION</a>
+                    <a href="/forecast" type="button" class="btn btn-outline-light" style="margin:5px;">
+                        FORECASTING</a>
+                    <a href="about.html" type="button" class="btn btn-outline-light" style="margin:5px;">
+                        ABOUT</a>
                 </div>
 
             </div>
-            <br><br>
+        </nav>
+        <br><br><br>
+        <div class="row align-items-end">
+            <div class="col-8"></div>
+            <div class="col-4">
+                <form action="#" method="POST">
+                    <!-- DATA MENU -->
+                    <select class="form-select mb-3" name="data_select" required>
+                        <option selected disabled>DATA</option>
+                        <option value="Revenue">Revenue</option>
+                        <option value="Appropriations">Appropriations</option>
+                    </select>
+                    <!-- REGION MENU-->
+                    <select class="form-select mb-3" name="reg_select" id='idReg'
+                        onchange="populate(this.id,'idCities')" required>
+                        <option selected disabled>REGION</option>
+                        <option value="NCR">NCR</option>
+                        <option value="CAR">CAR</option>
+                        <option value="Region 1">Region I</option>
+                        <option value="Region 2">Region II</option>
+                        <option value="Region 3">Region III</option>
+                        <option value="Region 4A">Region IV-A</option>
+                        <option value="Region 4B">Region IV-B</option>
+                        <option value="Region 5">Region V</option>
+                        <option value="Region 6">Region VI</option>
+                        <option value="Region 7">Region VII</option>
+                        <option value="Region 8">Region VIII</option>
+                        <option value="Region 9">Region IX</option>
+                        <option value="Region 10">Region X</option>
+                        <option value="Region 11">Region XI</option>
+                        <option value="Region 12">Region XII</option>
+                        <option value="Region 13">Region XIII</option>
+                        <option value="ARMM">ARMM</option>
+                        <option value="NIR">NIR</option>
+                    </select>
+                    <!-- CITY MENU-->
+                    <select class="form-select mb-3" name="cit_select" id='idCities' required>
+                        <option selected disabled>CITIES</option>
+                    </select>
+
+                    <!-- YEAR MENU-->
+                    <select class="form-select mb-3" name="yr_select" required>
+                        <option selected disabled>YEAR</option>
+                        <option value="2016">2016</option>
+                        <option value="2017">2017</option>
+                        <option value="2018">2018</option>
+                        <option value="2019">2019</option>
+                        <option value="2020">2020</option>
+                    </select>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+
         </div>
-        <div>
-            <div class="row p-4">
-                <div class="col-4">
-                    <div class="card mx-10">
-                        <div class="card-body">
-                            <div id="chart1">
-                            </div>
+        <br><br>
+    </div>
+    <main class="container">
+        <div class="row p-4">
+            <div class="col-4">
+                <div class="card mx-10">
+                    <div class="card-body">
+                        <div id="chart1">
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="row-4 p-4">
-                <div class="col-10">
-                    <div class="card mx-10">
-                        <div class="card-body">
-                            <div id="chart2">
-                            </div>
+        </div>
+        <div class="row-4 p-4">
+            <div class="col-10">
+                <div class="card mx-10">
+                    <div class="card-body">
+                        <div id="chart2">
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     </main>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>

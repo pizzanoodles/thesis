@@ -73,12 +73,12 @@ def get_surplus():
         text=["2016 SURPLUS", str(waterfvals[1]), str(
             waterfvals[2]), str(waterfvals[3]), str(waterfvals[4])],
         y=waterfvals,
-        increasing = {"marker":{"color":"#ABDEE6"}},
-        decreasing = {"marker":{"color":"#CBAACB"}},
+        increasing={"marker": {"color": "#ABDEE6"}},
+        decreasing={"marker": {"color": "#CBAACB"}},
         connector={"line": {"color": "rgb(63, 63, 63)"}},
     ))
     fig.update_layout(
-        title = "Surplus Values from 2016 to 2020"
+        title="Surplus Values from 2016 to 2020"
     )
     return fig
 

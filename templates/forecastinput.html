@@ -9,6 +9,96 @@
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/forecasting.css') }}">
     <title>Document</title>
+    <script type="text/javascript">
+        function populate(param1, param2) {
+            var Region = document.getElementById(param1);
+            var Cities = document.getElementById(param2);
+            Cities.innerHTML = "";
+            if (Region.value == 'ARMM') {
+                var optionArray = ["|SELECT CITY", "Isabela|Isabela", "Lamitan|Lamitan", "Marawi|Marawi"];
+            }
+            else if (Region.value == 'CAR') {
+                var optionArray = ["|SELECT CITY", "Baguio|Baguio", "Tabuk|Tabuk"];
+            }
+            else if (Region.value == 'NCR') {
+                var optionArray = ["|SELECT CITY", "Caloocan|Caloocan", "Las Piñas|Las Piñas", "Makati|Makati", "Malabon|Malabon", "Mandaluyong|Mandaluyong",
+                    "Manila|Manila", "Marikina|Marikina", "Muntinlupa|Muntinlupa", "Navotas|Navotas", "Parañaque|Parañaque", "Pasay|Pasay",
+                    "Pasig|Pasig", "Quezon|Quezon", "San Juan|San Juan", "Taguig|Taguig", "Valenzueala|Valenzuela"];
+            }
+            else if (Region.value == 'NIR') {
+                var optionArray = ["|SELECT CITY", "Bacolod|Bacolod", "Bago|Bago", "Bais|Bais", "Bayawan|Bayawan", "Cadiz|Cadiz", "Canlaon|Canlaon",
+                    "Dumaguete|Dumaguete", "Escalente|Escalente", "Guihulngan|Guihulngan", "Himamaylan|Himamaylan", "Kabankalan|Kabankalan",
+                    "Sagay|Sagay", "San Carlos|San Carlos", "Sipalay|Sipalay", "Talisay|Talisay", "Tanjay|Tanjay", "Victorias|Victorias"];
+            }
+            else if (Region.value == 'Region 1') {
+                var optionArray = ["|SELECT CITY", "Batac|Batac", "Laoag|Laoag", "Alaminos|Alaminos", "Dagupan|Dagupan", "San Carlos|San Carlos", "Urdaneta|Urdaneta,",
+                    "San Fernando|San Fernando", "Candon|Candon", "Vigan|Vigan"];
+            }
+            else if (Region.value == 'Region 2') {
+                var optionArray = ["|SELECT CITY", "Tuguegarao|Tuguegarao", "Cauayan|Cauayan", "Ilagan|Ilagan", "Santiago|Santiago"];
+            }
+            else if (Region.value == 'Region 3') {
+                var optionArray = ["|SELECT CITY", "Balanga|Balanga", "Malolos|Malolos", "Meycauayan|Meycauayan", "San Jose Del Monte|San Jose Del Monte",
+                    "Cabanatuan|Cabanatuan", "Gapan|Gapan", "Muñoz|Muñoz", "Palayan|Palayan", "San Jose|San Jose", "Angeles|Angeles", "San Fernando|San Fernando",
+                    "Mabalacat|Mabalacat", "Tarlac|Tarlac", "Olongapo|Olongapo"];
+            }
+            else if (Region.value == 'Region 4A') {
+                var optionArray = ["|SELECT CITY", "Batangas|Batangas", "Lipa|Lipa", "Santo Tomas|Santo Tomas", "Tanauan|Tanauan", "Bacoor|Bacoor", "Cavite|Cavite",
+                    "Dasmariñas|Dasmariñas", "General Trias|General Trias", "Imus|Imus", "Tagaytay|Tagaytay", "Trece Martires|Trece Martires", "Biñan|Biñan",
+                    "Cabuyao|Cabuyao", "Calamba|Calamba", "Sn Pablo|San Pablo", "San Pedro|San Pedro", "Santa Rosa|Santa Rosa", "Lucena|Lucena", "Tayabas|Tayabas",
+                    "Antipolo|Antipolo"];
+            }
+            else if (Region.value == 'Region 4B') {
+                var optionArray = ["|SELECT CITY", "Calapan|Calapan", "Puerto Princesa|Puerto Princesa"];
+            }
+            else if (Region.value == 'Region 5') {
+                var optionArray = ["|SELECT CITY", "Legazpi|Legazpi", "Ligao|Ligao", "Tabaco|Tabaco", "Iriga|Iriga", "Naga|Naga", "Masbate|Masbate", "Sorsogon|Sorsogon"];
+            }
+            else if (Region.value == 'Region 6') {
+                var optionArray = ["|SELECT CITY", "Iloilo|Iloilo", "Roxas|Roxas", "Passi|Passi"];
+            }
+            else if (Region.value == 'Region 7') {
+                var optionArray = ["|SELECT CITY", "Tagbilaran|Tagbilaran", "Carcar|Carcar", "Bogo|Bogo", "Cebu|Cebu", "Danao|Danao", "Lapu-lapu|Lapu-lapu",
+                    "Mandaue|Mandaue", "Naga|Naga", "Toledo|Toledo", "Talisay|Talisay"];
+            }
+            else if (Region.value == 'Region 8') {
+                var optionArray = ["|SELECT CITY", "Calbayog|Calbayog", "Baybay|Baybay", "Borongan|Borongan", "Catbalogan|Catbalogan", "Maasin|Maasin", "Ormoc|Ormoc",
+                    "Tacloban|Tacloban"];
+            }
+            else if (Region.value == 'Region 9') {
+                var optionArray = ["|SELECT CITY", "Zamboanga|Zamboanga", "Dapitan|Dapitan", "Dipolog|Dipolog", "Pagadian|Pagadian"];
+            }
+            else if (Region.value == 'Region 10') {
+                var optionArray = ["|SELECT CITY", "Tangub|Tangub", "Cagayan de Oro|Cagayan de Oro", "El Salvador|El Salvador", "Gingoog|Gingoog", "Iligan|Iligan",
+                    "Malaybalay|Malaybalay", "Oroquieta|Oroquieta", "Ozamiz|Ozamiz", "Valencia|Valencia"];
+            }
+            else if (Region.value == 'Region 11') {
+                var optionArray = ["|SELECT CITY", "Digos|Digos", "Davao|Davao", "Samal|Samal", "Panabo|Panabo", "Mati|Mati", "Tagum|Tagum"];
+            }
+            else if (Region.value == 'Region 12') {
+                var optionArray = ["|SELECT CITY", "Koronadal|Koronadal", "Cotabato|Cotabato", "General Santos|General Santos", "Kidapawan|Kidapawan", "Tacurong|Tacurong"];
+            }
+            else if (Region.value == 'Region 13') {
+                var optionArray = ["|SELECT CITY", "Bayugan|Bayugan", "Bislig|Bislig", "Butuan|Butuan", "Cabadbadaran|Cabadbaran", "Surigao|Surigao", "Tandag|Tandag"];
+            }
+            for (var option in optionArray) {
+                var pair = optionArray[option].split("|");
+                var newOption = document.createElement("option");
+                if (pair[1] == "SELECT CITY") {
+                    newOption.innerHTML = pair[1];
+                    newOption.disabled = true;
+                    newOption.selected = true;
+                }
+                else {
+                    newOption.value = pair[0];
+                    newOption.innerHTML = pair[1];
+                }
+
+
+                Cities.options.add(newOption);
+            }
+        }
+    </script>
 </head>
 
 <body>
@@ -38,13 +128,44 @@
                 <form action="#" method="POST">
                     <div class="row">
                         <div class="col-4">
+                            <p><strong>Forecast:</strong></p>
                             <select class="form-select mb-3" name="dt_select" required>
-                                <option selected disabled>Data Type Revenue</option>
+                                <option selected disabled>Total Appropriations</option>
                             </select>
                         </div>
                     </div>
+                    <br><br>
                     <div class="row">
+                        <p><strong>Input:</strong></p>
                         <div class="col-4">
+                            <select class="form-select mb-3" name="dt_select" required>
+                                <option selected disabled>Total Revenues</option>
+                            </select>
+                            <select class="form-select mb-3" name="reg_select" id='idReg'
+                                onchange="populate(this.id,'idCities')" required>
+                                <option selected disabled>REGION</option>
+                                <option value="NCR">NCR</option>
+                                <option value="CAR">CAR</option>
+                                <option value="Region 1">Region I</option>
+                                <option value="Region 2">Region II</option>
+                                <option value="Region 3">Region III</option>
+                                <option value="Region 4A">Region IV-A</option>
+                                <option value="Region 4B">Region IV-B</option>
+                                <option value="Region 5">Region V</option>
+                                <option value="Region 6">Region VI</option>
+                                <option value="Region 7">Region VII</option>
+                                <option value="Region 8">Region VIII</option>
+                                <option value="Region 9">Region IX</option>
+                                <option value="Region 10">Region X</option>
+                                <option value="Region 11">Region XI</option>
+                                <option value="Region 12">Region XII</option>
+                                <option value="Region 13">Region XIII</option>
+                                <option value="ARMM">ARMM</option>
+                                <option value="NIR">NIR</option>
+                            </select>
+                            <select class="form-select mb-3" name="cit_select" id='idCities' required>
+                                <option selected disabled>CITIES</option>
+                            </select>
                             <input name="inp1" type="text" class="form-control mb-3">
                         </div>
                     </div>

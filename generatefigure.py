@@ -176,6 +176,7 @@ def generate_fig_rev_rb(rt, ct):
                   color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                            "#FEE1E8", "#FED7C3"])
     fig.update_xaxes(type='category')
+    fig.update_traces(mode="markers+lines")
     return fig
 
 # GENERATE APPROPRIATIONS

@@ -34,10 +34,39 @@
         </nav>
         <br><br><br><br>
         <div class="container">
-            <h6>{{output}}</h6>
+            <h6>{{rmse_lst}}</h6>
+            <h3>Predicted Output: {{output}}</h3>
+            <div class="row-4 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart1">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <h3>Neighbors: {{n}}</h3>
+            <h4> - all accumulated neighbors {{neighbors}}</h4>
+            <div class="row-4 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart2">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <script>
+        var graph1 = {{ graph1JSON | safe}};
+        Plotly.plot("chart1", graph1, {})
+        var graph2 = {{ graph2JSON | safe}};
+        Plotly.plot("chart2", graph2, {})
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
