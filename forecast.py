@@ -12,7 +12,6 @@ from sklearn.neighbors import KNeighborsRegressor
 from defaultfigure import dict_scbaa
 from math import *
 from statistics import mean
-from numerize import numerize
 
 
 def forecasting(inp, reg, city):
