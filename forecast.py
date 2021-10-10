@@ -134,4 +134,5 @@ def get_optimalK(rmse):
         initlst.remove(min(initlst))
         return ((rmse.index(min(initlst)))+1), initlst
     else:
-        return (rmse.index(min(rmse))+1), initlst
+        initlst.remove(rmse[1])
+        return ((rmse.index(min(initlst)))+1), initlst
