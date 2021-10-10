@@ -13,11 +13,11 @@ from defaultfigure import dict_scbaa
 
 def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
-        fig = px.bar(dataframe, title=title, x="Label", y="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
-                                                                                           "#FEE1E8", "#FED7C3"])
+        fig = px.bar(dataframe, title=title, x="Label", y="Amount", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                             "#FEE1E8", "#FED7C3"])
     else:
-        fig = px.pie(dataframe, title=title, names="Label", values="Data", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
-                                                                                                    "#FEE1E8", "#FED7C3"])
+        fig = px.pie(dataframe, title=title, names="Label", values="Amount", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                      "#FEE1E8", "#FED7C3"])
     return fig
 
 # GENERATE FIGURE REVENUES
@@ -67,11 +67,12 @@ def generate_overview_rev(excel):
     rev_init2.extend(rev_init3)
     rev_init1.extend(rev_init2)
     rev_init.extend(rev_init1)
-    dict_samp['Data'] = rev_init
+    dict_samp['Amount'] = rev_init
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], values='Data', title="Overview of Revenues",
+    fig = px.sunburst(df, path=['Sources', 'Label1', 'Label2'], color="Sources", values='Amount', title="Overview of Revenues",
                       color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                "#FEE1E8", "#FED7C3"])
+    fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
     return fig
 
 
@@ -83,7 +84,7 @@ def generate_fig_rev_tr(excel):
                           "Tax Revenue - Goods and Services", "Other Local Taxes"]}
     title = "Tax Revenues"
     taxrev = excel.iloc[9:12, 4].values.tolist()
-    dict_fig['Data'] = taxrev
+    dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
     return fig
@@ -95,7 +96,7 @@ def generate_fig_rev_ntr(excel):
                           "Business Income", "Other Income and Receipts"]}
     title = "Non-Tax Revenues"
     taxrev = excel.iloc[14:17, 4].values.tolist()
-    dict_fig['Data'] = taxrev
+    dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
     return fig
@@ -114,7 +115,7 @@ def generate_fig_rev_ext(excel):
     taxrev4 = sum(excel.iloc[31:34, 4].values.tolist())
     lastrev = [taxrev1, taxrev2, taxrev3, taxrev4]
     taxrev.extend(lastrev)
-    dict_fig['Data'] = taxrev
+    dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
     return fig
@@ -124,10 +125,10 @@ def generate_fig_rev_ext(excel):
 
 def generate_fig_rev_ext_ntc(excel):
     dict_fig = {"Label": ["Share from Ecozone", "Share from EVAT",
-                "Share from National Wealth", "Share from Tobacco Excise Tax"]}
+                          "Share from National Wealth", "Share from Tobacco Excise Tax"]}
     title = "Other Shares from National Tax Collections"
     taxrev = excel.iloc[22:26, 4].values.tolist()
-    dict_fig['Data'] = taxrev
+    dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
     return fig
@@ -139,7 +140,7 @@ def generate_fig_rev_ext_or(excel):
     dict_fig = {"Label": ["Grants and Donations", "Other Subsidy Income"]}
     title = "Other Receipts"
     taxrev = excel.iloc[27:29, 4].values.tolist()
-    dict_fig['Data'] = taxrev
+    dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
     return fig
@@ -152,7 +153,7 @@ def generate_fig_rev_ext_cir(excel):
                           "Proceeds from Collections of Loans Receivable"]}
     title = "Capital/Investment Receipts"
     taxrev = excel.iloc[31:34, 4].values.tolist()
-    dict_fig['Data'] = taxrev
+    dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
     return fig
@@ -214,11 +215,12 @@ def generate_overview_app(excel):
     rev_init2 = excel.iloc[94:109, 4].values.tolist()
     cleanedList2 = [x for x in rev_init2 if str(x) != 'nan']
     cleanedList.extend(cleanedList2)
-    dict_samp['Data'] = cleanedList
+    dict_samp['Amount'] = cleanedList
     df = pd.DataFrame(dict_samp)
-    fig = px.sunburst(df, title="Overview of Expenditures", path=['Sources', 'Label1',
-                                                                  'Label2', 'Label3'], values='Data', color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
-                                                                                                                               "#FEE1E8", "#FED7C3"])
+    fig = px.sunburst(df, title="Overview of Expenditures", names="Sources", path=['Sources', 'Label1',
+                                                                                   'Label2', 'Label3'], values='Amount', color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                                                                  "#FEE1E8", "#FED7C3"])
+    fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
@@ -283,7 +285,7 @@ def generate_others_debt(excel):
     dict_fig = {"Label": ["Financial Expense", "Amortization"]}
     title = "Debt Services"
     values = excel.iloc[73:75, 4].values.tolist()
-    dict_fig['Data'] = values
+    dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
     return fig
@@ -340,7 +342,7 @@ def generate_others_others(excel):
                           "Maintenance and Other Expenses", "Capital Outlay"]}
     title = "Other Purposes"
     values = list(excel.iloc[88:91, 4].values.tolist())
-    dict_fig['Data'] = values
+    dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
     return fig
@@ -351,7 +353,7 @@ def generate_continuing_app(excel):
                           "Housing and Community Development", "Social Services and Welfare", "Economic Services", "Other Purposes"]}
     title = "Continuing Appropriations"
     values = list(excel.iloc[94:109:2, 4])
-    dict_fig['Data'] = values
+    dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
     return fig

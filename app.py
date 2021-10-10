@@ -58,12 +58,13 @@ def datavis(dt, rt, ct, yt):
 
 @app.route("/forecast", methods=["POST", "GET"])
 def forecast():
+    def_template = forecastref()
     if request.method == "POST":
         reg = request.form["reg_select"]
         city = request.form["cit_select"]
         input = request.form["inp1"]
         return redirect(url_for("results", inp=input, rt=reg, ct=city))
-    return render_template("/forecastinput.html")
+    return def_template
 
 
 @ app.route("/results/<rt>/<ct>/<inp>")

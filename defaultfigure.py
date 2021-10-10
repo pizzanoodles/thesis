@@ -183,3 +183,26 @@ def get_reg_app_rev():
         )
     ]) 
     return fig """
+
+
+def forecastref():
+    r = "CAR"
+    c = "Baguio"
+    input = 1387547678
+    dict_samp = {"Total Revenues": [], "Total Appropriations": [],
+                 "Year": [2016, 2017, 2018, 2019, 2020]}
+    for y in dict_scbaa['Year']:
+        link_init = "SCBAA/" + str(y) + "/" + r + ".xlsx"
+        reg_init = pd.ExcelFile(link_init)
+        city_init = pd.read_excel(reg_init, c)
+        total_rev = city_init.iloc[35, 4]
+        total_app = city_init.iloc[110, 4]
+        dict_samp['Total Revenues'].append(total_rev)
+        dict_samp['Total Appropriations'].append(total_app)
+    df = pd.DataFrame(dict_samp)
+    fig = px.bar(df, x="Year", y="Total Revenues", title="Baguio Total Revenues through 2016-2020", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                                             "#FEE1E8", "#FED7C3"])
+    fig.update_traces(
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Total Revenues", showlegend=True)
+    graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/forecastinput.html", graph1JSON=graph1JSON)
