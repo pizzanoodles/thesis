@@ -44,7 +44,7 @@ def generate_default_figs():
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     #graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     #graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, chart1insight=insights)
 
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
@@ -56,22 +56,44 @@ def get_surplus():
     phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
     surplusperyear = pd.read_excel(phsurplusexcel, usecols='T')
     surpvals = surplusperyear.iloc[0:5, 0]
+    years = ['2016','2017','2018','2019','2020']
     waterfvals = []
-
+    percents = []
+    pospercent = []
+    negpercent = []
+    insight = ""
+    #GET VALUES TO BE USED FOR WATERFALL CHART
     for i in range(len(surpvals)-1):
         if i == 0:
             waterfvals.append(surpvals[i])
             waterfvals.append(surpvals[i+1] - surpvals[i])
         else:
             waterfvals.append(surpvals[i+1] - surpvals[i])
+    #GET PERCENTAGES
+    for i in range(len(surpvals)-1):
+        if(i == 0):
+            percents.append(100)
+            if(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2) < 0):
+                negpercent.append(abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2)))
+            else:
+                pospercent.append(abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2)))
+            percents.append(abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2)))
+        else:
+            if(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2) < 0):
+                negpercent.append(abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2)))
+            else:
+                pospercent.append(abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2)))
+            percents.append(abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i])* 100),2)))
+
+
     fig = go.Figure(go.Waterfall(
         orientation="v",
         measure=["relative", "relative", "relative",
                  "relative", "relative", "relative"],
-        x=['2016', '2017', '2018', '2019', '2020'],
+        x=years,
         textposition="outside",
-        text=["2016 SURPLUS", str(waterfvals[1]), str(
-            waterfvals[2]), str(waterfvals[3]), str(waterfvals[4])],
+        text=["2016 SURPLUS", str(percents[1])+'%', str(
+            percents[2])+'%', str(percents[3])+'%', str(percents[4])+'%'],
         y=waterfvals,
         increasing={"marker": {"color": "#ABDEE6"}},
         decreasing={"marker": {"color": "#CBAACB"}},
@@ -80,6 +102,14 @@ def get_surplus():
     fig.update_layout(
         title="Surplus Values from 2016 to 2020"
     )
+    global insights
+    insights = "Highest Increase: {highinc}% during {highincyear}<br>Highest Decrease: {highdec}% during {highdecyear}<br>Difference of 2020 Surplus to 2016 Surplus: {yeardiff}%".format(
+        highinc = max(pospercent[1:]),
+        highincyear = years[np.argmax([percents == max(pospercent[1:])])],
+        highdec = max(negpercent[1:]),
+        highdecyear = years[np.argmax([percents == max(negpercent[1:])])],
+        yeardiff = abs(round((((surpvals[4] - surpvals[0])/surpvals[0])* 100),2)) )
+    print(insights)
     return fig
 
 # GRAPH 2: DEFAULT ANIMATED BAR CHART: ALL OF THE REGION'S APPROPRIATIONS AND REVENUES IN 2016-2020
