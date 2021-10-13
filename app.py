@@ -60,16 +60,19 @@ def datavis(dt, rt, ct, yt):
 def forecast():
     def_template = forecastref()
     if request.method == "POST":
+        forec = request.form["forec_select"]
+        print(forec, "ASDASDASDASDASDAS")
+        inp_type = request.form["inp_select"]
         reg = request.form["reg_select"]
         city = request.form["cit_select"]
         input = request.form["inp1"]
-        return redirect(url_for("results", inp=input, rt=reg, ct=city))
+        return redirect(url_for("results", inp=input, rt=reg, ct=city, inpt=inp_type, forect=forec))
     return def_template
 
 
-@ app.route("/results/<rt>/<ct>/<inp>")
-def results(inp, rt, ct):
-    forecast_template = forecasting(inp, rt, ct)
+@ app.route("/results/<rt>/<ct>/<inp>/<inpt>/<forect>")
+def results(inp, rt, ct, inpt, forect):
+    forecast_template = forecasting(inp, rt, ct, inpt, forect)
     return forecast_template
 
 

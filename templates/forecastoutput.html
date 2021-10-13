@@ -34,55 +34,84 @@
         </nav>
         <br><br><br><br>
         <div class="container">
-            <h2>Predicted Output: {{output}}</h2>
+            <h2>FORECAST TYPE: {{inptype}}</h2>
+            <h2>INPUT TYPE: {{forectype}}</h2>
+            <h2>INPUT: {{inp}}</h2>
             <div class="row-4 p-4">
                 <div class="col-10">
                     <div class="card mx-10">
                         <div class="card-body">
-                            <div id="chart1">
+                            <div id="chart5">
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <h3>RMSE check(for optimal K-Neighbors)</h3>
-            <h4> - train test 80:20</h4>
-            <div class="row-4 p-4">
-                <div class="col-10">
-                    <div class="card mx-10">
-                        <div class="card-body">
-                            <div id="chart3">
+            <div class="container">
+                <h2>Predicted Output: {{output}}</h2>
+                <div class="row-4 p-4">
+                    <div class="col-10">
+                        <div class="card mx-10">
+                            <div class="card-body">
+                                <div id="chart1">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <h3>Neighbors: {{n}}</h3>
-            <h4> - all accumulated neighbors {{neighbors}}</h4>
-            <div class="row-4 p-4">
-                <div class="col-10">
-                    <div class="card mx-10">
-                        <div class="card-body">
-                            <div id="chart2">
+                <h2>Predicted Outputs</h2>
+                <div class="row-4 p-4">
+                    <div class="col-10">
+                        <div class="card mx-10">
+                            <div class="card-body">
+                                <div id="chart4">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3>RMSE check(for optimal K-Neighbors)</h3>
+                <h4> - train test 80:20</h4>
+                <div class="row-4 p-4">
+                    <div class="col-10">
+                        <div class="card mx-10">
+                            <div class="card-body">
+                                <div id="chart3">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <h3>Neighbors: {{n}}</h3>
+                <h4> - all accumulated neighbors {{neighbors}}</h4>
+                <div class="row-4 p-4">
+                    <div class="col-10">
+                        <div class="card mx-10">
+                            <div class="card-body">
+                                <div id="chart2">
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script>
-        var graph1 = {{ graph1JSON | safe}};
-        Plotly.plot("chart1", graph1, {})
-        var graph2 = {{ graph2JSON | safe}};
-        Plotly.plot("chart2", graph2, {})
-        var graph3 = {{ graph3JSON | safe}};
-        Plotly.plot("chart3", graph3, {})
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-        crossorigin="anonymous"></script>
+        <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+        <script>
+            var graph1 = {{ graph1JSON | safe}};
+            Plotly.plot("chart1", graph1, {})
+            var graph2 = {{ graph2JSON | safe}};
+            Plotly.plot("chart2", graph2, {})
+            var graph3 = {{ graph3JSON | safe}};
+            Plotly.plot("chart3", graph3, {})
+            var graph4 = {{ graph4JSON | safe}};
+            Plotly.plot("chart4", graph4, {})
+            var graph5 = {{ graph5JSON | safe}};
+            Plotly.plot("chart5", graph5, {})
+        </script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+            crossorigin="anonymous"></script>
 </body>
 
 </html>
