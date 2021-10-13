@@ -44,7 +44,7 @@ def generate_default_figs():
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     #graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     #graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, chart1insight=insights)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, chart1insight=insights, chart2insight=insights2)
 
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
@@ -109,7 +109,6 @@ def get_surplus():
         highdec = max(negpercent[1:]),
         highdecyear = years[np.argmax([percents == max(negpercent[1:])])],
         yeardiff = abs(round((((surpvals[4] - surpvals[0])/surpvals[0])* 100),2)) )
-    print(insights)
     return fig
 
 # GRAPH 2: DEFAULT ANIMATED BAR CHART: ALL OF THE REGION'S APPROPRIATIONS AND REVENUES IN 2016-2020
@@ -118,6 +117,107 @@ def get_surplus():
 
 def get_reg_app_rev():
     df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
+    vals2016 = df.loc[df['Year'] == 2016]
+    vals2017 = df.loc[df['Year'] == 2017]
+    vals2018 = df.loc[df['Year'] == 2018]
+    vals2019 = df.loc[df['Year'] == 2019]
+    vals2020 = df.loc[df['Year'] == 2020]
+    global insights2
+    insights2 = "2016<br>\
+        <ul>Revenues\
+            <ul>\
+        <li>Highest Revenue: {maxrev2016:,} from {maxrev2016reg}</li>\
+        <li>Lowest Revenue: {minrev2016:,} from {minrev2016reg}</li>\
+            </ul>\
+        Appropriations\
+            <ul>\
+                <li>Highest Appropriation: {maxapp2016:,} from {maxapp2016reg}</li>\
+                <li>Lowest Appropriation: {minapp2016:,} from {minapp2016reg}</li>\
+        </ul></ul>\
+        2017<br>\
+            <ul>Revenues\
+            <ul>\
+        <li>Highest Revenue: {maxrev2017:,} from {maxrev2017reg}</li>\
+        <li>Lowest Revenue: {minrev2017:,} from {minrev2017reg}</li>\
+            </ul>\
+        Appropriations\
+            <ul>\
+                <li>Highest Appropriation: {maxapp2017:,} from {maxapp2017reg}</li>\
+                <li>Lowest Appropriation: {minapp2017:,} from {minapp2017reg}</li>\
+        </ul></ul>\
+        2018<br>\
+            <ul>Revenues\
+            <ul>\
+        <li>Highest Revenue: {maxrev2018:,} from {maxrev2018reg}</li>\
+        <li>Lowest Revenue: {minrev2018:,} from {minrev2018reg}</li>\
+            </ul>\
+        Appropriations\
+            <ul>\
+                <li>Highest Appropriation: {maxapp2018:,} from {maxapp2018reg}</li>\
+                <li>Lowest Appropriation: {minapp2018:,} {minapp2018reg}</li>\
+        </ul></ul>\
+        2019<br>\
+            <ul>Revenues\
+            <ul>\
+        <li>Highest Revenue: {maxrev2019:,} from {maxrev2019reg}</li>\
+        <li>Lowest Revenue: {minrev2019:,} from {minrev2019reg}</li>\
+            </ul>\
+        Appropriations\
+            <ul>\
+                <li>Highest Appropriation: {maxapp2019:,} from {maxapp2019reg}</li>\
+                <li>Lowest Appropriation: {minapp2019:,} from {minapp2019reg}</li>\
+        </ul></ul>\
+        2020<br>\
+            <ul>Revenues\
+            <ul>\
+        <li>Highest Revenue: {maxrev2020:,} from {maxrev2020reg}</li>\
+        <li>Lowest Revenue: {minrev2020:,} from {minrev2020reg}</li>\
+            </ul>\
+        Appropriations\
+            <ul>\
+                <li>Highest Appropriation: {maxapp2020:,} from {maxapp2020reg}</li>\
+                <li>Lowest Appropriation: {minapp2020:,} from {minapp2020reg}</li>\
+        </ul></ul>".format(
+        maxrev2016 = vals2016["Revenue"].max(), minrev2016 = vals2016["Revenue"].min(),
+        maxrev2016reg = vals2016["Region"].loc[vals2016["Revenue"] == vals2016["Revenue"].max()].iloc[0],
+        minrev2016reg = vals2016["Region"].loc[vals2016["Revenue"] == vals2016["Revenue"].min()].iloc[0],
+
+        maxapp2016 = vals2016["Appropriations"].max(), minapp2016 = vals2016["Appropriations"].min(),
+        maxapp2016reg = vals2016["Region"].loc[vals2016["Appropriations"] == vals2016["Appropriations"].max()].iloc[0],
+        minapp2016reg = vals2016["Region"].loc[vals2016["Appropriations"] == vals2016["Appropriations"].min()].iloc[0],
+
+        maxrev2017 = vals2017["Revenue"].max(), minrev2017 = vals2017["Revenue"].min(),
+        maxrev2017reg = vals2017["Region"].loc[vals2017["Revenue"] == vals2017["Revenue"].max()].iloc[0],
+        minrev2017reg = vals2017["Region"].loc[vals2017["Revenue"] == vals2017["Revenue"].min()].iloc[0],
+
+        maxapp2017 = vals2017["Appropriations"].max(), minapp2017 = vals2017["Appropriations"].min(),
+        maxapp2017reg = vals2017["Region"].loc[vals2017["Appropriations"] == vals2017["Appropriations"].max()].iloc[0],
+        minapp2017reg = vals2017["Region"].loc[vals2017["Appropriations"] == vals2017["Appropriations"].min()].iloc[0],
+
+        maxrev2018 = vals2018["Revenue"].max(), minrev2018 = vals2018["Revenue"].min(),
+        maxrev2018reg = vals2018["Region"].loc[vals2018["Revenue"] == vals2018["Revenue"].max()].iloc[0],
+        minrev2018reg = vals2018["Region"].loc[vals2018["Revenue"] == vals2018["Revenue"].min()].iloc[0],
+
+        maxapp2018 = vals2018["Appropriations"].max(), minapp2018 = vals2018["Appropriations"].min(),
+        maxapp2018reg = vals2018["Region"].loc[vals2018["Appropriations"] == vals2018["Appropriations"].max()].iloc[0],
+        minapp2018reg = vals2018["Region"].loc[vals2018["Appropriations"] == vals2018["Appropriations"].min()].iloc[0],
+
+        maxrev2019 = vals2019["Revenue"].max(), minrev2019 = vals2019["Revenue"].min(),
+        maxrev2019reg = vals2019["Region"].loc[vals2019["Revenue"] == vals2019["Revenue"].max()].iloc[0],
+        minrev2019reg = vals2019["Region"].loc[vals2019["Revenue"] == vals2019["Revenue"].min()].iloc[0],
+
+        maxapp2019 = vals2019["Appropriations"].max(), minapp2019 = vals2019["Appropriations"].min(),
+        maxapp2019reg = vals2019["Region"].loc[vals2019["Appropriations"] == vals2019["Appropriations"].max()].iloc[0],
+        minapp2019reg = vals2019["Region"].loc[vals2019["Appropriations"] == vals2019["Appropriations"].min()].iloc[0],
+
+        maxrev2020 = vals2020["Revenue"].max(), minrev2020 = vals2020["Revenue"].min(),
+        maxrev2020reg = vals2020["Region"].loc[vals2020["Revenue"] == vals2020["Revenue"].max()].iloc[0],
+        minrev2020reg = vals2020["Region"].loc[vals2020["Revenue"] == vals2020["Revenue"].min()].iloc[0],
+
+        maxapp2020 = vals2020["Appropriations"].max(), minapp2020 = vals2020["Appropriations"].min(),
+        maxapp2020reg = vals2020["Region"].loc[vals2020["Appropriations"] == vals2020["Appropriations"].max()].iloc[0],
+        minapp2020reg = vals2020["Region"].loc[vals2020["Appropriations"] == vals2020["Appropriations"].min()].iloc[0]
+        )
     fig = px.bar(df, x="Region", y=["Appropriations", "Revenue"],
                  animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#ABDEE6", "#CBAACB"],
                  title="Revenue and Appropriations per Region 2016 to 2020")
