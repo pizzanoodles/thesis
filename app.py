@@ -1,12 +1,8 @@
-from flask import render_template, url_for, request, redirect
+from flask import render_template, url_for, request, redirect, jsonify
 import pandas as pd
-import json
-import plotly
-import plotly.express as px
 import matplotlib.ticker as ticker
-import numpy as np
-import plotly.graph_objects as go
 from defaultfigure import *
+from initialize import *
 from generatefigure import *
 from forecast import *
 
@@ -42,6 +38,12 @@ def test():
         return default_template
 
 
+@app.route('/city/<reg>/<yr>/<dt>')
+def city(reg, yr, dt):
+    cities = get_cities(reg, yr, dt)
+    return jsonify({'city': cities})
+
+
 @app.route("/<dt>/<rt>/<ct>/<yt>")
 def datavis(dt, rt, ct, yt):
     link_init = "SCBAA/" + str(yt) + "/" + rt + ".xlsx"
@@ -58,16 +60,23 @@ def datavis(dt, rt, ct, yt):
 
 @app.route("/forecast", methods=["POST", "GET"])
 def forecast():
-    def_template = forecastref()
+    year = initialize_dir_year()
+    region = initialize_dir_region()
     if request.method == "POST":
         forec = request.form["forec_select"]
-        print(forec, "ASDASDASDASDASDAS")
         inp_type = request.form["inp_select"]
         reg = request.form["reg_select"]
         city = request.form["cit_select"]
         input = request.form["inp1"]
         return redirect(url_for("results", inp=input, rt=reg, ct=city, inpt=inp_type, forect=forec))
-    return def_template
+    return render_template("forecastinput.html", year=year, region=region)
+
+
+@app.route('/viewref/<r>/<c>')
+def viewref(r, c):
+    fig = gen_reference(r, c)
+    graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
+    return jsonify(graph1JSON)
 
 
 @ app.route("/results/<rt>/<ct>/<inp>/<inpt>/<forect>")

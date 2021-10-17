@@ -1,17 +1,12 @@
-from flask import render_template, url_for, request, redirect
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import mean_squared_error
+from flask import render_template
 import pandas as pd
 import json
 import plotly
 import plotly.express as px
-import matplotlib.ticker as ticker
-import numpy as np
-import plotly.graph_objects as go
-from sklearn.neighbors import KNeighborsRegressor
 from defaultfigure import dict_scbaa
 from math import *
 from statistics import mean
+from knnalgo import *
 
 
 def forecasting(inp, reg, city, inptype, forectype):
@@ -25,18 +20,16 @@ def forecasting(inp, reg, city, inptype, forectype):
         total_app = city_init.iloc[110, 4]
         dict_samp[inptype].append(total_rev)
         dict_samp[forectype].append(total_app)
-    arr = np.array(dict_samp[inptype])
-    df = pd.DataFrame(dict_samp)
-    arr_2d = np.reshape(arr, (-1, 1))
-    rmse_lst = get_rmse(arr_2d, dict_samp[forectype], 4)
+    X = dict_samp[inptype]
+    Y = dict_samp[forectype]
+    dataset = [[X[i], Y[i]] for i in range(5)]
+    rmse_lst = get_rmse(X, Y, 4)
     n_num, valid_rmse = get_optimalK(rmse_lst)
-    neigh = KNeighborsRegressor(n_neighbors=n_num, p=1)
-    neigh.fit(arr_2d, dict_samp[forectype])
-    lst = neigh.predict([[inp]])
-    optm_predict_output = lst[0]
-    nby, nbx = get_neighbors(
-        neigh, inp, dict_samp[forectype], dict_samp[inptype])
-    allpred = fig1_krange(arr_2d, dict_samp[forectype], inp)
+    nbx, nby = get_neighbors(dataset, [float(inp)], n_num)
+    optm_predict_output = predict(nby)
+    df = pd.DataFrame(dict_samp)
+    #get_new = check_inp(inp, dict_samp[inptype], dict_samp[forectype])
+    allpred = fig1_krange(dataset, [float(inp)])
     fig_inp = get_figinp(inp, reg, city, inptype)
     fig_preds = get_fig0(allpred, optm_predict_output, n_num)
     fig_bar = get_fig1(df, optm_predict_output, forectype)
@@ -47,18 +40,27 @@ def forecasting(inp, reg, city, inptype, forectype):
     graph3JSON = json.dumps(fig_line, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig_preds, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_inp, cls=plotly.utils.PlotlyJSONEncoder)
-    predict_output = "₱{:,.2f}".format(optm_predict_output)
+    predict_output = "₱{:,.2f}".format(optm_predict_output[0])
     input = "₱{:,.2f}".format(float(inp))
-    return render_template("/forecastoutput.html", output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype, forectype=forectype)
+    return render_template("/forecastoutput.html", output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,
+                           graph4JSON=graph4JSON, graph5JSON=graph5JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype,
+                           forectype=forectype)
 
 
-def fig1_krange(arr, arr2, inp):
+"""def check_inp(inp, arr1, arr2):
+    if(float(inp) < min(arr1)):
+        chng_rate = (float(inp)-min(arr1))/min(arr1)
+        newarr2 = [i+(i * chng_rate) for i in arr2]
+        return newarr2
+"""
+
+
+def fig1_krange(dataset, inp):
     res = []
     k = [2, 3, 4]
     for ra in k:
-        model = KNeighborsRegressor(n_neighbors=ra)
-        model.fit(arr, arr2)
-        pred = model.predict([[inp]])
+        nbx, nby = get_neighbors(dataset, inp, ra)
+        pred = predict(nby)
         res.append(pred[0])
     return res
 
@@ -96,9 +98,9 @@ def get_fig0(lst, pred, optm_k):
     init_k = [2, 3, 4]
     init_preds = list(lst)
     init_k.remove(optm_k)
-    init_preds.remove(pred)
+    init_preds.remove(pred[0])
     df = {"K": init_k, "Predicted Appropriations": init_preds}
-    df2 = {"K": [optm_k], "Optimal Predicted Appropriation": [pred]}
+    df2 = {"K": [optm_k], "Optimal Predicted Appropriation": pred}
     fig = px.bar(df, x="K", y="Predicted Appropriations",
                  text="Predicted Appropriations",  color_discrete_sequence=["#ABDEE6"])
     fig.update_traces(
@@ -119,7 +121,7 @@ def get_fig0(lst, pred, optm_k):
 
 
 def get_fig1(df, pred, forectype):
-    df2 = {"Year": [2021], "Predicted Appropriation": [pred]}
+    df2 = {"Year": [2021], "Predicted Appropriation": pred}
     fig = px.bar(df, x="Year", y=forectype, text=forectype,  color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                       "#FEE1E8", "#FED7C3"])
     fig.update_traces(
@@ -175,34 +177,3 @@ def get_fig3(rmse, min):
     fig.add_trace(fig2.data[0])
     fig.update_traces(mode="markers+lines")
     return fig
-
-
-def get_neighbors(model, inpt, Y, X):
-    neighbor_num = model.kneighbors([[inpt]], return_distance=False)
-    neighbory = [Y[i]for i in neighbor_num[0]]
-    neighborx = [X[i]for i in neighbor_num[0]]
-    return(neighbory, neighborx)
-
-
-def get_rmse(X, Y, ra):
-    rmse_val = []
-    X_train, X_test, Y_train, Y_test = train_test_split(
-        X, Y, test_size=0.2, random_state=0)
-    for K in range(ra):
-        K = K+1
-        model = KNeighborsRegressor(n_neighbors=K)
-        model.fit(X_train, Y_train)
-        pred = model.predict(X_test)
-        error = sqrt(mean_squared_error(pred, Y_test))
-        rmse_val.append(error)
-    return rmse_val
-
-
-def get_optimalK(rmse):
-    initlst = list(rmse)
-    if(rmse.index(min(rmse))+1) == 1:
-        initlst.remove(min(initlst))
-        return ((rmse.index(min(initlst)))+1), initlst
-    else:
-        initlst.remove(rmse[1])
-        return ((rmse.index(min(initlst)))+1), initlst

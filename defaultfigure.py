@@ -1,9 +1,9 @@
 from flask import render_template, url_for, request, redirect
+from initialize import initialize_dir_year, initialize_dir_region
 import pandas as pd
 import json
 import plotly
 import plotly.express as px
-import matplotlib.ticker as ticker
 import numpy as np
 import plotly.graph_objects as go
 
@@ -32,6 +32,8 @@ dict_scbaa = {"Region": {
 
 
 def generate_default_figs():
+    year = initialize_dir_year()
+    region = initialize_dir_region()
     # Graph 1 WATERFALL CHART function call
     fig = get_surplus()
     # Graph 2 BAR CHART function call
@@ -44,7 +46,7 @@ def generate_default_figs():
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     #graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     #graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, chart1insight=insights, chart2insight=insights2)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, chart1insight=insights, chart2insight=insights2, year=year, region=region)
 
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
@@ -340,14 +342,12 @@ def get_reg_app_rev():
     return fig """
 
 
-def forecastref():
-    r = "CAR"
-    c = "Baguio"
-    input = 1387547678
+def gen_reference(r, c):
     dict_samp = {"Total Revenues": [], "Total Appropriations": [],
                  "Year": [2016, 2017, 2018, 2019, 2020]}
-    for y in dict_scbaa['Year']:
-        link_init = "SCBAA/" + str(y) + "/" + r + ".xlsx"
+    year = initialize_dir_year()
+    for y in year:
+        link_init = "SCBAA/" + y + "/" + r + ".xlsx"
         reg_init = pd.ExcelFile(link_init)
         city_init = pd.read_excel(reg_init, c)
         total_rev = city_init.iloc[35, 4]
@@ -355,9 +355,8 @@ def forecastref():
         dict_samp['Total Revenues'].append(total_rev)
         dict_samp['Total Appropriations'].append(total_app)
     df = pd.DataFrame(dict_samp)
-    fig = px.bar(df, x="Year", y="Total Revenues", title="Baguio Total Revenues through 2016-2020", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
-                                                                                                                             "#FEE1E8", "#FED7C3"])
+    fig = px.bar(df, x="Year", y="Total Revenues", title=c+" Total Revenues through 2016-2020", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                                         "#FEE1E8", "#FED7C3"])
     fig.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name="Total Revenues", showlegend=True)
-    graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/forecastinput.html", graph1JSON=graph1JSON)
+    return fig
