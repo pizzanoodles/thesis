@@ -40,7 +40,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph6JSON = json.dumps(fig_ext_cir, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -73,6 +73,31 @@ def generate_overview_rev(excel):
                       color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                "#FEE1E8", "#FED7C3"])
     fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
+    amounts = df["Amount"]
+    largestval = max(amounts)
+    lowestval = amounts[amounts > 0].min(0)
+    sum = amounts.sum()
+    largestpercent = round(((largestval/sum)*100),2)
+    lowestpercent = round(((lowestval/sum)*100),2)
+    if((df["Label2"].loc[df["Amount"] == largestval].iloc[0]) == None):
+        largestsource = df["Label1"].loc[df["Amount"] == largestval].iloc[0]
+    else:
+        largestsource = df["Label2"].loc[df["Amount"] == largestval].iloc[0]
+
+    if((df["Label2"].loc[df["Amount"] == lowestval].iloc[0]) == None):
+        lowestsource = df["Label1"].loc[df["Amount"] == lowestval].iloc[0]
+    else:
+        lowestsource = df["Label2"].loc[df["Amount"] == lowestval].iloc[0]
+    global sunbInsightsRev
+    sunbInsightsRev = "Largest Revenue: {largestrev}% ({largestrevval:,}) from {largestrevsrc} <br/>\
+        Lowest Revenue: {lowestrev}% ({lowestrevval:,}) from {lowestrevsrc}".format(
+        largestrev = largestpercent,
+        largestrevval = largestval,
+        largestrevsrc = largestsource,
+        lowestrev = lowestpercent,
+        lowestrevval = lowestval,
+        lowestrevsrc = lowestsource
+    )
     return fig
 
 
@@ -196,7 +221,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph4JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -221,6 +246,31 @@ def generate_overview_app(excel):
                                                                                    'Label2', 'Label3'], values='Amount', color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                                                                                   "#FEE1E8", "#FED7C3"])
     fig.update_layout(margin=dict(t=0, l=0, r=0, b=0))
+    amounts = df["Amount"]
+    largestval = max(amounts)
+    lowestval = amounts[amounts > 0].min(0)
+    sum = amounts.sum()
+    largestpercent = round(((largestval/sum)*100),2)
+    lowestpercent = round(((lowestval/sum)*100),2)
+    if((df["Label1"].loc[df["Amount"] == largestval].iloc[0]) == None):
+        largestsource = df["Label2"].loc[df["Amount"] == largestval].iloc[0]
+    else:
+        largestsource = df["Label1"].loc[df["Amount"] == largestval].iloc[0]
+
+    if((df["Label1"].loc[df["Amount"] == lowestval].iloc[0]) == None):
+        lowestsource = df["Label2"].loc[df["Amount"] == lowestval].iloc[0]
+    else:
+        lowestsource = df["Label1"].loc[df["Amount"] == lowestval].iloc[0]
+    global sunbInsightsApp
+    sunbInsightsApp = "Largest Revenue: {largestapp}% ({largestrevval:,}) from {largestappsrc} <br/>\
+        Lowest Revenue: {lowestapp}% ({lowestrevval:,}) from {lowestappsrc}".format(
+        largestapp = largestpercent,
+        largestrevval = largestval,
+        largestappsrc = largestsource,
+        lowestapp = lowestpercent,
+        lowestrevval = lowestval,
+        lowestappsrc = lowestsource
+    )
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
