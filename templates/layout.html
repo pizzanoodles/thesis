@@ -100,26 +100,27 @@
         city_select = document.getElementById('city');
         data_select = document.getElementById('iddt');
         data_select.onchange = function () {
-            get_city(reg_select, year_select, data_select, city_select)
+            get_city()
         }
         year_select.onchange = function () {
-            get_city(reg_select, year_select, data_select, city_select)
+            get_city()
         }
         reg_select.onchange = function () {
-            get_city(reg_select, year_select, data_select, city_select)
+            get_city()
         }
 
-        function get_city(region, year, data_s, city) {
-            reg = region.value;
-            yr = year.value;
-            dt = data_s.value;
-            fetch('city/' + reg + '/' + yr + '/' + dt).then(function (response) {
+        function get_city() {
+            reg = reg_select.value;
+            yr = year_select.value;
+            dt = data_select.value;
+            pg = "datavis"
+            fetch('city/' + reg + '/' + yr + '/' + dt + '/' + pg).then(function (response) {
                 response.json().then(function (data) {
                     optionHTML = '<option value="default" selected disabled>CITIES</option>';
                     data.city.forEach(function (item) {
                         optionHTML += '<option value="' + item + '">' + item + '</option>'
                     });
-                    city.innerHTML = optionHTML;
+                    city_select.innerHTML = optionHTML;
                 });
             });
         }

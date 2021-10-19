@@ -38,22 +38,7 @@
                 <form action="#" method="POST">
                     <div class="row">
                         <div class="col-4">
-                            <p><strong>Forecast:</strong></p>
-                            <div class="row">
-                                <div class="col-6">
-                                    <select class="form-select mb-3" name="forec_select" id="forec" required>
-                                        <option value="Total Appropriations" selected>Appropriations</option>
-                                        <option value="Total Revenues">Revenues</option>
-                                    </select>
-                                </div>
-                                <div class="col-6">
-                                    <select class="form-select mb-3" name="forectype_select" id="forect" required>
-                                        <option value="Total Appropriations" selected></option>
-                                    </select>
-                                </div>
-                            </div>
-                            <br><br>
-                            <p><strong>Input:</strong></p>
+                            <p><strong>Location:</strong></p>
                             <select class="form-select mb-3" name="reg_select" id='idReg' required>
                                 <option value="default" selected disabled>REGION</option>
                                 {%for i in range(region['value']|length)%}
@@ -63,24 +48,54 @@
                             <select class="form-select mb-3" name="cit_select" id="city" required>
                                 <option value="default" selected disabled>CITIES</option>
                             </select>
+                            <br>
+                            <p><strong>Forecast:</strong></p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <select class="form-select mb-3" name="forec_select" id="forec" required>
+                                        <option value="Appropriations" selected>Appropriations</option>
+                                        <option value="Revenues">Revenues</option>
+                                    </select>
+                                </div>
+                                <div class="col-6">
+                                    <select class="form-select mb-3" name="forectype_select" id="forect" required>
+                                        <option value="Total Appropriations" selected>Total Appropriations</option>
+                                    </select>
+                                    <div class="spinner-border text-primary" id="spin1" style="display:none"
+                                        role=" status">
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                            <p><strong>Input:</strong></p>
+
                             <div class="row">
                                 <div class="col-6">
                                     <select class="form-select mb-3" name="inp_select" id="inp" required>
-                                        <option value="Total Revenues" selected>Revenues</option>
-                                        <option value="Total Appropriations">Appropriations</option>
+                                        <option value="Revenues" selected>Revenues</option>
+                                        <option value="Appropriations">Appropriations</option>
                                     </select>
                                 </div>
                                 <div class="col-6">
                                     <select class="form-select mb-3" name="inptype_select" id="inpt" required>
-                                        <option value="Total Appropriations" selected></option>
+                                        <option value="Total Revenues" selected>Total Revenues</option>
                                     </select>
+                                    <div class="spinner-border text-primary" id="spin2" style="display:none"
+                                        role=" status">
+                                    </div>
                                 </div>
                             </div>
 
-                            <button onclick="viewRef()" type="button" class="btn btn-primary mb-3">View
-                                Reference</button>
+
                             <input name="inp1" type="text" class="form-control mb-3">
-                            <button type="submit" class="btn btn-primary">Submit</button>
+
+                            <button type="submit" id="spinbtn1" class="btn btn-primary mb-3 ">
+                                <span id="spin3" class="spinner-border spinner-border-sm" style="display:none"
+                                    role="status" aria-hidden="true"></span>Predict</button>
+                            <button onclick="viewRef()" type="button" id="spinbtn2" class="btn btn-primary mb-3 mx-4">
+                                <span id="spin4" class="spinner-border spinner-border-sm" style="display:none"
+                                    role="status" aria-hidden="true"></span>View
+                                Reference</button>
                         </div>
                         <div class="col-8">
                             <p><strong>Reference:</strong></p>
@@ -101,61 +116,124 @@
     </div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
-        forec_select = document.getElementById('forec')
-        inp_select = document.getElementById('inp')
+        forec_select = document.getElementById('forec');
+        inp_select = document.getElementById('inp');
+        forect_select = document.getElementById('forect');
+        inpt_select = document.getElementById('inpt');
         reg_select = document.getElementById('idReg');
         city_select = document.getElementById('city');
         forec_select.onchange = function () {
-            forec_inpcheck(forec_select, inp_select)
+            forec_inpcheck(forec_select, inp_select);
+            get_datatype();
+
         }
         inp_select.onchange = function () {
-            forec_inpcheck(inp_select, forec_select)
+            forec_inpcheck(inp_select, forec_select);
+            get_datatype();
         }
         reg_select.onchange = function () {
-            get_city(reg_select)
+            get_city();
         }
+        city_select.onchange = function () {
+            get_datatype();
+        }
+
+        function get_datatype_fetch(f, i, ft, it, c, r, foreh, inph) {
+            showload();
+            fetch('gettype/' + i + '/' + c + '/' + r).then(function (response) {
+                response.json().then(function (data) {
+                    for (let i = 0; i < data.forecastl.length; i++) {
+                        foreh += '<option value="' + data.forecastv[i] + '">' + data.forecastl[i] + '</option>'
+                    }
+                    for (let i = 0; i < data.inputl.length; i++) {
+                        inph += '<option value="' + data.inputv[i] + '">' + data.inputl[i] + '</option>'
+                    }
+                    forect_select.innerHTML = foreh;
+                    inpt_select.innerHTML = inph;
+                    hideload();
+                });
+            });
+        }
+
+        function get_datatype() {
+
+            f = forec_select.value;
+            i = inp_select.value;
+            ft = forect_select.value;
+            it = inpt_select.value;
+            c = city_select.value;
+            r = reg_select.value;
+            if (f === "Appropriations") {
+                h1 = '<option value="Total Appropriations" selected>Total Appropriations</option>';
+                h2 = '<option value="Total Revenues">Total Revenues</option>';
+                get_datatype_fetch(f, i, ft, it, c, r, h1, h2)
+            }
+
+            else if (f === "Revenues") {
+                h1 = '<option value="Total Revenues" selected>Total Revenues</option>';
+                h2 = '<option value="Total Appropriations">Total Appropriations</option>';
+                get_datatype_fetch(f, i, ft, it, c, r, h1, h2)
+            }
+
+        }
+
         function forec_inpcheck(select, selectinnerht) {
             val = select.value;
-            if (val === "Total Appropriations") {
-                optionHTML = '<option value="Total Revenues" selected>Revenues</option><option value="Total Appropriations">Appropriations</option>';
+            if (val === "Appropriations") {
+                optionHTML = '<option value="Revenues" selected>Revenues</option><option value="Appropriations">Appropriations</option>';
                 selectinnerht.innerHTML = optionHTML;
             }
-            else if (val === "Total Revenues") {
-                optionHTML = '<option value="Total Appropriations" selected>Appropriations</option><option value="Total Revenues">Revenues</option>';
+            else if (val === "Revenues") {
+                optionHTML = '<option value="Appropriations" selected>Appropriations</option><option value="Revenues">Revenues</option>';
                 selectinnerht.innerHTML = optionHTML;
             }
         }
 
         function viewRef() {
             Plotly.purge('chart1');
-            city_select = document.getElementById('city');
-            reg_select = document.getElementById('idReg');
             r = reg_select.value;
             c = city_select.value;
-            fetch('viewref/' + r + '/' + c).then(function (response) {
+            f = forect_select.value;
+            i = inpt_select.value;
+            fetch('viewref/' + r + '/' + c + '/' + f + '/' + i).then(function (response) {
                 response.json().then(function (data) {
-                    object = JSON.parse(data)
+                    object = JSON.parse(data);
                     console.log(object)
                     Plotly.plot("chart1", object, {})
-
                 });
             });
-
         }
 
-        function get_city(region) {
-            reg = region.value;
-            yr = "2020"
-            dt = "Revenue"
-            fetch('city/' + reg + '/' + yr + '/' + dt).then(function (response) {
+        function get_city() {
+            reg = reg_select.value;
+            pg = "forecast"
+            yr = "2016";
+            dt = "Revenue";
+            fetch('city/' + reg + '/' + yr + '/' + dt + '/' + pg).then(function (response) {
                 response.json().then(function (data) {
                     optionHTML = '<option value="default" selected disabled>CITIES</option>';
                     data.city.forEach(function (item) {
                         optionHTML += '<option value="' + item + '">' + item + '</option>'
                     });
-                    city.innerHTML = optionHTML;
+                    city_select.innerHTML = optionHTML;
                 });
             });
+        }
+        function showload() {
+            document.getElementById('spin1').style.display = "inline-block";
+            document.getElementById('spin2').style.display = "inline-block";
+            document.getElementById('spin3').style.display = "inline-block";
+            document.getElementById('spin4').style.display = "inline-block";
+            document.getElementById("spinbtn1").disabled = true;
+            document.getElementById("spinbtn2").disabled = true;
+        }
+        function hideload() {
+            document.getElementById('spin1').style.display = "none";
+            document.getElementById('spin2').style.display = "none";
+            document.getElementById('spin3').style.display = "none";
+            document.getElementById('spin4').style.display = "none";
+            document.getElementById("spinbtn1").disabled = false;
+            document.getElementById("spinbtn2").disabled = false;
         }
 
         window.addEventListener("pageshow", function (event) {

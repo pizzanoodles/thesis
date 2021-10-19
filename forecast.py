@@ -1,4 +1,5 @@
 from flask import render_template
+from initialize import initialize_dir_year, get_amountallyr
 import pandas as pd
 import json
 import plotly
@@ -10,16 +11,11 @@ from knnalgo import *
 
 
 def forecasting(inp, reg, city, inptype, forectype):
-    dict_samp = {inptype: [], forectype: [],
-                 "Year": [2016, 2017, 2018, 2019, 2020]}
-    for y in dict_scbaa['Year']:
-        link_init = "SCBAA/" + str(y) + "/" + reg + ".xlsx"
-        reg_init = pd.ExcelFile(link_init)
-        city_init = pd.read_excel(reg_init, city)
-        total_rev = city_init.iloc[35, 4]
-        total_app = city_init.iloc[110, 4]
-        dict_samp[inptype].append(total_rev)
-        dict_samp[forectype].append(total_app)
+    test_list = initialize_dir_year()
+    year = list(map(int, test_list))
+    dict_samp = {"Year": year}
+    dict_samp[inptype] = get_amountallyr(reg, city, inptype)
+    dict_samp[forectype] = get_amountallyr(reg, city, forectype)
     X = dict_samp[inptype]
     Y = dict_samp[forectype]
     dataset = [[X[i], Y[i]] for i in range(5)]
@@ -30,9 +26,9 @@ def forecasting(inp, reg, city, inptype, forectype):
     df = pd.DataFrame(dict_samp)
     #get_new = check_inp(inp, dict_samp[inptype], dict_samp[forectype])
     allpred = fig1_krange(dataset, [float(inp)])
-    fig_inp = get_figinp(inp, reg, city, inptype)
-    fig_preds = get_fig0(allpred, optm_predict_output, n_num)
-    fig_bar = get_fig1(df, optm_predict_output, forectype)
+    fig_inp = get_figinp(inp, reg, city, inptype, year)
+    fig_preds = get_fig0(allpred, optm_predict_output, n_num, forectype)
+    fig_bar = get_fig1(df, optm_predict_output, forectype, year)
     fig_scat = get_fig2(df, inp, nbx, nby, inptype, forectype)
     fig_line = get_fig3(valid_rmse, n_num)
     graph1JSON = json.dumps(fig_bar, cls=plotly.utils.PlotlyJSONEncoder)
@@ -65,25 +61,20 @@ def fig1_krange(dataset, inp):
     return res
 
 
-def get_figinp(inp, reg, city, inptype):
-    dict_samp = {"Year": [2016, 2017, 2018, 2019, 2020], inptype: []}
-    dict_inp = {"Year": [2021], "Input Revenue": [float(inp)]}
-    for y in dict_scbaa['Year']:
-        link_init = "SCBAA/" + str(y) + "/" + reg + ".xlsx"
-        reg_init = pd.ExcelFile(link_init)
-        city_init = pd.read_excel(reg_init, city)
-        total_rev = city_init.iloc[35, 4]
-        dict_samp[inptype].append(total_rev)
+def get_figinp(inp, reg, city, inptype, year):
+    dict_samp = {"Year": year}
+    dict_inp = {"Year": year[-1]+1, "Input "+inptype: [float(inp)]}
+    dict_samp[inptype] = get_amountallyr(reg, city, inptype)
     df = pd.DataFrame(dict_samp)
     df2 = pd.DataFrame(dict_inp)
     fig = px.bar(df, x="Year", y=inptype,
                  text=inptype,  color_discrete_sequence=["#ABDEE6"])
     fig.update_traces(
         texttemplate="₱%{text:,.0f}", textposition='outside', name=inptype, showlegend=True)
-    fig2 = px.bar(df2, x="Year", y="Input Revenue",
-                  text="Input Revenue", color_discrete_sequence=["#CBAACB"])
+    fig2 = px.bar(df2, x="Year", y="Input "+inptype,
+                  text="Input "+inptype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
-        texttemplate="₱%{y:,.0f}", textposition='outside', name="Input Revenue", showlegend=True)
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Input "+inptype, showlegend=True)
 
     fig2.add_trace(fig.data[0])
 
@@ -94,21 +85,21 @@ def get_figinp(inp, reg, city, inptype):
     return fig2
 
 
-def get_fig0(lst, pred, optm_k):
+def get_fig0(lst, pred, optm_k, forectype):
     init_k = [2, 3, 4]
     init_preds = list(lst)
     init_k.remove(optm_k)
     init_preds.remove(pred[0])
-    df = {"K": init_k, "Predicted Appropriations": init_preds}
-    df2 = {"K": [optm_k], "Optimal Predicted Appropriation": pred}
-    fig = px.bar(df, x="K", y="Predicted Appropriations",
-                 text="Predicted Appropriations",  color_discrete_sequence=["#ABDEE6"])
+    df = {"K": init_k, "Predicted "+forectype: init_preds}
+    df2 = {"K": [optm_k], "Optimal Predicted "+forectype: pred}
+    fig = px.bar(df, x="K", y="Predicted "+forectype,
+                 text="Predicted "+forectype,  color_discrete_sequence=["#ABDEE6"])
     fig.update_traces(
-        texttemplate="₱%{y:,.0f}", textposition='outside', name="Predicted Appropriations", showlegend=True)
-    fig2 = px.bar(df2, x="K", y="Optimal Predicted Appropriation",
-                  text="Optimal Predicted Appropriation", color_discrete_sequence=["#CBAACB"])
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Predicted "+forectype, showlegend=True)
+    fig2 = px.bar(df2, x="K", y="Optimal Predicted "+forectype,
+                  text="Optimal Predicted "+forectype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
-        texttemplate="₱%{y:,.0f}", textposition='outside', name="Optimal Predicted Appropriation", showlegend=True)
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Optimal Predicted "+forectype, showlegend=True)
 
     fig2.add_trace(fig.data[0])
 
@@ -120,16 +111,16 @@ def get_fig0(lst, pred, optm_k):
     return fig2
 
 
-def get_fig1(df, pred, forectype):
-    df2 = {"Year": [2021], "Predicted Appropriation": pred}
+def get_fig1(df, pred, forectype, year):
+    df2 = {"Year": year[-1]+1, "Predicted "+forectype: pred}
     fig = px.bar(df, x="Year", y=forectype, text=forectype,  color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                       "#FEE1E8", "#FED7C3"])
     fig.update_traces(
         texttemplate="₱%{text:,.0f}", textposition='outside', name=forectype, showlegend=True)
-    fig2 = px.bar(df2, x="Year", y="Predicted Appropriation",
-                  text="Predicted Appropriation", color_discrete_sequence=["#CBAACB"])
+    fig2 = px.bar(df2, x="Year", y="Predicted "+forectype,
+                  text="Predicted "+forectype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
-        texttemplate="₱%{y:,.0f}", textposition='outside', name="Predicted Appropriation", showlegend=True)
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Predicted "+forectype, showlegend=True)
 
     fig2.add_trace(fig.data[0])
 
