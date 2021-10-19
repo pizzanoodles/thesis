@@ -4,6 +4,7 @@ from sklearn.metrics import mean_squared_error
 from math import sqrt
 # calculate the Euclidean distance between two vectors
 
+
 def euclidean_distance(row1, row2):
     distance = 0.0
     for i in range(len(row1)):
@@ -11,6 +12,8 @@ def euclidean_distance(row1, row2):
     return sqrt(distance)
 
 # Locate the most similar neighbors returning neighborx and neighbory
+
+
 def get_neighbors(train, test_row, num_neighbors):
     distances = list()
     for train_row in train:
@@ -22,10 +25,12 @@ def get_neighbors(train, test_row, num_neighbors):
     for i in range(num_neighbors):
         neighborsx.append(distances[i][0][0])
         neighborsy.append(distances[i][0][1])
-    return neighborsx,neighborsy
+    return neighborsx, neighborsy
+
 
 def predict(nby):
     return [mean(nby)]
+
 
 def get_rmse(X, Y, ra):
     rmse_val = []
@@ -39,6 +44,7 @@ def get_rmse(X, Y, ra):
         error = sqrt(mean_squared_error([pred], Y_test))
         rmse_val.append(error)
     return rmse_val
+
 
 def get_optimalK(rmse):
     initlst = list(rmse)

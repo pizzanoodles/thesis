@@ -1,5 +1,5 @@
 from flask import render_template, url_for, request, redirect
-from initialize import initialize_dir_year, initialize_dir_region
+from initialize import initialize_dir_year, initialize_dir_region, get_amountallyr
 import pandas as pd
 import json
 import plotly
@@ -342,21 +342,14 @@ def get_reg_app_rev():
     return fig """
 
 
-def gen_reference(r, c):
-    dict_samp = {"Total Revenues": [], "Total Appropriations": [],
-                 "Year": [2016, 2017, 2018, 2019, 2020]}
+def gen_reference(r, c, f, i):
     year = initialize_dir_year()
-    for y in year:
-        link_init = "SCBAA/" + y + "/" + r + ".xlsx"
-        reg_init = pd.ExcelFile(link_init)
-        city_init = pd.read_excel(reg_init, c)
-        total_rev = city_init.iloc[35, 4]
-        total_app = city_init.iloc[110, 4]
-        dict_samp['Total Revenues'].append(total_rev)
-        dict_samp['Total Appropriations'].append(total_app)
+    year = list(map(int, year))
+    dict_samp = {"Year": year}
+    dict_samp[i] = get_amountallyr(r, c, i)
     df = pd.DataFrame(dict_samp)
-    fig = px.bar(df, x="Year", y="Total Revenues", title=c+" Total Revenues through 2016-2020", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
-                                                                                                                         "#FEE1E8", "#FED7C3"])
+    fig = px.bar(df, x="Year", y=i, title=c + " " + i+" through 2016-2020", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                                                                     "#FEE1E8", "#FED7C3"])
     fig.update_traces(
-        texttemplate="₱%{y:,.0f}", textposition='outside', name="Total Revenues", showlegend=True)
+        texttemplate="₱%{y:,.0f}", textposition='outside', name=i, showlegend=True)
     return fig

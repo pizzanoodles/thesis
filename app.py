@@ -2,7 +2,7 @@ from flask import render_template, url_for, request, redirect, jsonify
 import pandas as pd
 import matplotlib.ticker as ticker
 from defaultfigure import *
-from initialize import *
+from initialize import initialize_dir_region, initialize_dir_year, get_cities, get_allapptype, get_allrevtype
 from generatefigure import *
 from forecast import *
 
@@ -38,9 +38,9 @@ def test():
         return default_template
 
 
-@app.route('/city/<reg>/<yr>/<dt>')
-def city(reg, yr, dt):
-    cities = get_cities(reg, yr, dt)
+@app.route('/city/<reg>/<yr>/<dt>/<pg>')
+def city(reg, yr, dt, pg):
+    cities = get_cities(reg, yr, dt, pg)
     return jsonify({'city': cities})
 
 
@@ -63,8 +63,8 @@ def forecast():
     year = initialize_dir_year()
     region = initialize_dir_region()
     if request.method == "POST":
-        forec = request.form["forec_select"]
-        inp_type = request.form["inp_select"]
+        forec = request.form["forectype_select"]
+        inp_type = request.form["inptype_select"]
         reg = request.form["reg_select"]
         city = request.form["cit_select"]
         input = request.form["inp1"]
@@ -72,11 +72,22 @@ def forecast():
     return render_template("forecastinput.html", year=year, region=region)
 
 
-@app.route('/viewref/<r>/<c>')
-def viewref(r, c):
-    fig = gen_reference(r, c)
+@app.route('/viewref/<r>/<c>/<f>/<i>')
+def viewref(r, c, f, i):
+    fig = gen_reference(r, c, f, i)
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return jsonify(graph1JSON)
+
+
+@app.route('/gettype/<i>/<c>/<r>')
+def gettype(i, c, r):
+    if(i == "Revenues"):
+        forel, forev = get_allapptype(r, c)
+        inpl, inpv = get_allrevtype(r, c)
+    elif(i == "Appropriations"):
+        inpl, inpv = get_allapptype(r, c)
+        forel, forev = get_allrevtype(r, c)
+    return jsonify({'inputl': inpl, 'inputv': inpv, 'forecastl': forel, 'forecastv': forev})
 
 
 @ app.route("/results/<rt>/<ct>/<inp>/<inpt>/<forect>")
