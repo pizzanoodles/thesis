@@ -40,7 +40,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph6JSON = json.dumps(fig_ext_cir, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, defInsightsRev=defInsightsRev)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -98,6 +98,32 @@ def generate_overview_rev(excel):
         lowestrevval = lowestval,
         lowestrevsrc = lowestsource
     )
+    global defInsightsRev
+    defInsightsRev = "<h1> Definitions </h1>\
+                    <ul><li>Tax Revenue - Revenue from Various Local Taxes</li>\
+                        <ul><li>Property - Real estate tax from properties of individuals/corporations</li>\
+                            <li>Goods and Services - value-added tax levied on most goods and services sold for domestic consumption</li>\
+                            <li>Other Local Taxes - Various taxes from various government services</li></ul>\
+                    <li>Non-Tax Revenue - Revenue from Non-Tax sources</li>\
+                        <ul><li>Service Income - Income gained from various government Services</li>\
+                            <li>Business Income - Income gained from various government Businesses</li>\
+                            <li>Other Income and Receipts - Other sources of income from various sources/sales</li></ul>\
+                    <li>External Sources - Revenue from outside the Local Government Unit</li>\
+                        <ul><li>IRA - Administered by the BIR. Income, Indirect, Excise, and Stamp Taxes</li>\
+                            <li>GOCCs - Revenue from Government Owned Controlled Corporation</li>\
+                            <li>National Tax Collections - Revenue collected from National Taxes</li>\
+                            <ul><li>Economic Zone - Revenue from Special Economic Zones(SEZ), an area in a country that is subject to different economic regulations than other regions within the same country</li>\
+                                <li>EVAT - Revenue from Extended Value added Taxes</li>\
+                                <li>National Wealth - Revenue tax based on the market value of assets owned by the taxpayer.</li>\
+                                <li>Tobacco Excise Tax - Tax from Tobacco based products</li></ul>\
+                        <li>Other Receipts - Revenues received that are not contributions or loans</li>\
+                            <ul><li>Grants and Donations - Various grants and donations provided to the local government</li>\
+                                <li>Other Subsidy Income - Grants of money granted by or to the government or a public body to assist an industry or business</li></ul>\
+                        <li>Inter-local Transfer - Revenues from other government levels to help the LGU's development</li>\
+                        <li>Capital/Investment Receipts - Various revenues from various investments</li>\
+                            <ul><li>Sale of Capital Assets - Revenue from sale of a government owned investment item for government purposes</li>\
+                                <li>Sale of Investments - Revenue from sale of other investment</li>\
+                                <li>Proceeds from Collections of Loans Receivable - Revenue from collections of loans</li></ul></ul></ul>"
     return fig
 
 
@@ -221,7 +247,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph4JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp,defInsightsApp=defInsightsApp)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -262,8 +288,8 @@ def generate_overview_app(excel):
     else:
         lowestsource = df["Label1"].loc[df["Amount"] == lowestval].iloc[0]
     global sunbInsightsApp
-    sunbInsightsApp = "Largest Revenue: {largestapp}% ({largestrevval:,}) from {largestappsrc} <br/>\
-        Lowest Revenue: {lowestapp}% ({lowestrevval:,}) from {lowestappsrc}".format(
+    sunbInsightsApp = "Largest Appropriation: {largestapp}% ({largestrevval:,}) from {largestappsrc} <br/>\
+        Lowest Appropriation: {lowestapp}% ({lowestrevval:,}) from {lowestappsrc}".format(
         largestapp = largestpercent,
         largestrevval = largestval,
         largestappsrc = largestsource,
@@ -271,6 +297,29 @@ def generate_overview_app(excel):
         lowestrevval = lowestval,
         lowestappsrc = lowestsource
     )
+    global defInsightsApp
+    defInsightsApp = "<h1>Definitions</h1>\
+                    <ul><li>Current Appropriations - Budget that is set aside for various government uses for this current year.</li>\
+                        <li>Continuing Appropriations - appropriations available to support obligations for a specified purpose or project, even when these obligations are incurred beyond the budget year.</li>\
+                    <ul><li>General Public Services - Budget for General Services that the government provide to the public</li>\
+                        <li>Education - Budget for education related purposes, (schools,seminars, etc.)</li>\
+                        <li>Health, Nutrition and Population Control - Budget for health-related expenses.</li>\
+                        <li>Labor and Employment - Budget for employment related expenses</li>\
+                        <li>Housing and Community Development - Budget for local housing development expenses</li>\
+                        <li>Social Services and Social Welfare - Budget for aiding disadvantaged, distressed, or vulnerable persons or groups.</li>\
+                        <li>Economic Services - Budget for economic utility expenses</li>\
+                        <li>Other Services Sector - Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)</li>\
+                            <ul><li>Personnel Services - Budget for expenses on the personnel (salaries, wages, and other compensation)</li>\
+                                <li>Maintenance and Other Operating Expenses - Budget for the expenses made for regulation of an operation of a sector.</li>\
+                                <li>Capital Outlay - Budget for expenses made to acquire capital assets to be used for a certain sector.</li></ul>\
+                        <li>Debt Service - Budget for payment and repayment of principal capital</li>\
+                            <ul><li>Financial Expense - Expenses associated with financing the certain sector.</li>\
+                                <li>Amortization - Budget for specifically repaying of debts.</li></ul>\
+                        <li>LDRRMF - Budget invested in disaster risk reductions</li>\
+                        <li>20% Development Fund - Budget used for expenses in the development of the local government</li>\
+                        <li>Share from National Wealth - Expenses made for share in the National Wealth</li>\
+                        <li>Allocation for Senior Citizens and PWD - Budget for expenses used for the programs, projects and activities proportionately divided among senior citizens and persons with disability</li>\
+                        <li>Others - Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)</li></ul></ul>"
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
