@@ -1,10 +1,12 @@
 from flask import render_template, url_for, request, redirect, jsonify
 import pandas as pd
 import matplotlib.ticker as ticker
-from defaultfigure import *
+from defaultfigure import generate_default_figs, gen_reference
 from initialize import initialize_dir_region, initialize_dir_year, get_cities, get_allapptype, get_allrevtype
-from generatefigure import *
-from forecast import *
+from generatefigure import generate_fig_rev, generate_fig_app
+from forecast import forecasting
+import plotly
+import json
 
 from flask import Flask
 
@@ -72,9 +74,9 @@ def forecast():
     return render_template("forecastinput.html", year=year, region=region)
 
 
-@app.route('/viewref/<r>/<c>/<f>/<i>')
-def viewref(r, c, f, i):
-    fig = gen_reference(r, c, f, i)
+@app.route('/viewref/<r>/<c>/<i>')
+def viewref(r, c, i):
+    fig = gen_reference(r, c, i)
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return jsonify(graph1JSON)
 

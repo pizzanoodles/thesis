@@ -32,11 +32,11 @@ def predict(nby):
     return [mean(nby)]
 
 
-def get_rmse(X, Y, ra):
+def get_rmse(X, Y):
     rmse_val = []
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=0.2, random_state=0)
-    for K in range(ra):
+    for K in range(len(X_train)):
         K = K+1
         samp = [[X_train[i], Y_train[i]] for i in range(len(X_train))]
         nbx, nby = get_neighbors(samp, X_test, K)
@@ -48,18 +48,13 @@ def get_rmse(X, Y, ra):
 
 def get_optimalK(rmse):
     initlst = list(rmse)
-    if(rmse.index(min(rmse))+1) == 1:
-        initlst.remove(min(initlst))
-        return ((rmse.index(min(initlst)))+1), initlst
-    else:
-        initlst.remove(rmse[1])
-        return ((rmse.index(min(initlst)))+1), initlst
+    initlst.remove(rmse[0])
+    return ((rmse.index(min(initlst)))+1), initlst
 
 
-def imputearr(arr, inp, year):
-    df = {"Imputed "+inp: [], "Year": []}
-    for i in range(len(arr)):
+def imputearr_lst(arr):
+    samparr = list(arr)
+    for i in range(len(samparr)):
         if(arr[i] == 0):
-            df["Imputed "+inp].append(mean(arr))
-            df['Year'].append(year[i])
-    return df
+            samparr[i] = mean(arr)
+    return samparr
