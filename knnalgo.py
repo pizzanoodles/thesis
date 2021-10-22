@@ -54,3 +54,12 @@ def get_optimalK(rmse):
     else:
         initlst.remove(rmse[1])
         return ((rmse.index(min(initlst)))+1), initlst
+
+
+def imputearr(arr, inp, year):
+    df = {"Imputed "+inp: [], "Year": []}
+    for i in range(len(arr)):
+        if(arr[i] == 0):
+            df["Imputed "+inp].append(mean(arr))
+            df['Year'].append(year[i])
+    return df

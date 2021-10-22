@@ -7,6 +7,8 @@ import plotly.express as px
 import numpy as np
 import plotly.graph_objects as go
 
+from knnalgo import imputearr
+
 dict_scbaa = {"Region": {
     "ARMM": ['Isabela', 'Lamitan', 'Marawi'],
     "CAR": ['Baguio', 'Tabuk'],
@@ -352,4 +354,15 @@ def gen_reference(r, c, f, i):
                                                                                                      "#FEE1E8", "#FED7C3"])
     fig.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name=i, showlegend=True)
-    return fig
+    df2 = pd.DataFrame(imputearr(dict_samp[i], i, year))
+    fig2 = px.bar(df2, x="Year", y="Imputed "+i,
+                  text="Imputed "+i, color_discrete_sequence=["#CBAACB"])
+    fig2.update_traces(
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Imputed "+i, showlegend=True)
+    fig2.add_trace(fig.data[0])
+
+    fig2.update_layout(uniformtext_minsize=8,
+                       uniformtext_mode='hide', showlegend=True)
+    fig2.update_yaxes(
+        tickprefix="₱", showgrid=True)
+    return fig2
