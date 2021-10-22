@@ -6,6 +6,7 @@ import plotly
 import plotly.express as px
 import numpy as np
 import plotly.graph_objects as go
+import math
 
 dict_scbaa = {"Region": {
     "ARMM": ['Isabela', 'Lamitan', 'Marawi'],
@@ -38,15 +39,19 @@ def generate_default_figs():
     fig = get_surplus()
     # Graph 2 BAR CHART function call
     fig2 = get_reg_app_rev()
+    fig3 = reg_app_pie()
+    fig4 = gauge_surp()
     # Graph 3 Sample
     #long_df = px.data.medals_long()
     #fig3 = px.bar(long_df, x="nation", y="count",color="medal", title="Long-Form Input")
     #fig4 = dropdownchart()
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
+    graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
+    graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
     #graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     #graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, chart1insight=insights, chart2insight=insights2, year=year, region=region)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,graph4JSON=graph4JSON ,chart1insight=insights, chart2insight=insights2, year=year, region=region)
 
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
@@ -54,7 +59,6 @@ def generate_default_figs():
 
 
 def get_surplus():
-    df = px.data.medals_wide()
     phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
     surplusperyear = pd.read_excel(phsurplusexcel, usecols='T')
     surpvals = surplusperyear.iloc[0:5, 0]
@@ -104,7 +108,7 @@ def get_surplus():
         y=waterfvals,
         increasing={"marker": {"color": "#ABDEE6"}},
         decreasing={"marker": {"color": "#CBAACB"}},
-        connector={"line": {"color": "rgb(63, 63, 63)"}},
+        connector={"line": {"color": "rgb(63, 63, 63)"}}
     ))
     fig.update_layout(
         title="Surplus Values from 2016 to 2020"
@@ -130,8 +134,8 @@ def get_reg_app_rev():
     vals2019 = df.loc[df['Year'] == 2019]
     vals2020 = df.loc[df['Year'] == 2020]
     global insights2
-    insights2 = "2016<br>\
-        <ul>Revenues\
+    insights2 = "\
+        <ul class='year1'>Revenues\
             <ul>\
         <li>Highest Revenue: {maxrev2016:,} from {maxrev2016reg}</li>\
         <li>Lowest Revenue: {minrev2016:,} from {minrev2016reg}</li>\
@@ -141,8 +145,8 @@ def get_reg_app_rev():
                 <li>Highest Appropriation: {maxapp2016:,} from {maxapp2016reg}</li>\
                 <li>Lowest Appropriation: {minapp2016:,} from {minapp2016reg}</li>\
         </ul></ul>\
-        2017<br>\
-            <ul>Revenues\
+        \
+            <ul class = 'year2'>Revenues\
             <ul>\
         <li>Highest Revenue: {maxrev2017:,} from {maxrev2017reg}</li>\
         <li>Lowest Revenue: {minrev2017:,} from {minrev2017reg}</li>\
@@ -152,8 +156,8 @@ def get_reg_app_rev():
                 <li>Highest Appropriation: {maxapp2017:,} from {maxapp2017reg}</li>\
                 <li>Lowest Appropriation: {minapp2017:,} from {minapp2017reg}</li>\
         </ul></ul>\
-        2018<br>\
-            <ul>Revenues\
+        \
+            <ul class = 'year3'>Revenues\
             <ul>\
         <li>Highest Revenue: {maxrev2018:,} from {maxrev2018reg}</li>\
         <li>Lowest Revenue: {minrev2018:,} from {minrev2018reg}</li>\
@@ -163,8 +167,8 @@ def get_reg_app_rev():
                 <li>Highest Appropriation: {maxapp2018:,} from {maxapp2018reg}</li>\
                 <li>Lowest Appropriation: {minapp2018:,} {minapp2018reg}</li>\
         </ul></ul>\
-        2019<br>\
-            <ul>Revenues\
+        \
+            <ul class='year4'>Revenues\
             <ul>\
         <li>Highest Revenue: {maxrev2019:,} from {maxrev2019reg}</li>\
         <li>Lowest Revenue: {minrev2019:,} from {minrev2019reg}</li>\
@@ -174,8 +178,8 @@ def get_reg_app_rev():
                 <li>Highest Appropriation: {maxapp2019:,} from {maxapp2019reg}</li>\
                 <li>Lowest Appropriation: {minapp2019:,} from {minapp2019reg}</li>\
         </ul></ul>\
-        2020<br>\
-            <ul>Revenues\
+        \
+            <ul class = 'year5'>Revenues\
             <ul>\
         <li>Highest Revenue: {maxrev2020:,} from {maxrev2020reg}</li>\
         <li>Lowest Revenue: {minrev2020:,} from {minrev2020reg}</li>\
@@ -249,10 +253,60 @@ def get_reg_app_rev():
                  animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#ABDEE6", "#CBAACB"],
                  title="Revenue and Appropriations per Region 2016 to 2020")
     return fig
-
+#Pie chart of Revenues and Appropriations 2016 to 2020
+def reg_app_pie():
+    df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
+    years = ["2016","2017","2018","2019","2020"]
+    yearsi = [2016,2017,2018,2019,2020]
+    totalrevs = []
+    totaldicts = {
+        "Years":["2016","2017","2018","2019","2020"],
+        "Revenues":[],
+        "Appropriations":[]}
+    for i in yearsi:
+        totaldicts["Revenues"].append((df["Revenue"].loc[df["Year"] == i]).sum())
+    totalapps = []
+    for i in yearsi:
+        totaldicts["Appropriations"].append((df["Appropriations"].loc[df["Year"] == i]).sum())
+    linedf = pd.DataFrame(totaldicts)
+    fig = px.line(
+        data_frame = linedf,
+        x="Years", y=["Revenues", "Appropriations"],color_discrete_sequence=["#ABDEE6", "#CBAACB"], markers=True, line_shape="spline",
+        title="Revenues and Appropriations of all Local Government Units from 2016 to 2020"
+    )
+    return fig
 # GRAPH 4: DROPDOWN CHART: SAMPLE
 # function generate
 
+def gauge_surp():
+    phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
+    df = pd.read_excel(phsurplusexcel, usecols='T')
+    latest = df.iloc[-1]
+    previous = df.iloc[-2]
+    lat = latest[0]
+    prev = previous[0]
+    #lat = 200000000
+    #prev = 3000000000
+    diff = ((lat - prev)/((lat+prev)/2))*100
+    diffpercent = abs(((lat - prev)/((lat+prev)/2))*100)
+    diffround = abs(math.ceil(diffpercent / 100)*100)
+    difflow = -diffround
+    print(diffpercent)
+    print(diffround)
+    print(difflow)
+    fig = go.Figure(go.Indicator(
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    value = diff,
+    mode = "gauge+number",
+    title = {'text': "Latest Surplus Difference in %"},
+    gauge = {'bar': {'color': "#FED7C3"},'axis': {'range': [difflow, diffround]},
+             'steps' : [
+                 {'range': [difflow,(difflow+diffround)/2], 'color': "#CBAACB"},
+                 {'range': [(difflow+diffround)/2,(diffround/2)], 'color': "#FFFFB5"},
+                 {'range': [diffround/2,diffround], 'color': "#ABDEE6"}
+                 ]}))
+    fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+    return fig
 
 """ def dropdownchart():
     ncr2016 = pd.ExcelFile('SCBAA/2016/NCR.xlsx')
