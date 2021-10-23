@@ -1,5 +1,6 @@
 from flask import render_template, url_for, request, redirect
 from initialize import initialize_dir_year, initialize_dir_region, get_amountallyr
+from statistics import mean
 import pandas as pd
 import json
 import plotly
@@ -391,14 +392,43 @@ def gauge_surp():
     return fig """
 
 
-def gen_reference(r, c, f, i):
+def gen_reference(r, c, i):
     year = initialize_dir_year()
     year = list(map(int, year))
-    dict_samp = {"Year": year}
-    dict_samp[i] = get_amountallyr(r, c, i)
+    arr = get_amountallyr(r, c, i)
+    dict_samp = remov_zero(arr, i, year)
     df = pd.DataFrame(dict_samp)
-    fig = px.bar(df, x="Year", y=i, title=c + " " + i+" through 2016-2020", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
-                                                                                                     "#FEE1E8", "#FED7C3"])
+    fig = px.bar(df, x="Year", y=i,  color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
+                                                              "#FEE1E8", "#FED7C3"])
     fig.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name=i, showlegend=True)
-    return fig
+    df2 = pd.DataFrame(imputearr(arr, i, year))
+    fig2 = px.bar(df2, x="Year", y="Imputed "+i, title=c + " " + i+" through 2016-2020",
+                  text="Imputed "+i, color_discrete_sequence=["#FFFFB5"])
+    fig2.update_traces(
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Imputed "+i, showlegend=True)
+    fig2.add_trace(fig.data[0])
+
+    fig2.update_layout(uniformtext_minsize=8,
+                       uniformtext_mode='hide', showlegend=True)
+    fig2.update_yaxes(
+        tickprefix="₱", showgrid=True)
+    return fig2
+
+
+def imputearr(arr, inp, year):
+    df = {"Imputed "+inp: [], "Year": []}
+    for i in range(len(arr)):
+        if(arr[i] == 0):
+            df["Imputed "+inp].append(mean(arr))
+            df['Year'].append(year[i])
+    return df
+
+
+def remov_zero(arr, inp, year):
+    df = {inp: [], "Year": []}
+    for i in range(len(arr)):
+        if(arr[i] != 0):
+            df[inp].append(arr[i])
+            df['Year'].append(year[i])
+    return df

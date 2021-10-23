@@ -1,10 +1,14 @@
 from flask import render_template, url_for, request, redirect, jsonify
 import pandas as pd
 import matplotlib.ticker as ticker
-from defaultfigure import *
-from initialize import initialize_dir_region, initialize_dir_year, get_cities, get_allapptype, get_allrevtype
-from generatefigure import *
-from forecast import *
+from defaultfigure import generate_default_figs, gen_reference
+from initialize import initialize_dir_region, initialize_dir_year, get_cities, get_allapptype, get_allrevtype, get_amountallyr
+from generatefigure import generate_fig_rev, generate_fig_app
+from forecast import forecasting
+from knnalgo import imputearr_lst
+import plotly
+import json
+import ast
 
 from flask import Flask
 
@@ -68,13 +72,18 @@ def forecast():
         reg = request.form["reg_select"]
         city = request.form["cit_select"]
         input = request.form["inp1"]
-        return redirect(url_for("results", inp=input, rt=reg, ct=city, inpt=inp_type, forect=forec))
+        year = [int(i) for i in year]
+        dict_samp = {"Year": year}
+        dict_samp[inp_type] = imputearr_lst(
+            get_amountallyr(reg, city, inp_type))
+        dict_samp[forec] = imputearr_lst(get_amountallyr(reg, city, forec))
+        return redirect(url_for("results", inp=input, rt=reg, ct=city, inpt=inp_type, forect=forec, dict_samp=dict_samp))
     return render_template("forecastinput.html", year=year, region=region)
 
 
-@app.route('/viewref/<r>/<c>/<f>/<i>')
-def viewref(r, c, f, i):
-    fig = gen_reference(r, c, f, i)
+@app.route('/viewref/<r>/<c>/<i>')
+def viewref(r, c, i):
+    fig = gen_reference(r, c, i)
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     return jsonify(graph1JSON)
 
@@ -90,9 +99,17 @@ def gettype(i, c, r):
     return jsonify({'inputl': inpl, 'inputv': inpv, 'forecastl': forel, 'forecastv': forev})
 
 
-@ app.route("/results/<rt>/<ct>/<inp>/<inpt>/<forect>")
-def results(inp, rt, ct, inpt, forect):
-    forecast_template = forecasting(inp, rt, ct, inpt, forect)
+@ app.route("/results/<rt>/<ct>/<inp>/<inpt>/<forect>/<dict_samp>", methods=["POST", "GET"])
+def results(inp, rt, ct, inpt, forect, dict_samp):
+    dict_samp = ast.literal_eval(dict_samp)
+    forecast_template, predict = forecasting(
+        inp, rt, ct, inpt, forect, dict_samp)
+    if request.method == "POST":
+        dict_samp[inpt].append(float(inp))
+        dict_samp[forect].append(predict[0])
+        dict_samp["Year"].append(dict_samp["Year"][-1]+1)
+        inp = request.form["inp1"]
+        return redirect(url_for("results", inp=inp, rt=rt, ct=ct, inpt=inpt, forect=forect, dict_samp=dict_samp))
     return forecast_template
 
 

@@ -195,7 +195,7 @@
             c = city_select.value;
             f = forect_select.value;
             i = inpt_select.value;
-            fetch('viewref/' + r + '/' + c + '/' + f + '/' + i).then(function (response) {
+            fetch('viewref/' + r + '/' + c + '/' + i).then(function (response) {
                 response.json().then(function (data) {
                     object = JSON.parse(data);
                     console.log(object)
