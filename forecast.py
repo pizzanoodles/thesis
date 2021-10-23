@@ -68,8 +68,10 @@ def get_figinp(inp, reg, city, inptype, year, dict):
     dict_samp = {"Year": [], "Previous Input "+inptype: []}
     year_check = initialize_dir_year()
     year_check = [int(i) for i in year_check]
+    check_dictsamp = False
     for i in range(len(dict["Year"])):
         if year_check[-1] < dict["Year"][i]:
+            check_dictsamp = True
             dict_samp["Year"].append(dict["Year"][i])
             dict_samp["Previous Input "+inptype].append(dict[inptype][i])
     df3 = pd.DataFrame(dict_samp)
@@ -78,7 +80,8 @@ def get_figinp(inp, reg, city, inptype, year, dict):
                   text="Previous Input "+inptype, color_discrete_sequence=["#F3B0C3"])
     fig3.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name="Previous Input "+inptype, showlegend=True)
-    fig.add_trace(fig3.data[0])
+    if check_dictsamp:
+        fig.add_trace(fig3.data[0])
     fig2 = px.bar(df2, x="Year", y="Input "+inptype,
                   text="Input "+inptype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
@@ -126,8 +129,10 @@ def get_fig1(optm_predict_output, reg, city, forectype, year, dict):
     dict_samp = {"Year": [], "Previous Predicted "+forectype: []}
     year_check = initialize_dir_year()
     year_check = [int(i) for i in year_check]
+    check_dictsamp = False
     for i in range(len(dict["Year"])):
         if year_check[-1] < dict["Year"][i]:
+            check_dictsamp = True
             dict_samp["Year"].append(dict["Year"][i])
             dict_samp["Previous Predicted " +
                       forectype].append(dict[forectype][i])
@@ -137,7 +142,8 @@ def get_fig1(optm_predict_output, reg, city, forectype, year, dict):
                   text="Previous Predicted "+forectype, color_discrete_sequence=["#F3B0C3"])
     fig3.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name="Previous Predicted "+forectype, showlegend=True)
-    fig.add_trace(fig3.data[0])
+    if check_dictsamp:
+        fig.add_trace(fig3.data[0])
     fig2 = px.bar(df2, x="Year", y="Predicted "+forectype,
                   text="Predicted "+forectype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
