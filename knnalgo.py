@@ -8,7 +8,7 @@ from math import sqrt
 def euclidean_distance(row1, row2):
     distance = 0.0
     for i in range(len(row1)):
-        distance += (row1[i] - row2[i])**2
+        distance += (row1[i] - row2[0])**2
     return sqrt(distance)
 
 # Locate the most similar neighbors returning neighborx and neighbory
@@ -40,8 +40,8 @@ def get_rmse(X, Y):
         K = K+1
         samp = [[X_train[i], Y_train[i]] for i in range(len(X_train))]
         nbx, nby = get_neighbors(samp, X_test, K)
-        pred = predict(nby)
-        error = sqrt(mean_squared_error([pred], Y_test))
+        pred = [predict(nby)[0] for i in range(len(Y_test))]
+        error = sqrt(mean_squared_error(pred, Y_test))
         rmse_val.append(error)
     return rmse_val
 

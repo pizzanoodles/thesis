@@ -47,8 +47,12 @@
                     </div>
                 </div>
             </div>
+            <form action="#" method="POST">
+                <input name="inp1" type="text" class="form-control mb-3">
+                <button type="submit" id="spinbtn1" class="btn btn-primary mb-3 ">Predict</button>
+            </form>
             <div class="container">
-                <h2>Predicted Output: {{output}}</h2>
+                <h2 id="predict_outp">Predicted Output: {{output}}</h2>
                 <div class="row-4 p-4">
                     <div class="col-10">
                         <div class="card mx-10">

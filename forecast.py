@@ -1,38 +1,35 @@
 from flask import render_template
-from initialize import initialize_dir_year, get_amountallyr
 import pandas as pd
 import json
 import plotly
 import plotly.express as px
+import ast
 from math import *
 from statistics import mean
+from initialize import initialize_dir_year
 from knnalgo import *
 from defaultfigure import gen_reference
 
 
-def forecasting(inp, reg, city, inptype, forectype):
-    test_list = initialize_dir_year()
-    year = list(map(int, test_list))
-    dict_samp = {"Year": year}
-    dict_samp[inptype] = imputearr_lst(get_amountallyr(reg, city, inptype))
-    dict_samp[forectype] = imputearr_lst(get_amountallyr(reg, city, forectype))
+def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     X = dict_samp[inptype]
     Y = dict_samp[forectype]
+    year = dict_samp["Year"]
+    df = pd.DataFrame(dict_samp)
     dataset = [[X[i], Y[i]] for i in range(len(X))]
-    k = [x+2 for x in range(len(dataset)-2)]
     rmse_lst = get_rmse(X, Y)
     n_num, valid_rmse = get_optimalK(rmse_lst)
+    k = [x+2 for x in range(len(valid_rmse))]
     nbx, nby = get_neighbors(dataset, [float(inp)], n_num)
     optm_predict_output = predict(nby)
-    print(len(k))
-    print(len(valid_rmse))
-    df = pd.DataFrame(dict_samp)
+
     #get_new = check_inp(inp, dict_samp[inptype], dict_samp[forectype])
     allpred = fig1_krange(dataset, [float(inp)], k)
     #fig_inp = get_figinp(inp, reg, city, inptype, year)
-    fig_inp = get_figinp(inp, reg, city, inptype, year)
+    fig_inp = get_figinp(inp, reg, city, inptype, year, dict_samp)
     fig_preds = get_fig0(allpred, optm_predict_output, n_num, forectype, k)
-    fig_bar = get_fig1(optm_predict_output, reg, city, forectype, year)
+    fig_bar = get_fig1(optm_predict_output, reg, city,
+                       forectype, year, dict_samp)
     fig_scat = get_fig2(df, inp, nbx, nby, inptype, forectype)
     fig_line = get_fig3(valid_rmse, n_num, k)
 
@@ -45,7 +42,7 @@ def forecasting(inp, reg, city, inptype, forectype):
     input = "₱{:,.2f}".format(float(inp))
     return render_template("/forecastoutput.html", output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,
                            graph4JSON=graph4JSON, graph5JSON=graph5JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype,
-                           forectype=forectype)
+                           forectype=forectype), optm_predict_output
 
 
 """def check_inp(inp, arr1, arr2):
@@ -65,10 +62,23 @@ def fig1_krange(dataset, inp, k):
     return res
 
 
-def get_figinp(inp, reg, city, inptype, year):
+def get_figinp(inp, reg, city, inptype, year, dict):
     dict_inp = {"Year": year[-1]+1, "Input "+inptype: [float(inp)]}
     df2 = pd.DataFrame(dict_inp)
+    dict_samp = {"Year": [], "Previous Input "+inptype: []}
+    year_check = initialize_dir_year()
+    year_check = [int(i) for i in year_check]
+    for i in range(len(dict["Year"])):
+        if year_check[-1] < dict["Year"][i]:
+            dict_samp["Year"].append(dict["Year"][i])
+            dict_samp["Previous Input "+inptype].append(dict[inptype][i])
+    df3 = pd.DataFrame(dict_samp)
     fig = gen_reference(reg, city, inptype)
+    fig3 = px.bar(df3, x="Year", y="Previous Input "+inptype,
+                  text="Previous Input "+inptype, color_discrete_sequence=["#F3B0C3"])
+    fig3.update_traces(
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Previous Input "+inptype, showlegend=True)
+    fig.add_trace(fig3.data[0])
     fig2 = px.bar(df2, x="Year", y="Input "+inptype,
                   text="Input "+inptype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
@@ -109,11 +119,25 @@ def get_fig0(lst, pred, optm_k, forectype, k):
     return fig2
 
 
-def get_fig1(optm_predict_output, reg, city, forectype, year):
+def get_fig1(optm_predict_output, reg, city, forectype, year, dict):
     dict_inp = {"Year": year[-1]+1, "Predicted " +
                 forectype: optm_predict_output}
     df2 = pd.DataFrame(dict_inp)
+    dict_samp = {"Year": [], "Previous Predicted "+forectype: []}
+    year_check = initialize_dir_year()
+    year_check = [int(i) for i in year_check]
+    for i in range(len(dict["Year"])):
+        if year_check[-1] < dict["Year"][i]:
+            dict_samp["Year"].append(dict["Year"][i])
+            dict_samp["Previous Predicted " +
+                      forectype].append(dict[forectype][i])
+    df3 = pd.DataFrame(dict_samp)
     fig = gen_reference(reg, city, forectype)
+    fig3 = px.bar(df3, x="Year", y="Previous Predicted "+forectype,
+                  text="Previous Predicted "+forectype, color_discrete_sequence=["#F3B0C3"])
+    fig3.update_traces(
+        texttemplate="₱%{y:,.0f}", textposition='outside', name="Previous Predicted "+forectype, showlegend=True)
+    fig.add_trace(fig3.data[0])
     fig2 = px.bar(df2, x="Year", y="Predicted "+forectype,
                   text="Predicted "+forectype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
@@ -156,7 +180,6 @@ def get_fig2(df, inp, nbx, nby, inptype, forectype):
 def get_fig3(rmse, min, k):
     df = {"K": k, "RMSE": rmse}
     df2 = {"K": [min], "RMSE": [rmse[min-2]]}
-    print(df)
     fig = px.line(df, x="K", y="RMSE")
     fig.update_traces(name="K", showlegend=True)
     fig2 = px.scatter(df2, x="K", y="RMSE",
