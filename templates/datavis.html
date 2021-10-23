@@ -161,6 +161,23 @@
                 </div>
             </div>
         </div>
+        <div id="revg">
+            <p><strong>Difference from last year</strong></p>
+            <div class="row-2 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            {% if prevyear==2015 %}
+                            <h1>walang prev year</h1>
+                            {% else %}
+                            <div id="chart9">
+                            </div>
+                            {% endif %}                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% else %}
         <div id="curapp">
             <p><strong>Current Appropriations</strong></p>
@@ -219,6 +236,23 @@
                 </div>
             </div>
         </div>
+        <div id="appg">
+            <p><strong>Difference from last year</strong></p>
+            <div class="row-2 p-4">
+                <div class="col-10">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            {% if prevyear==2015 %}
+                            <h1>walang prev year</h1>
+                            {% else %}
+                            <div id="chart7">
+                            </div>
+                            {% endif %}                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
         {% endif %}
     </div>
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
@@ -240,6 +274,8 @@
         Plotly.plot("chart7", graph7, {})
         var graph8 = {{ graph8JSON | safe}};
         Plotly.plot("chart8", graph8, {})
+        var graph9 = {{ graph9JSON | safe}};
+        Plotly.plot("chart9", graph9, {})
     </script>
     {% else %}
     <script>
@@ -255,6 +291,8 @@
         Plotly.plot("chart5", graph5, {})
         var graph6 = {{ graph6JSON | safe}};
         Plotly.plot("chart6", graph6, {})
+        var graph7 = {{ graph7JSON | safe}};
+        Plotly.plot("chart7", graph7, {})
     </script>
     {% endif %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"

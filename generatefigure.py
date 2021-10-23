@@ -7,6 +7,7 @@ import matplotlib.ticker as ticker
 import numpy as np
 import plotly.graph_objects as go
 from defaultfigure import dict_scbaa
+import math
 
 # EXTRA FUNCTIONS > check list zeros
 
@@ -32,6 +33,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     fig_ext_cir = generate_fig_rev_ext_cir(excel)
     fig_rb = generate_fig_rev_rb(rt, ct)
     fig_ov = generate_overview_rev(excel)
+    fig_gauge = gen_gauge_rev(int(yt)-1)
     graph1JSON = json.dumps(fig_tr, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_ntr, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ext, cls=plotly.utils.PlotlyJSONEncoder)
@@ -40,7 +42,8 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph6JSON = json.dumps(fig_ext_cir, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev)
+    graph9JSON = json.dumps(fig_gauge, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON,graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -508,13 +511,15 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     fig_others_g2 = generate_others_social(excel)
     fig_others_g3 = generate_others_others(excel)
     fig_cont_app = generate_continuing_app(excel)
+    fig_gauge_rev = gen_gauge_app(int(yt)-1)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_others_g1, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig_others_g2, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp)
+    graph7JSON = json.dumps(fig_gauge_rev, cls=plotly.utils.PlotlyJSONEncoder)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp,prevyear=prevyear)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -867,4 +872,53 @@ def generate_continuing_app(excel):
     dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
+    return fig
+
+def gen_gauge_rev(year):
+    global prevyear
+    prevyear = year
+    df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
+    currentRevs = df["Revenue"].loc[df["Year"] == year+1].sum()
+    prevRevs = df["Revenue"].loc[df["Year"] == year].sum()
+    diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
+    diffpercent = abs(((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
+    diffround = abs(math.ceil(diffpercent / 100)*100)
+    difflow = -diffround
+    fig = go.Figure(go.Indicator(
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    value = diff,
+    mode = "gauge+number",
+    title = {'text': "Latest Revenue Difference in %"},
+    gauge = {'bar': {'color': "#FED7C3"},'axis': {'range': [difflow, diffround]},
+             'steps' : [
+                 {'range': [difflow,(difflow+diffround)/2], 'color': "#CBAACB"},
+                 {'range': [(difflow+diffround)/2,(diffround/2)], 'color': "#FFFFB5"},
+                 {'range': [diffround/2,diffround], 'color': "#ABDEE6"}
+                 ]}))
+    fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+    return fig
+
+def gen_gauge_app(year):
+    global prevyear
+    prevyear = year
+    print(prevyear)
+    df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
+    currentRevs = df["Appropriations"].loc[df["Year"] == year+1].sum()
+    prevRevs = df["Appropriations"].loc[df["Year"] == year].sum()
+    diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
+    diffpercent = abs(((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
+    diffround = abs(math.ceil(diffpercent / 100)*100)
+    difflow = -diffround
+    fig = go.Figure(go.Indicator(
+    domain = {'x': [0, 1], 'y': [0, 1]},
+    value = diff,
+    mode = "gauge+number",
+    title = {'text': "Latest Approriation Difference in %"},
+    gauge = {'bar': {'color': "#FED7C3"},'axis': {'range': [difflow, diffround]},
+             'steps' : [
+                 {'range': [difflow,(difflow+diffround)/2], 'color': "#CBAACB"},
+                 {'range': [(difflow+diffround)/2,(diffround/2)], 'color': "#FFFFB5"},
+                 {'range': [diffround/2,diffround], 'color': "#ABDEE6"}
+                 ]}))
+    fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
     return fig

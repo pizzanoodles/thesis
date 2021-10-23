@@ -285,15 +285,10 @@ def gauge_surp():
     previous = df.iloc[-2]
     lat = latest[0]
     prev = previous[0]
-    #lat = 200000000
-    #prev = 3000000000
     diff = ((lat - prev)/((lat+prev)/2))*100
     diffpercent = abs(((lat - prev)/((lat+prev)/2))*100)
     diffround = abs(math.ceil(diffpercent / 100)*100)
     difflow = -diffround
-    print(diffpercent)
-    print(diffround)
-    print(difflow)
     fig = go.Figure(go.Indicator(
     domain = {'x': [0, 1], 'y': [0, 1]},
     value = diff,
