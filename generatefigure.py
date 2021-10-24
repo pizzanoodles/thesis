@@ -43,7 +43,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
     graph9JSON = json.dumps(fig_gauge, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON,graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -80,22 +80,21 @@ def generate_overview_rev(excel):
     largestval = max(amounts)
     lowestval = amounts[amounts > 0].min(0)
     sum = amounts.sum()
-    largestpercent = round(((largestval/sum)*100),2)
-    lowestpercent = round(((lowestval/sum)*100),2)
+    largestpercent = round(((largestval/sum)*100), 2)
+    lowestpercent = round(((lowestval/sum)*100), 2)
 
     ####largest vars####
-    largestpercent = round(((largestval/sum)*100),2)
+    largestpercent = round(((largestval/sum)*100), 2)
     largestsource = ""
     source1 = ""
     highfinlbl = ""
     #####################
-   
-    
+
     ####LARGEST VARIABLES####
     source1 = df["Sources"].loc[df["Amount"] == largestval].iloc[0]
     if(source1 == "Local Sources"):
         if((df["Label1"].loc[df["Amount"] == largestval].iloc[0]) == "Tax Revenue"):
-            largestsource="Tax Revenue"
+            largestsource = "Tax Revenue"
             if((df["Label2"].loc[df["Amount"] == largestval].iloc[0]) == "Tax Revenue - Property"):
                 highfinlbl = "Tax Revenue - Property"
             elif((df["Label2"].loc[df["Amount"] == largestval].iloc[0]) == "Tax Revenue - Goods and Services"):
@@ -146,12 +145,12 @@ def generate_overview_rev(excel):
             else:
                 highfinlbl = "Proceeds from Collections of Loans Receivable"
     else:
-        largestsource="Receipts from Borrowings"
-        highfinlbl=""
+        largestsource = "Receipts from Borrowings"
+        highfinlbl = ""
     #########################
     ####LOWEST VARIABLES ####
      ####lowest vars#####
-    lowestpercent = round(((lowestval/sum)*100),2)
+    lowestpercent = round(((lowestval/sum)*100), 2)
     lowestsource = ""
     source2 = ""
     lowfinlbl = ""
@@ -159,7 +158,7 @@ def generate_overview_rev(excel):
     source2 = df["Sources"].loc[df["Amount"] == lowestval].iloc[0]
     if(source2 == "Local Sources"):
         if((df["Label1"].loc[df["Amount"] == lowestval].iloc[0]) == "Tax Revenue"):
-            lowestsource="Tax Revenue"
+            lowestsource = "Tax Revenue"
             if((df["Label2"].loc[df["Amount"] == lowestval].iloc[0]) == "Tax Revenue - Property"):
                 lowfinlbl = "Tax Revenue - Property"
             elif((df["Label2"].loc[df["Amount"] == lowestval].iloc[0]) == "Tax Revenue - Goods and Services"):
@@ -209,19 +208,22 @@ def generate_overview_rev(excel):
             else:
                 lowfinlbl = "Proceeds from Collections of Loans Receivable"
     else:
-        lowestsource="Receipts from Borrowings"
-        lowfinlbl=""
+        lowestsource = "Receipts from Borrowings"
+        lowfinlbl = ""
     #########################
     #TOOLTIP GENERATION#
         ###TOOLTIP FOR LARGEST###
     tooltips = []
-        ###SOURCE LARGEST###
+    ###SOURCE LARGEST###
     if(source1 == "Local Sources"):
-        tooltips.append("Revenue garnered from inside the Local Government Unit")
+        tooltips.append(
+            "Revenue garnered from inside the Local Government Unit")
     elif(source1 == "External Sources"):
-        tooltips.append("Revenue garnered from outside the Local Government Unit")
+        tooltips.append(
+            "Revenue garnered from outside the Local Government Unit")
     else:
-        tooltips.append("Money from loans/borrowings from both internal/external sources")
+        tooltips.append(
+            "Money from loans/borrowings from both internal/external sources")
     ########################LABEL 1##########################
     if(largestsource == "Tax Revenue"):
         tooltips.append("Revenue from Various Local Taxes")
@@ -229,7 +231,8 @@ def generate_overview_rev(excel):
         tooltips.append("Revenue from Non-Tax sources")
 
     elif(largestsource == "Share from the National Internal Revenue Taxes (IRA)"):
-        tooltips.append("Administered by the BIR. Income, Indirect, Excise, and Stamp Taxes")
+        tooltips.append(
+            "Administered by the BIR. Income, Indirect, Excise, and Stamp Taxes")
 
     elif(largestsource == "Share from GOCCs"):
         tooltips.append("Revenue from Government Owned Controlled Corporation")
@@ -238,10 +241,12 @@ def generate_overview_rev(excel):
         tooltips.append("Revenue collected from National Taxes")
 
     elif(largestsource == "Other Receipts"):
-        tooltips.append("Other Revenues from financial transactions of the Local Government Unit")
+        tooltips.append(
+            "Other Revenues from financial transactions of the Local Government Unit")
 
     elif(largestsource == "Inter-local Transfer"):
-        tooltips.append("Revenues from other government levels to help the LGU's development")
+        tooltips.append(
+            "Revenues from other government levels to help the LGU's development")
 
     elif(largestsource == "Capital/Investment Receipts"):
         tooltips.append("Various revenues from investments and capital assets")
@@ -249,10 +254,12 @@ def generate_overview_rev(excel):
         tooltips.append("")
     #################LABEL 2 ##########################
     if(highfinlbl == "Tax Revenue - Property"):
-        tooltips.append("Real estate tax from properties of individuals/corporations")
+        tooltips.append(
+            "Real estate tax from properties of individuals/corporations")
 
     elif(highfinlbl == "Tax Revenue - Goods and Services"):
-        tooltips.append("Value-added tax levied on most goods and services sold for domestic consumption")
+        tooltips.append(
+            "Value-added tax levied on most goods and services sold for domestic consumption")
 
     elif(highfinlbl == "Other Local Taxes"):
         tooltips.append("Various taxes from government services")
@@ -267,40 +274,49 @@ def generate_overview_rev(excel):
         tooltips.append("Other sources of income from various sales")
 
     elif(highfinlbl == "Share from Ecozone"):
-        tooltips.append("Revenue from Special Economic Zones(SEZ), an area in a country that is subject to different economic regulations than other regions within the same country")
+        tooltips.append(
+            "Revenue from Special Economic Zones(SEZ), an area in a country that is subject to different economic regulations than other regions within the same country")
 
     elif(highfinlbl == "Share from EVAT"):
         tooltips.append("Revenue from Extended Value added Taxes")
 
     elif(highfinlbl == "Share from National Wealth"):
-        tooltips.append("Local Government's share from the National Government's revenues")
+        tooltips.append(
+            "Local Government's share from the National Government's revenues")
 
     elif(highfinlbl == "Share from Tobacco Excise Tax"):
         tooltips.append("Tax from Tobacco based products")
 
     elif(highfinlbl == "Grants and Donations"):
-        tooltips.append("Various grants and donations provided to the local government")
+        tooltips.append(
+            "Various grants and donations provided to the local government")
 
     elif(highfinlbl == "Other Subsidy Income"):
-        tooltips.append("Grants of money granted to the government or a public body to assist on a certain service")
+        tooltips.append(
+            "Grants of money granted to the government or a public body to assist on a certain service")
 
     elif(highfinlbl == "Sale of Capital Assets"):
-        tooltips.append("Revenue from sale of a government owned investment item for government purposes")
+        tooltips.append(
+            "Revenue from sale of a government owned investment item for government purposes")
 
     elif(highfinlbl == "Sale of Investments"):
         tooltips.append("Revenue from return of investments")
 
     elif(highfinlbl == "Proceeds from Collections of Loans Receivable"):
-        tooltips.append("Revenue garnered from the collection of various loans")
+        tooltips.append(
+            "Revenue garnered from the collection of various loans")
     else:
         tooltips.append("")
     ########################################LOWEST VALUE ###############################
     if(source2 == "Local Sources"):
-        tooltips.append("Revenue garnered from inside the Local Government Unit")
+        tooltips.append(
+            "Revenue garnered from inside the Local Government Unit")
     elif(source2 == "External Sources"):
-        tooltips.append("Revenue garnered from outside the Local Government Unit")
+        tooltips.append(
+            "Revenue garnered from outside the Local Government Unit")
     else:
-        tooltips.append("Money from loans/borrowings from both internal/external sources")
+        tooltips.append(
+            "Money from loans/borrowings from both internal/external sources")
     ########################LABEL 1##########################
     if(lowestsource == "Tax Revenue"):
         tooltips.append("Revenue from Various Local Taxes")
@@ -308,7 +324,8 @@ def generate_overview_rev(excel):
         tooltips.append("Revenue from Non-Tax sources")
 
     elif(lowestsource == "Share from the National Internal Revenue Taxes (IRA)"):
-        tooltips.append("Administered by the BIR. Income, Indirect, Excise, and Stamp Taxes")
+        tooltips.append(
+            "Administered by the BIR. Income, Indirect, Excise, and Stamp Taxes")
 
     elif(lowestsource == "Share from GOCCs"):
         tooltips.append("Revenue from Government Owned Controlled Corporation")
@@ -317,10 +334,12 @@ def generate_overview_rev(excel):
         tooltips.append("Revenue collected from National Taxes")
 
     elif(lowestsource == "Other Receipts"):
-        tooltips.append("Other Revenues from financial transactions of the Local Government Unit")
+        tooltips.append(
+            "Other Revenues from financial transactions of the Local Government Unit")
 
     elif(lowestsource == "Inter-local Transfer"):
-        tooltips.append("Revenues from other government levels to help the LGU's development")
+        tooltips.append(
+            "Revenues from other government levels to help the LGU's development")
 
     elif(lowestsource == "Capital/Investment Receipts"):
         tooltips.append("Various revenues from investments and capital assets")
@@ -328,10 +347,12 @@ def generate_overview_rev(excel):
         tooltips.append("")
     #################LABEL 2 ##########################
     if(lowfinlbl == "Tax Revenue - Property"):
-        tooltips.append("Real estate tax from properties of individuals/corporations")
+        tooltips.append(
+            "Real estate tax from properties of individuals/corporations")
 
     elif(lowfinlbl == "Tax Revenue - Goods and Services"):
-        tooltips.append("Value-added tax levied on most goods and services sold for domestic consumption")
+        tooltips.append(
+            "Value-added tax levied on most goods and services sold for domestic consumption")
 
     elif(lowfinlbl == "Other Local Taxes"):
         tooltips.append("Various taxes from government services")
@@ -346,54 +367,60 @@ def generate_overview_rev(excel):
         tooltips.append("Other sources of income from various sales")
 
     elif(lowfinlbl == "Share from Ecozone"):
-        tooltips.append("Revenue from Special Economic Zones(SEZ), an area in a country that is subject to different economic regulations than other regions within the same country")
+        tooltips.append(
+            "Revenue from Special Economic Zones(SEZ), an area in a country that is subject to different economic regulations than other regions within the same country")
 
     elif(lowfinlbl == "Share from EVAT"):
         tooltips.append("Revenue from Extended Value added Taxes")
 
     elif(lowfinlbl == "Share from National Wealth"):
-        tooltips.append("Local Government's share from the National Government's revenues")
+        tooltips.append(
+            "Local Government's share from the National Government's revenues")
 
     elif(lowfinlbl == "Share from Tobacco Excise Tax"):
         tooltips.append("Tax from Tobacco based products")
 
     elif(lowfinlbl == "Grants and Donations"):
-        tooltips.append("Various grants and donations provided to the local government")
+        tooltips.append(
+            "Various grants and donations provided to the local government")
 
     elif(lowfinlbl == "Other Subsidy Income"):
-        tooltips.append("Grants of money granted to the government or a public body to assist on a certain service")
+        tooltips.append(
+            "Grants of money granted to the government or a public body to assist on a certain service")
 
     elif(lowfinlbl == "Sale of Capital Assets"):
-        tooltips.append("Revenue from sale of a government owned investment item for government purposes")
+        tooltips.append(
+            "Revenue from sale of a government owned investment item for government purposes")
 
     elif(lowfinlbl == "Sale of Investments"):
         tooltips.append("Revenue from return of investments")
 
     elif(lowfinlbl == "Proceeds from Collections of Loans Receivable"):
-        tooltips.append("Revenue garnered from the collection of various loans")
+        tooltips.append(
+            "Revenue garnered from the collection of various loans")
     else:
         tooltips.append("")
     global sunbInsightsRev
     sunbInsightsRev = "Largest Appropriation: {largestapp}% ({largestrevval:,}) from <span class='jtip'>{firstsource} <span class = 'tooltiptext'>{tooltip0}</span></span> > <span class='jtip'>{largestappsrc}<span class='tooltiptext'>{tooltip1}</span></span> > <span class = 'jtip'>{lstlbl}<span class='tooltiptext'>{tooltip2}</span></span> <br/>\
         Lowest Appropriation: {lowestapp}% ({lowestrevval:,}) from <span class = 'jtip'>{secondsource}<span class = 'tooltiptext'>{tooltip3}</span></span> > <span class = 'jtip'>{lowestappsrc}<span class='tooltiptext'>{tooltip4}</span></span> > <span class ='jtip'>{lstlbl2}<span class='tooltiptext'>{tooltip5}</span></span>".format(
-        largestapp = largestpercent,
-        largestrevval = largestval,
-        largestappsrc = largestsource,
-        firstsource = source1,
-        lstlbl = highfinlbl,
-        lowestapp = lowestpercent,
-        lowestrevval = lowestval,
-        lowestappsrc = lowestsource,
-        secondsource = source2,
-        lstlbl2 = lowfinlbl,
-        tooltip0 = tooltips[0],
-        tooltip1 = tooltips[1],
-        tooltip2 = tooltips[2],
-        tooltip3 = tooltips[3],
-        tooltip4 = tooltips[4],
-        tooltip5 = tooltips[5]
+        largestapp=largestpercent,
+        largestrevval=largestval,
+        largestappsrc=largestsource,
+        firstsource=source1,
+        lstlbl=highfinlbl,
+        lowestapp=lowestpercent,
+        lowestrevval=lowestval,
+        lowestappsrc=lowestsource,
+        secondsource=source2,
+        lstlbl2=lowfinlbl,
+        tooltip0=tooltips[0],
+        tooltip1=tooltips[1],
+        tooltip2=tooltips[2],
+        tooltip3=tooltips[3],
+        tooltip4=tooltips[4],
+        tooltip5=tooltips[5]
     )
-    
+
     return fig
 
 
@@ -494,7 +521,7 @@ def generate_fig_rev_rb(rt, ct):
         dict1['Year'].append(y)
         dict1['Receipts'].append(rev_init)
     df = pd.DataFrame(data=dict1)
-    fig = px.line(df, x="Year", y="Receipts",
+    fig = px.line(df, x="Year", y="Receipts", line_shape="spline",
                   color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                            "#FEE1E8", "#FED7C3"])
     fig.update_xaxes(type='category')
@@ -519,7 +546,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_gauge_rev, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp,prevyear=prevyear)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -549,18 +576,18 @@ def generate_overview_app(excel):
     lowestval = amounts[amounts > 0].min(0)
     sum = amounts.sum()
     ####largest vars####
-    largestpercent = round(((largestval/sum)*100),2)
+    largestpercent = round(((largestval/sum)*100), 2)
     largestsource = ""
     source1 = ""
     highfinlbl = ""
     #####################
     ####lowest vars#####
-    lowestpercent = round(((lowestval/sum)*100),2)
+    lowestpercent = round(((lowestval/sum)*100), 2)
     lowestsource = ""
     source2 = ""
     lowfinlbl = ""
     #####################
-    
+
     ####LARGEST VARIABLES####
     if((df["Label1"].loc[df["Amount"] == largestval].iloc[0]) == "Other Purposes"):
         largestsource = df["Label2"].loc[df["Amount"] == largestval].iloc[0]
@@ -587,17 +614,21 @@ def generate_overview_app(excel):
     #TOOLTIP GENERATION#
         ###TOOLTIP FOR LARGEST###
     tooltips = []
-        ###SOURCE LARGEST###
+    ###SOURCE LARGEST###
     if(source1 == "Current Appropriations"):
-        tooltips.append("Budget that is set aside for various government uses for this current year")
+        tooltips.append(
+            "Budget that is set aside for various government uses for this current year")
     elif(source1 == "Continuing Appropriations"):
-        tooltips.append("Appropriations available to support obligations for a specified purpose or project, even when these obligations are incurred beyond the budget year")
+        tooltips.append(
+            "Appropriations available to support obligations for a specified purpose or project, even when these obligations are incurred beyond the budget year")
     ########################LABEL 1##########################
     if(largestsource == "General Public Services"):
-        tooltips.append("Budget for General Services that the government provide to the public")
+        tooltips.append(
+            "Budget for General Services that the government provide to the public")
 
     elif(largestsource == "Education"):
-        tooltips.append("Budget for education related purposes, (schools,seminars, etc.)")
+        tooltips.append(
+            "Budget for education related purposes, (schools,seminars, etc.)")
 
     elif(largestsource == "Health, Nutrition and Population Control"):
         tooltips.append("Budget for public's health-related expenses.")
@@ -606,63 +637,79 @@ def generate_overview_app(excel):
         tooltips.append("Budget for the public's employment related expenses")
 
     elif(largestsource == "Housing and Community Development"):
-        tooltips.append("Budget for the public's local housing development expenses")
+        tooltips.append(
+            "Budget for the public's local housing development expenses")
 
     elif(largestsource == "Social Services and Social Welfare"):
-        tooltips.append("Budget for aiding disadvantaged, distressed, or vulnerable persons or groups.")
+        tooltips.append(
+            "Budget for aiding disadvantaged, distressed, or vulnerable persons or groups.")
 
     elif(largestsource == "Economic Services"):
         tooltips.append("Budget for economic utility expenses")
 
     elif(largestsource == "Other Services Sector"):
-        tooltips.append("Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
-    
+        tooltips.append(
+            "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
+
     elif(largestsource == "Other Purposes"):
-        tooltips.append("Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
+        tooltips.append(
+            "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
 
     elif(largestsource == "Debt Service"):
-        tooltips.append("Budget for payment and repayment of principal capital")
-    
+        tooltips.append(
+            "Budget for payment and repayment of principal capital")
+
     elif(largestsource == "LDRRMF"):
         tooltips.append("Budget invested in disaster risk reductions")
 
     elif(largestsource == "20% Development Fund"):
-        tooltips.append("Budget used for expenses in the development of the local government")
+        tooltips.append(
+            "Budget used for expenses in the development of the local government")
 
     elif(largestsource == "Share from National Wealth"):
         tooltips.append("Expenses made for share in the National Wealth")
 
     elif(largestsource == "Allocation for Senior Citizens and PWD"):
-        tooltips.append("Budget for expenses used for the programs, projects and activities proportionately divided among senior citizens and persons with disability")
+        tooltips.append(
+            "Budget for expenses used for the programs, projects and activities proportionately divided among senior citizens and persons with disability")
 
     else:
-        tooltips.append("Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
+        tooltips.append(
+            "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
     #################LABEL 2 ##########################
     if(highfinlbl == "Financial Expense"):
-        tooltips.append("Expenses associated with financing the certain sector.")
+        tooltips.append(
+            "Expenses associated with financing the certain sector.")
 
     if(highfinlbl == "Amortization"):
         tooltips.append("Budget for specifically repaying of debts.")
 
     if(highfinlbl == "Personnel Services"):
-        tooltips.append("Budget for expenses on the personnel (salaries, wages, and other compensation)")
+        tooltips.append(
+            "Budget for expenses on the personnel (salaries, wages, and other compensation)")
 
     if(highfinlbl == "Maintenance and Other Operating Expenses"):
-        tooltips.append("Budget for the expenses made for regulation of an operation of a sector.")
+        tooltips.append(
+            "Budget for the expenses made for regulation of an operation of a sector.")
 
     if(highfinlbl == "Capital Outlay"):
-        tooltips.append("Budget for expenses made to acquire capital assets to be used for a certain sector.")
+        tooltips.append(
+            "Budget for expenses made to acquire capital assets to be used for a certain sector.")
     ########################################LOWEST VALUE ###############################
     if(source2 == "Current Appropriations"):
-        tooltips.append("Budget that is set aside for various government uses for this current year")
+        tooltips.append(
+            "Budget that is set aside for various government uses for this current year")
     elif(source2 == "Continuing Appropriations"):
-        tooltips.append("Appropriations available to support obligations for a specified purpose or project, even when these obligations are incurred beyond the budget year")
-    
+        tooltips.append(
+            "Appropriations available to support obligations for a specified purpose or project, even when these obligations are incurred beyond the budget year")
+
     if(lowestsource == "General Public Services"):
-        tooltips.append("Budget for General Services that the government provide to the public")
+        tooltips.append(
+            "Budget for General Services that the government provide to the public")
 
     elif(lowestsource == "Education"):
-        tooltips.append("Budget for education related purposes, (schools,seminars, etc.)")
+        tooltips.append(
+            "Budget for education related purposes, (schools,seminars, etc.)")
 
     elif(lowestsource == "Health, Nutrition and Population Control"):
         tooltips.append("Budget for public's health-related expenses.")
@@ -671,71 +718,83 @@ def generate_overview_app(excel):
         tooltips.append("Budget for the public's employment related expenses")
 
     elif(lowestsource == "Housing and Community Development"):
-        tooltips.append("Budget for the public's local housing development expenses")
+        tooltips.append(
+            "Budget for the public's local housing development expenses")
 
     elif(lowestsource == "Social Services and Social Welfare"):
-        tooltips.append("Budget for aiding disadvantaged, distressed, or vulnerable persons or groups.")
+        tooltips.append(
+            "Budget for aiding disadvantaged, distressed, or vulnerable persons or groups.")
 
     elif(lowestsource == "Economic Services"):
         tooltips.append("Budget for economic utility expenses")
 
     elif(lowestsource == "Other Services Sector"):
-        tooltips.append("Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
-    
+        tooltips.append(
+            "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
+
     elif(lowestsource == "Other Purposes"):
-        tooltips.append("Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
+        tooltips.append(
+            "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
 
     elif(lowestsource == "Debt Service"):
-        tooltips.append("Budget for payment and repayment of principal capital")
-    
+        tooltips.append(
+            "Budget for payment and repayment of principal capital")
+
     elif(lowestsource == "LDRRMF"):
         tooltips.append("Budget invested in disaster risk reductions")
 
     elif(lowestsource == "20% Development Fund"):
-        tooltips.append("Budget used for expenses in the development of the local government")
+        tooltips.append(
+            "Budget used for expenses in the development of the local government")
 
     elif(lowestsource == "Share from National Wealth"):
         tooltips.append("Expenses made for share in the National Wealth")
 
     elif(lowestsource == "Allocation for Senior Citizens and PWD"):
-        tooltips.append("Budget for expenses used for the programs, projects and activities proportionately divided among senior citizens and persons with disability")
+        tooltips.append(
+            "Budget for expenses used for the programs, projects and activities proportionately divided among senior citizens and persons with disability")
 
     else:
-        tooltips.append("Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
+        tooltips.append(
+            "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)")
     #################LABEL 2 ##########################
     if(lowfinlbl == "Financial Expense"):
-        tooltips.append("Expenses associated with financing the certain sector.")
+        tooltips.append(
+            "Expenses associated with financing the certain sector.")
 
     if(lowfinlbl == "Amortization"):
         tooltips.append("Budget for specifically repaying of debts.")
 
     if(lowfinlbl == "Personnel Services"):
-        tooltips.append("Budget for expenses on the personnel (salaries, wages, and other compensation)")
+        tooltips.append(
+            "Budget for expenses on the personnel (salaries, wages, and other compensation)")
 
     if(lowfinlbl == "Maintenance and Other Operating Expenses"):
-        tooltips.append("Budget for the expenses made for regulation of an operation of a sector.")
+        tooltips.append(
+            "Budget for the expenses made for regulation of an operation of a sector.")
 
     if(lowfinlbl == "Capital Outlay"):
-        tooltips.append("Budget for expenses made to acquire capital assets to be used for a certain sector.")
+        tooltips.append(
+            "Budget for expenses made to acquire capital assets to be used for a certain sector.")
     global sunbInsightsApp
     sunbInsightsApp = "Largest Appropriation: {largestapp}% ({largestrevval:,}) from <span class='jtip'>{firstsource} <span class = 'tooltiptext'>{tooltip0}</span></span> > <span class='jtip'>{largestappsrc}<span class='tooltiptext'>{tooltip1}</span></span> > <span class = 'jtip'>{lstlbl}<span class='tooltiptext'>{tooltip2}</span></span> <br/>\
         Lowest Appropriation: {lowestapp}% ({lowestrevval:,}) from <span class = 'jtip'>{secondsource}<span class = 'tooltiptext'>{tooltip3}</span></span> > <span class = 'jtip'>{lowestappsrc}<span class='tooltiptext'>{tooltip4}</span></span> > <span class ='jtip'>{lstlbl2}<span class='tooltiptext'>{tooltip5}</span></span>".format(
-        largestapp = largestpercent,
-        largestrevval = largestval,
-        largestappsrc = largestsource,
-        firstsource = source1,
-        lstlbl = highfinlbl,
-        lowestapp = lowestpercent,
-        lowestrevval = lowestval,
-        lowestappsrc = lowestsource,
-        secondsource = source2,
-        lstlbl2 = lowfinlbl,
-        tooltip0 = tooltips[0],
-        tooltip1 = tooltips[1],
-        tooltip2 = tooltips[2],
-        tooltip3 = tooltips[3],
-        tooltip4 = tooltips[4],
-        tooltip5 = tooltips[5]
+        largestapp=largestpercent,
+        largestrevval=largestval,
+        largestappsrc=largestsource,
+        firstsource=source1,
+        lstlbl=highfinlbl,
+        lowestapp=lowestpercent,
+        lowestrevval=lowestval,
+        lowestappsrc=lowestsource,
+        secondsource=source2,
+        lstlbl2=lowfinlbl,
+        tooltip0=tooltips[0],
+        tooltip1=tooltips[1],
+        tooltip2=tooltips[2],
+        tooltip3=tooltips[3],
+        tooltip4=tooltips[4],
+        tooltip5=tooltips[5]
     )
     return fig
 
@@ -874,6 +933,7 @@ def generate_continuing_app(excel):
     fig = check_list_zero(df, values, title)
     return fig
 
+
 def gen_gauge_rev(year):
     global prevyear
     prevyear = year
@@ -881,22 +941,27 @@ def gen_gauge_rev(year):
     currentRevs = df["Revenue"].loc[df["Year"] == year+1].sum()
     prevRevs = df["Revenue"].loc[df["Year"] == year].sum()
     diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
-    diffpercent = abs(((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
+    diffpercent = abs(
+        ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
     diffround = abs(math.ceil(diffpercent / 100)*100)
     difflow = -diffround
     fig = go.Figure(go.Indicator(
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    value = diff,
-    mode = "gauge+number",
-    title = {'text': "Latest Revenue Difference in %"},
-    gauge = {'bar': {'color': "#FED7C3"},'axis': {'range': [difflow, diffround]},
-             'steps' : [
-                 {'range': [difflow,(difflow+diffround)/2], 'color': "#CBAACB"},
-                 {'range': [(difflow+diffround)/2,(diffround/2)], 'color': "#FFFFB5"},
-                 {'range': [diffround/2,diffround], 'color': "#ABDEE6"}
-                 ]}))
-    fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        domain={'x': [0, 1], 'y': [0, 1]},
+        value=diff,
+        mode="gauge+number",
+        title={'text': "Latest Revenue Difference in %"},
+        gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
+               'steps': [
+            {'range': [difflow, (difflow+diffround)/2],
+             'color': "#CBAACB"},
+            {'range': [(difflow+diffround)/2, (diffround/2)],
+             'color': "#FFFFB5"},
+            {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
+        ]}))
+    fig.update_layout(paper_bgcolor="lavender", font={
+                      'color': "darkblue", 'family': "Arial"})
     return fig
+
 
 def gen_gauge_app(year):
     global prevyear
@@ -906,19 +971,23 @@ def gen_gauge_app(year):
     currentRevs = df["Appropriations"].loc[df["Year"] == year+1].sum()
     prevRevs = df["Appropriations"].loc[df["Year"] == year].sum()
     diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
-    diffpercent = abs(((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
+    diffpercent = abs(
+        ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
     diffround = abs(math.ceil(diffpercent / 100)*100)
     difflow = -diffround
     fig = go.Figure(go.Indicator(
-    domain = {'x': [0, 1], 'y': [0, 1]},
-    value = diff,
-    mode = "gauge+number",
-    title = {'text': "Latest Approriation Difference in %"},
-    gauge = {'bar': {'color': "#FED7C3"},'axis': {'range': [difflow, diffround]},
-             'steps' : [
-                 {'range': [difflow,(difflow+diffround)/2], 'color': "#CBAACB"},
-                 {'range': [(difflow+diffround)/2,(diffround/2)], 'color': "#FFFFB5"},
-                 {'range': [diffround/2,diffround], 'color': "#ABDEE6"}
-                 ]}))
-    fig.update_layout(paper_bgcolor = "lavender", font = {'color': "darkblue", 'family': "Arial"})
+        domain={'x': [0, 1], 'y': [0, 1]},
+        value=diff,
+        mode="gauge+number",
+        title={'text': "Latest Approriation Difference in %"},
+        gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
+               'steps': [
+            {'range': [difflow, (difflow+diffround)/2],
+             'color': "#CBAACB"},
+            {'range': [(difflow+diffround)/2, (diffround/2)],
+             'color': "#FFFFB5"},
+            {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
+        ]}))
+    fig.update_layout(paper_bgcolor="lavender", font={
+                      'color': "darkblue", 'family': "Arial"})
     return fig

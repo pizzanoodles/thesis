@@ -186,7 +186,7 @@ def get_fig2(df, inp, nbx, nby, inptype, forectype):
 def get_fig3(rmse, min, k):
     df = {"K": k, "RMSE": rmse}
     df2 = {"K": [min], "RMSE": [rmse[min-2]]}
-    fig = px.line(df, x="K", y="RMSE")
+    fig = px.line(df, x="K", y="RMSE", line_shape="spline")
     fig.update_traces(name="K", showlegend=True)
     fig2 = px.scatter(df2, x="K", y="RMSE",
                       color_discrete_sequence=["red"])
