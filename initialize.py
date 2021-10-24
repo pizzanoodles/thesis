@@ -14,6 +14,7 @@ def get_cities(reg, yr, dt, page):
     sheets = pd.ExcelFile(link_init)
     cities = sheets.sheet_names
     for c in cities:
+        sum =0 
         city_init = pd.read_excel(link_init, c)
         if(dt == "Revenue"):
             sum = city_init.iloc[35, 4]

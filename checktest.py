@@ -1,8 +1,9 @@
-from initialize import initialize_dir_year, initialize_dir_region
 import pandas as pd
+from defaultfigure import *
+from initialize import initialize_dir_year, initialize_dir_region, get_cities, find_typedata
 
-
-def get_cities(reg, yr):
+#CHECK CITY ERRORS WITH MISSING SCBAA
+"""def get_cities(reg, yr):
     link_init = "SCBAA/" + yr + "/" + reg + ".xlsx"
     sheets = pd.ExcelFile(link_init)
     cities = sheets.sheet_names
@@ -23,4 +24,25 @@ for y in year:
     for r in region:
         city = get_cities(r, y)
         if city:
-            print(y, r, city)
+            print(y, r, city)"""
+
+#UPDATE defaultgraph and check cities(sheets) in region.xlsx
+"""year = initialize_dir_year()
+region = initialize_dir_region()['value']
+
+dict_revapp = {"Region": [], "Year": [], "Revenue": [], "Appropriations": []}
+for y in year:
+    for r in region:
+        reg_excel = pd.ExcelFile("SCBAA/" + str(y) + "/" + r + ".xlsx")
+        totalrev = 0
+        totalapp = 0
+        for c in dict_scbaa["Region"][r]:
+            city_excel = pd.read_excel(reg_excel, c)
+            totalrev += city_excel.iloc[35, 4]
+            totalapp += city_excel.iloc[110, 4]
+        dict_revapp["Region"].append(r)
+        dict_revapp["Year"].append(y)
+        dict_revapp["Revenue"].append(totalrev)
+        dict_revapp["Appropriations"].append(totalapp)
+df = pd.DataFrame(dict_revapp)
+df.to_excel("SCBAA/output.xlsx")"""
