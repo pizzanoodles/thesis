@@ -182,6 +182,11 @@ def get_amountallyr(r, c, lbl):
         link_init = "SCBAA/" + y + "/" + r + ".xlsx"
         reg_init = pd.ExcelFile(link_init)
         city_init = pd.read_excel(reg_init, c)
+        total = find_typedata(city_init,lbl)
+        locals.append(total)
+    return locals
+
+def find_typedata(city_init,lbl):
         if(lbl == "Local Sources"):
             total = get_localsources(city_init)
         elif(lbl == "Tax Revenues"):
@@ -246,9 +251,7 @@ def get_amountallyr(r, c, lbl):
             total = get_totalapp(city_init)
         elif(lbl == "Total Revenues"):
             total = get_totalrev(city_init)
-        locals.append(total)
-    return locals
-
+        return total
 
 def get_totalrev(city_init):
     total_rev = city_init.iloc[35, 4]

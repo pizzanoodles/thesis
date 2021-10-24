@@ -6,7 +6,7 @@ import plotly.express as px
 import matplotlib.ticker as ticker
 import numpy as np
 import plotly.graph_objects as go
-from defaultfigure import dict_scbaa
+from defaultfigure import *
 import math
 
 # EXTRA FUNCTIONS > check list zeros
@@ -33,7 +33,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     fig_ext_cir = generate_fig_rev_ext_cir(excel)
     fig_rb = generate_fig_rev_rb(rt, ct)
     fig_ov = generate_overview_rev(excel)
-    fig_gauge = gen_gauge_rev(int(yt)-1,rt,ct)
+    fig_gauge = gen_gauge_rev(int(yt)-1, rt, ct)
     graph1JSON = json.dumps(fig_tr, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_ntr, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ext, cls=plotly.utils.PlotlyJSONEncoder)
@@ -537,7 +537,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     fig_others_g2 = generate_others_social(excel)
     fig_others_g3 = generate_others_others(excel)
     fig_cont_app = generate_continuing_app(excel)
-    fig_gauge_rev = gen_gauge_app(int(yt)-1,rt,ct)
+    fig_gauge_rev = gen_gauge_app(int(yt)-1, rt, ct)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_others_g1, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
@@ -933,12 +933,14 @@ def generate_continuing_app(excel):
     return fig
 
 
-def gen_gauge_rev(year,reg,city):
+def gen_gauge_rev(year, reg, city):
     global prevyear
     prevyear = year
-    if(prevyear !=2015):
-        prevyearExcel = pd.read_excel('SCBAA/{year}/{region}.xlsx'.format(year=prevyear,region=reg),sheet_name=city)
-        curryearExcel = pd.read_excel('SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1,region=reg),sheet_name=city)
+    if(prevyear != 2015):
+        prevyearExcel = pd.read_excel(
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
+        curryearExcel = pd.read_excel(
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1, region=reg), sheet_name=city)
         df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
         #currentRevs = df["Revenue"].loc[df["Year"] == year+1].sum()
         #prevRevs = df["Revenue"].loc[df["Year"] == year].sum()
@@ -955,31 +957,33 @@ def gen_gauge_rev(year,reg,city):
             mode="gauge+number",
             title={'text': "Latest Revenue Difference in %"},
             gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
-                'steps': [
+                   'steps': [
                 {'range': [difflow, (difflow+diffround)/2],
-                'color': "#CBAACB"},
+                 'color': "#CBAACB"},
                 {'range': [(difflow+diffround)/2, (diffround/2)],
-                'color': "#FFFFB5"},
+                 'color': "#FFFFB5"},
                 {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
             ]}))
         fig.update_layout(paper_bgcolor="lavender", font={
-                        'color': "darkblue", 'family': "Arial"})
+            'color': "darkblue", 'family': "Arial"})
     else:
-      return None
+        return None
     return fig
 
 
-def gen_gauge_app(year,reg,city):
+def gen_gauge_app(year, reg, city):
     global prevyear
     prevyear = year
-    if(prevyear !=2015):
-        prevyearExcel = pd.read_excel('SCBAA/{year}/{region}.xlsx'.format(year=prevyear,region=reg),sheet_name=city)
-        curryearExcel = pd.read_excel('SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1,region=reg),sheet_name=city)
+    if(prevyear != 2015):
+        prevyearExcel = pd.read_excel(
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
+        curryearExcel = pd.read_excel(
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1, region=reg), sheet_name=city)
         df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
         currentRevs = df["Appropriations"].loc[df["Year"] == year+1].sum()
         prevRevs = df["Appropriations"].loc[df["Year"] == year].sum()
-        prevRevs = prevyearExcel.iloc[35][4]
-        currentRevs = curryearExcel.iloc[35][4]
+        prevRevs = prevyearExcel.iloc[110][4]
+        currentRevs = curryearExcel.iloc[110][4]
         diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
         diffpercent = abs(
             ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
@@ -991,15 +995,15 @@ def gen_gauge_app(year,reg,city):
             mode="gauge+number",
             title={'text': "Latest Approriation Difference in %"},
             gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
-                'steps': [
+                   'steps': [
                 {'range': [difflow, (difflow+diffround)/2],
-                'color': "#CBAACB"},
+                 'color': "#CBAACB"},
                 {'range': [(difflow+diffround)/2, (diffround/2)],
-                'color': "#FFFFB5"},
+                 'color': "#FFFFB5"},
                 {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
             ]}))
         fig.update_layout(paper_bgcolor="lavender", font={
-                        'color': "darkblue", 'family': "Arial"})
+            'color': "darkblue", 'family': "Arial"})
     else:
         return None
     return fig
