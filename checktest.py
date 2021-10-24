@@ -23,5 +23,4 @@ for y in year:
     for r in region:
         city = get_cities(r, y)
         if city:
-            print(y,r,city)
-    
+            print(y, r, city)
