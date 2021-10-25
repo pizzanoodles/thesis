@@ -16,76 +16,82 @@
 </head>
 
 <body>
-        <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-            <div class="container-fluid">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <div class="container-fluid">
 
-                <a class="navbar-brand " href="index.html"> <img
-                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
-                        alt="about width=40" height="40" style="float:left">
-                    <h6 style="float:right; color:black;">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm</h6>
-                </a>
-                <div class="mr-auto">
-                    <a href="/test" type="button" class="btn btn-outline-dark" style="margin:5px;">
-                        DATA VISUALIZATION</a>
-                    <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
-                        FORECASTING</a>
-                    <a href="about.html" type="button" class="btn btn-outline-dark" style="margin:5px;">
-                        ABOUT</a>
-                </div>
+            <a class="navbar-brand " href="index.html"> <img
+                    src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
+                    alt="about width=40" height="40" style="float:left">
+                <h6 style="float:right; color:black;">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm
+                </h6>
+            </a>
+            <div class="mr-auto">
+                <a href="/test" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    DATA VISUALIZATION</a>
+                <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    FORECASTING</a>
+                <a href="about.html" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    ABOUT</a>
+            </div>
 
-            </div>
-        </nav>
-        <br><br><br>
-        <!--<div class="p-3 mb text-black"></div>-->
-        <div class="row align-items-center">
-            <div class="col-4">
-                <form action="#" method="POST">
-                    <!-- DATA MENU -->
-                    <h5 id = "selectcat">VISUALIZATION</h5><br/><br/>
-                    <h5 id = "selectcat">SELECT CATEGORY TO VISUALIZE</h5><br/>
-                    <select class="form-select mb-3" name="data_select" id='iddt' required>
-                        <option selected disabled>DATA</option>
-                        <option value="Revenue">Revenue</option>
-                        <option value="Appropriations">Appropriations</option>
-                    </select>
-                    <select class="form-select mb-3" name="yr_select" id='idyr' required>
-                        <option value="default" selected disabled>YEAR</option>
-                        {%for x in year%}
-                        <option value={{x}}>{{x}}</option>
-                        {%endfor%}
-                    </select>
-                    <select class="form-select mb-3" name="reg_select" id='idReg' required>
-                        <option value="default" selected disabled>REGION</option>
-                        {%for i in range(region['value']|length)%}
-                        <option value="{{region['value'][i]}}">{{region['label'][i]}}</option>
-                        {%endfor%}
-                    </select>
-                    <select class="form-select mb-3" name="cit_select" id="city">
-                        <option value="default" selected disabled>CITIES</option>
-                    </select>
-                    <button type="submit"  id='btnsubmit'>SUBMIT</button>
-                    <p><br/>Disclaimer: The data that is to be visualized is taken from the Commision on Audit's official website: <a href="https://www.coa.gov.ph/"> Click here</a>.<br/></br> The developers created a template for all regional data to conform to our requirements for the Data Visualization and Forecasting.<br/><br/>All legal content is in the public domain of Commission of Audit of the Replublic of the Philippines unless otherwise stated.<br/><br/><br/><br/><br/><br/><br/><br/></p>
-                </form>
-            </div>
-            <div class="col" id="barchart">
-                <div class="col-12">
-                    <div class="card mx-10">
-                        <div class="card-body">
-                            <div id="chart2">
-                            </div>
-                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                                {%for i in range(year|length)%}
-                                <input type="radio" class="btn-check" name="btnradio" id="btnradio{{i+1}}"
-                                    autocomplete="off" {% if i==0 %} checked{% else %}{% endif %}>
-                                <label class="btn btn-outline-dark btndes" for="btnradio{{i+1}}">{{year[i]}}</label>
-                                {%endfor%}
-                            </div>
-                            <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
+        </div>
+    </nav>
+    <br><br><br>
+    <!--<div class="p-3 mb text-black"></div>-->
+    <div class="row align-items-center">
+        <div class="col-4">
+            <form action="#" method="POST">
+                <!-- DATA MENU -->
+                <h5 id="selectcat">VISUALIZATION</h5><br /><br />
+                <h5 id="selectcat">SELECT CATEGORY TO VISUALIZE</h5><br />
+                <select class="form-select mb-3" name="data_select" id='iddt' required>
+                    <option selected disabled>DATA</option>
+                    <option value="Revenue">Revenue</option>
+                    <option value="Appropriations">Appropriations</option>
+                </select>
+                <select class="form-select mb-3" name="yr_select" id='idyr' required>
+                    <option value="default" selected disabled>YEAR</option>
+                    {%for x in year%}
+                    <option value={{x}}>{{x}}</option>
+                    {%endfor%}
+                </select>
+                <select class="form-select mb-3" name="reg_select" id='idReg' required>
+                    <option value="default" selected disabled>REGION</option>
+                    {%for i in range(region['value']|length)%}
+                    <option value="{{region['value'][i]}}">{{region['label'][i]}}</option>
+                    {%endfor%}
+                </select>
+                <select class="form-select mb-3" name="cit_select" id="city">
+                    <option value="default" selected disabled>CITIES</option>
+                </select>
+                <button type="submit" id='btnsubmit'>SUBMIT</button>
+                <p><br />Disclaimer: The data that is to be visualized is taken from the Commision on Audit's official
+                    website: <a href="https://www.coa.gov.ph/"> Click here</a>.<br /></br> The developers created a
+                    template for all regional data to conform to our requirements for the Data Visualization and
+                    Forecasting.<br /><br />All legal content is in the public domain of Commission of Audit of the
+                    Replublic of the Philippines unless otherwise
+                    stated.<br /><br /><br /><br /><br /><br /><br /><br /></p>
+            </form>
+        </div>
+        <div class="col" id="barchart">
+            <div class="col-12">
+                <div class="card mx-10">
+                    <div class="card-body">
+                        <div id="chart2">
                         </div>
+                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                            {%for i in range(year|length)%}
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio{{i+1}}"
+                                autocomplete="off" {% if i==0 %} checked{% else %}{% endif %}>
+                            <label class="btn btn-outline-dark btndes" for="btnradio{{i+1}}">{{year[i]}}</label>
+                            {%endfor%}
+                        </div>
+                        <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <main class="row align-items-center" id="btmcharts">
         <div class="col">
             <div class="col">
@@ -93,7 +99,7 @@
                     <div class="card-body">
                         <div id="chart1">
                         </div>
-                        <p class ='c1insight'> {% autoescape false %} {{chart1insight}} {% endautoescape %}</p>
+                        <p class='c1insight'> {% autoescape false %} {{chart1insight}} {% endautoescape %}</p>
                     </div>
                 </div>
             </div>
@@ -119,6 +125,54 @@
             </div>
         </div>
     </main>
+
+    <!-- Footer -->
+    <footer class="page-footer font-small mdb-color lighten-3 pt-4">
+        <div class="container text-center text-md-left">
+            <div class="row">
+                <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4"></h5>
+                    <p><img src="{{ url_for('static', filename='/images/aninaw-tech-logo-brown.png') }}"
+                            class="tribimg"></p>
+                </div>
+                <hr class="clearfix w-100 d-md-none">
+                <div class=" about col-md-2 col-lg-2 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">About</h5>
+                    <p>Aninaw-tech is a web application developed by the students of Far Eastern University - Alabang
+                        for their
+                        Thesis project.</p>
+                </div>
+                <hr class="clearfix w-100 d-md-none">
+                <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    <h5 class="font-weight-bold text-uppercase mb-4">CONTACT US:</h5>
+                    <ul class="list-unstyled">
+                        <li>
+                            <i class="fas fa-home mr-3">jensjovellano@gmail.com</i>
+                        </li>
+                        <li>
+                            <i class="fas fa-envelope mr-3">lararon2428@gmail.com</i>
+                        </li>
+                        <li>
+                            <i class="fas fa-phone mr-3">joanerepol1@gmail.com</i>
+                        </li>
+                        <li>
+                            <i class="fas fa-print mr-3">kelseyrlantano@gmail.com</i>
+                        </li>
+                    </ul>
+                </div>
+                <hr class="clearfix w-100 d-md-none">
+                <div class="col-md-2 col-lg-2 text-center mx-auto my-4">
+                    <h5 class="font-weight-bold text-uppercase mb-4"></h5>
+                    <img src="{{ url_for('static', filename='/images/tribunal2.png') }}" class="tribimg2">
+                </div>
+            </div>
+        </div>
+        <div class="footer-copyright text-center py-3">© 2021 Copyright:
+            <a href="https://aninaw-tech.herokuapp.com/"> Aninaw-tech - Tribunal</a>
+        </div>
+    </footer>
+    <!-- Footer -->
+
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
         reg_select = document.getElementById('idReg');
