@@ -13,20 +13,6 @@ html, body {
 div{
   color:black;
 }
-.year1{
-}
-.year2{
-  display:none;
-}
-.year3{
-  display:none;
-}
-.year4{
-  display:none;
-}
-.year5{
-  display:none;
-}
 .jtip {
   position: relative;
   display: inline-block;

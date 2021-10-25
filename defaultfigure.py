@@ -121,6 +121,14 @@ def get_surplus():
 # function generate
 
 
+def get_styledisp(i):
+    if(i == 0):
+        string = None
+    else:
+        string = "style='display: none;'"
+    return string
+
+
 def get_reg_app_rev():
     df = pd.read_excel('SCBAA/Defaultgraph.xlsx')
     year = initialize_dir_year()
@@ -129,7 +137,7 @@ def get_reg_app_rev():
     insights2 = ""
     for i in range(len(year)):
         insights2 += "\
-        <ul class='year{num}'>Revenues\
+        <ul class='year{num}' {style}>Revenues\
             <ul>\
         <li>Highest Revenue: {maxrev:,} from {maxrevreg}</li>\
         <li>Lowest Revenue: {minrev:,} from {minrevreg} </li>\
@@ -148,7 +156,8 @@ def get_reg_app_rev():
                                                              == valsdf[i]["Appropriations"].max()].iloc[0],
                            minappreg=valsdf[i]["Region"].loc[valsdf[i]["Appropriations"]
                                                              == valsdf[i]["Appropriations"].min()].iloc[0],
-                           num=i+1)
+                           num=i+1,
+                           style=get_styledisp(i))
 
     fig = px.bar(df, x="Region", y=["Revenue", "Appropriations"],
                  animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#ABDEE6", "#CBAACB"],
