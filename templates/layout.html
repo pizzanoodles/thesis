@@ -16,32 +16,33 @@
 </head>
 
 <body>
-    <div class="p-3 mb-2 text-white">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
             <div class="container-fluid">
 
                 <a class="navbar-brand " href="index.html"> <img
-                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-white.png') }}" class="rounded"
+                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
                         alt="about width=40" height="40" style="float:left">
-                    <h6 style="float:right">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm</h6>
+                    <h6 style="float:right; color:black;">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm</h6>
                 </a>
                 <div class="mr-auto">
-                    <a href="/test" type="button" class="btn btn-outline-light" style="margin:5px;">
+                    <a href="/test" type="button" class="btn btn-outline-dark" style="margin:5px;">
                         DATA VISUALIZATION</a>
-                    <a href="/forecast" type="button" class="btn btn-outline-light" style="margin:5px;">
+                    <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
                         FORECASTING</a>
-                    <a href="about.html" type="button" class="btn btn-outline-light" style="margin:5px;">
+                    <a href="about.html" type="button" class="btn btn-outline-dark" style="margin:5px;">
                         ABOUT</a>
                 </div>
 
             </div>
         </nav>
         <br><br><br>
-        <div class="row align-items-end">
-            <div class="col-8"></div>
+        <!--<div class="p-3 mb text-black"></div>-->
+        <div class="row align-items-center">
             <div class="col-4">
                 <form action="#" method="POST">
                     <!-- DATA MENU -->
+                    <h5 id = "selectcat">VISUALIZATION</h5><br/><br/>
+                    <h5 id = "selectcat">SELECT CATEGORY TO VISUALIZE</h5><br/>
                     <select class="form-select mb-3" name="data_select" id='iddt' required>
                         <option selected disabled>DATA</option>
                         <option value="Revenue">Revenue</option>
@@ -62,45 +63,43 @@
                     <select class="form-select mb-3" name="cit_select" id="city">
                         <option value="default" selected disabled>CITIES</option>
                     </select>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit"  id='btnsubmit'>SUBMIT</button>
+                    <p><br/>Disclaimer: The data that is to be visualized is taken from the Commision on Audit's official website: <a href="https://www.coa.gov.ph/"> Click here</a>.<br/></br> The developers created a template for all regional data to conform to our requirements for the Data Visualization and Forecasting.<br/><br/>All legal content is in the public domain of Commission of Audit of the Replublic of the Philippines unless otherwise stated.<br/><br/><br/><br/><br/><br/><br/><br/></p>
                 </form>
             </div>
-
+            <div class="col" id="barchart">
+                <div class="col-12">
+                    <div class="card mx-10">
+                        <div class="card-body">
+                            <div id="chart2">
+                            </div>
+                            <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                                {%for i in range(year|length)%}
+                                <input type="radio" class="btn-check" name="btnradio" id="btnradio{{i+1}}"
+                                    autocomplete="off" {% if i==0 %} checked{% else %}{% endif %}>
+                                <label class="btn btn-outline-dark btndes" for="btnradio{{i+1}}">{{year[i]}}</label>
+                                {%endfor%}
+                            </div>
+                            <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-        <br><br>
-    </div>
-    <main class="container">
-        <div class="row-4 p-4">
-            <div class="col-8">
+    <main class="row align-items-center" id="btmcharts">
+        <div class="col">
+            <div class="col">
                 <div class="card mx-10">
                     <div class="card-body">
                         <div id="chart1">
                         </div>
-                        <h2> {% autoescape false %} {{chart1insight}} {% endautoescape %}</h2>
+                        <p class ='c1insight'> {% autoescape false %} {{chart1insight}} {% endautoescape %}</p>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row-4 p-4">
-            <div class="col-10">
-                <div class="card mx-10">
-                    <div class="card-body">
-                        <div id="chart2">
-                        </div>
-                        <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            {%for i in range(year|length)%}
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio{{i+1}}"
-                                autocomplete="off" {% if i==0 %} checked{% else %}{% endif %}>
-                            <label class="btn btn-outline-primary" for="btnradio{{i+1}}">{{year[i]}}</label>
-                            {%endfor%}
-                        </div>
-                        <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row-4 p-4">
-            <div class="col-10">
+        <div class="col cb">
+            <div class="col">
                 <div class="card mx-10">
                     <div class="card-body">
                         <div id="chart3">
@@ -109,8 +108,8 @@
                 </div>
             </div>
         </div>
-        <div class="row-4 p-4">
-            <div class="col-10">
+        <div class="col cb">
+            <div class="col">
                 <div class="card mx-10">
                     <div class="card-body">
                         <div id="chart4">

@@ -963,8 +963,6 @@ def gen_gauge_rev(year, reg, city, yearlst):
                  'color': "#FFFFB5"},
                 {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
             ]}))
-        fig.update_layout(paper_bgcolor="lavender", font={
-            'color': "darkblue", 'family': "Arial"})
     else:
         return None, prevyear
     return fig, prevyear
@@ -997,8 +995,6 @@ def gen_gauge_app(year, reg, city, yearlst):
                  'color': "#FFFFB5"},
                 {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
             ]}))
-        fig.update_layout(paper_bgcolor="lavender", font={
-            'color': "darkblue", 'family': "Arial"})
     else:
         return None, prevyear
     return fig, prevyear

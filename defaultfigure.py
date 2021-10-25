@@ -105,7 +105,8 @@ def get_surplus():
         connector={"line": {"color": "rgb(63, 63, 63)"}}
     ))
     fig.update_layout(
-        title="Surplus Values from "+years[0]+" to "+years[-1]
+        title="Surplus Values from "+years[0]+" to "+years[-1],
+        height=500
     )
     insights = "Highest Increase: {highinc}% during {highincyear}<br>Highest Decrease: {highdec}% during {highdecyear}<br>Difference of {yearmax} Surplus to {yearmin} Surplus: {yeardiff}%".format(
         highinc=max(pospercent[1:]),
@@ -187,6 +188,7 @@ def reg_app_line():
         title="Revenues and Appropriations of all Local Government Units from " +
         yearstr[0]+" to "+yearstr[-1]
     )
+    fig.update_layout(height=600)
     return fig
 # GRAPH 4: DROPDOWN CHART: SAMPLE
 # function generate
@@ -207,7 +209,7 @@ def gauge_surp():
         domain={'x': [0, 1], 'y': [0, 1]},
         value=diff,
         mode="gauge+number",
-        title={'text': "Latest Surplus Difference in %"},
+        title={'text': "Latest Surplus/Excess Difference in %"},
         gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
                'steps': [
             {'range': [difflow, (difflow+diffround)/2],
@@ -216,8 +218,7 @@ def gauge_surp():
              'color': "#FFFFB5"},
             {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
         ]}))
-    fig.update_layout(paper_bgcolor="lavender", font={
-                      'color': "darkblue", 'family': "Arial"})
+    fig.update_layout(height=600)
     return fig
 
 

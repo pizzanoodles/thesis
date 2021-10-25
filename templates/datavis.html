@@ -12,27 +12,24 @@
 </head>
 
 <body>
-    <div class="p-3 mb-2 text-white">
         <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
             <div class="container-fluid">
 
                 <a class="navbar-brand " href="index.html"> <img
-                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-white.png') }}" class="rounded"
+                        src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
                         alt="about width=40" height="40" style="float:left">
-                    <h6 style="float:right">{{dt}} > {{rt}} > {{ct}} > {{yt}}</h6>
+                    <h6 style="float:right; color:black;">{{dt}} > {{rt}} > {{ct}} > {{yt}}</h6>
                 </a>
                 <div class="mr-auto">
-                    <a href="/test" type="button" class="btn btn-outline-light" style="margin:5px;">
+                    <a href="/test" type="button" class="btn btn-outline-dark" style="margin:5px;">
                         DATA VISUALIZATION</a>
-                    <a href="/forecast" type="button" class="btn btn-outline-light" style="margin:5px;">
+                    <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
                         FORECASTING</a>
-                    <a href="about.html" type="button" class="btn btn-outline-light" style="margin:5px;">
+                    <a href="about.html" type="button" class="btn btn-outline-dark" style="margin:5px;">
                         ABOUT</a>
                 </div>
-
             </div>
         </nav>
-    </div>
 
     <div class="card">
         <div class="card-body">
@@ -49,13 +46,13 @@
             {% endif %}
         </div>
     </div>
-    <div class="container text-white">
+    <div class="row align-items-center">
         {% if dt == "Revenue" %}
         <div id="overview">
             <p><strong>Overview</strong></p>
-            <div class="row-4 p-4">
+            <div class="col-8">
                 <div class="col-10">
-                    <div class="card mx-10">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart8">
                             </div>
@@ -69,9 +66,9 @@
         {% else %}
         <div id="overview">
             <p><strong>Overview</strong></p>
-            <div class="row-4 p-4">
-                <div class="col-10">
-                    <div class="card mx-10">
+            <div class="col">
+                <div class="col-4">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart3">
                             </div>
@@ -86,18 +83,18 @@
         </div>
         {% endif %}
         {% if dt == "Revenue" %}
-        <div id="lcl">
+        <div class ='col-6' id="lcl">
             <p><strong>Local Sources</strong></p>
-            <div class="row p-4">
-                <div class="col-5">
-                    <div class="card mx-10">
+            <div class="col">
+                <div class="col-4">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart1">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-5">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             <div id="chart2">
@@ -109,8 +106,8 @@
         </div>
         <div id="ext">
             <p><strong>External Sources</strong></p>
-            <div class="row-3 p-4">
-                <div class="col-12">
+            <div class="col">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             <div id="chart3">
@@ -119,8 +116,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row p-4">
-                <div class="col-5">
+            <div class="col">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             <div id="chart4">
@@ -128,7 +125,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-5">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             <div id="chart5">
@@ -137,8 +134,8 @@
                     </div>
                 </div>
             </div>
-            <div class="row-2 p-4">
-                <div class="col-10">
+            <div class="col">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             <div id="chart6">
@@ -150,8 +147,8 @@
         </div>
         <div id="rec">
             <p><strong>Receipts From Borrowings</strong></p>
-            <div class="row-2 p-4">
-                <div class="col-10">
+            <div class="col">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             <div id="chart7">
@@ -163,8 +160,8 @@
         </div>
         <div id="revg">
             <p><strong>Difference from last year</strong></p>
-            <div class="row-2 p-4">
-                <div class="col-10">
+            <div class="col">
+                <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             {% if prevyear==year[0] %}

@@ -1,0 +1,23 @@
+body{
+    background-color: #fafafa;
+}
+.footer-copyright{
+    background-color: rgba(246, 240, 233, 1);;
+}
+.tribimg{
+    height:100px;
+    width:100px;
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+}
+.tribimg2{
+    height:100px;
+    width:100px;
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+}
+.about{
+    width: 25%;
+}
