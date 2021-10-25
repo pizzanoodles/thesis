@@ -46,12 +46,12 @@
             {% endif %}
         </div>
     </div>
-    <div class="row align-items-center">
+    <div class="row align-items-center all">
         {% if dt == "Revenue" %}
         <div id="overview">
             <p><strong>Overview</strong></p>
-            <div class="col-8">
-                <div class="col-10">
+            <div class="col">
+                <div class="col">
                     <div class="card">
                         <div class="card-body">
                             <div id="chart8">
@@ -64,36 +64,36 @@
             </div>
         </div>
         {% else %}
-        <div id="overview">
+        <div class="row align-items-center all">
+        <div id="overview2">
             <p><strong>Overview</strong></p>
             <div class="col">
-                <div class="col-4">
+                <div class="col">
                     <div class="card">
                         <div class="card-body">
                             <div id="chart3">
                             </div>
                             <div>{% autoescape false %} {{sunbInsightsApp}}{% endautoescape %}
-                                <!--<span class="tooltiptext">{% autoescape false %} {{tooltip}} {% endautoescape %}</span>-->
-                                <!--<div style="color:black">{% autoescape false %} {{defInsightsApp}} {% endautoescape %}</div>-->
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
         {% endif %}
         {% if dt == "Revenue" %}
-        <div class='col-6' id="lcl">
+        <div id="lcl">
             <p><strong>Local Sources</strong></p>
             <div class="col">
-                <div class="col-4">
+                <div class="col">
                     <div class="card">
                         <div class="card-body">
                             <div id="chart1">
                             </div>
                         </div>
                     </div>
-                </div>
+                </div><br><br>
                 <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
@@ -104,11 +104,12 @@
                 </div>
             </div>
         </div>
-        <div id="ext">
+        </div>
+        <div class = "row align-items-center all" id="ext">
             <p><strong>External Sources</strong></p>
             <div class="col">
                 <div class="col">
-                    <div class="card mx-10">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart3">
                             </div>
@@ -118,25 +119,26 @@
             </div>
             <div class="col">
                 <div class="col">
-                    <div class="card mx-10">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart4">
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col">
-                    <div class="card mx-10">
+                </div>
+                <div class = "row align-items-center all" id="ext">
+                <div class="col ext3">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart5">
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="col">
+            <div class="col ext4">
                 <div class="col">
-                    <div class="card mx-10">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart6">
                             </div>
@@ -145,7 +147,9 @@
                 </div>
             </div>
         </div>
-        <div id="rec">
+    </div>
+    <div class = "row align-items-center all" id="ext">
+        <div  class = "col " id="rec">
             <p><strong>Receipts From Borrowings</strong></p>
             <div class="col">
                 <div class="col">
@@ -158,14 +162,14 @@
                 </div>
             </div>
         </div>
-        <div id="revg">
+        <div  class = "col " id="revg">
             <p><strong>Difference from last year</strong></p>
             <div class="col">
                 <div class="col">
                     <div class="card mx-10">
                         <div class="card-body">
                             {% if prevyear==year[0] %}
-                            <h1>walang prev year</h1>
+                            <h1>There is no data from the previous year to compare to.</h1>
                             {% else %}
                             <div id="chart9">
                             </div>
@@ -175,12 +179,13 @@
                 </div>
             </div>
         </div>
+    </div>
         {% else %}
-        <div id="curapp">
+        <div class = "row align-items-center all">
             <p><strong>Current Appropriations</strong></p>
-            <div class="row-10 p-4">
-                <div class="col-15">
-                    <div class="card mx-10">
+            <div class="col">
+                <div class="col">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart1">
                             </div>
@@ -188,9 +193,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row-10 p-4">
-                <div class="col-15">
-                    <div class="card mx-10">
+            <div class="col">
+                <div class="col">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart2">
                             </div>
@@ -198,9 +203,10 @@
                     </div>
                 </div>
             </div>
-            <div class="row-10 p-4">
-                <div class="col-15">
-                    <div class="card mx-10">
+            </div>
+            <div class="col">
+                <div class="col">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart4">
                             </div>
@@ -208,9 +214,9 @@
                     </div>
                 </div>
             </div>
-            <div class="row-10 p-4">
-                <div class="col-15">
-                    <div class="card mx-10">
+            <div class="col">
+                <div class="col">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart5">
                             </div>
@@ -218,13 +224,10 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-        <div id="conapp">
-            <p><strong>Continuing Appropriations</strong></p>
-            <div class="row-10 p-4">
-                <div class="col-15">
-                    <div class="card mx-10">
+        <div class="row align-items-center all">
+            <div class="col">
+                <div class="col conapps">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart6">
                             </div>
@@ -232,15 +235,12 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="appg">
-            <p><strong>Difference from last year</strong></p>
-            <div class="row-2 p-4">
-                <div class="col-10">
-                    <div class="card mx-10">
+            <div class="col">
+                <div class="col conapps">
+                    <div class="card">
                         <div class="card-body">
                             {% if prevyear==year[0] %}
-                            <h1>walang prev year</h1>
+                            <h1>There is no data from the previous year to compare to.</h1>
                             {% else %}
                             <div id="chart7">
                             </div>
@@ -249,9 +249,8 @@
                     </div>
                 </div>
             </div>
-        </div>
-        {% endif %}
     </div>
+        {% endif %}
 
     <!-- Footer -->
     <footer class="page-footer font-small mdb-color lighten-3 pt-4">

@@ -16,6 +16,7 @@ body{
   background-position: top;
   background-attachment: fixed;
   }*/
+
 div{
   color:black;
 }
@@ -114,11 +115,6 @@ ul{
   text-align: center;
   padding:0;
 }
-.container{
-  width:100%;
-  background-color:rgb(128, 78, 21);
-  display:grid;
-}
 .container div{
   display:-ms-inline-grid;
 }
@@ -185,4 +181,47 @@ ul{
 .jtip:hover .tooltiptext {
   visibility: visible;
   opacity: 1;
+}
+
+.all{
+  padding:3em;
+  width:100%;
+  margin:auto;
+  margin-top:1px;
+  display:-ms-inline-grid;
+  }
+#overview{
+  width:40%;
+  margin:auto;
+}
+#lcl{
+  width:35%;
+  margin:auto;
+}
+.extchart{
+  width:100%;
+}
+#chart1{
+  margin-bottom:2em;
+}
+.ext3, .ext4{
+  width:inherit;
+}
+#overview2{
+  width:100%;
+}
+.conapps{
+  width:100%;
+  margin:auto;
+  display:-ms-inline-grid;
+}
+footer{
+  padding:0;
+  margin:0;
+  width:100%;
+  border-top:1px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+  border-style: solid;
 }
