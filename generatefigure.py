@@ -1,12 +1,11 @@
-from flask import render_template, url_for, request, redirect
+from flask import render_template
 import pandas as pd
 import json
 import plotly
 import plotly.express as px
-import matplotlib.ticker as ticker
 import numpy as np
 import plotly.graph_objects as go
-from defaultfigure import *
+from initialize import initialize_dir_year
 import math
 
 # EXTRA FUNCTIONS > check list zeros
@@ -25,6 +24,8 @@ def check_list_zero(dataframe, arr, title):
 
 
 def generate_fig_rev(excel, dt, rt, ct, yt):
+    year = initialize_dir_year()
+    yeari = [int(i) for i in year]
     fig_tr = generate_fig_rev_tr(excel)
     fig_ntr = generate_fig_rev_ntr(excel)
     fig_ext = generate_fig_rev_ext(excel)
@@ -33,7 +34,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     fig_ext_cir = generate_fig_rev_ext_cir(excel)
     fig_rb = generate_fig_rev_rb(rt, ct)
     fig_ov = generate_overview_rev(excel)
-    fig_gauge = gen_gauge_rev(int(yt)-1, rt, ct)
+    fig_gauge, prevyear = gen_gauge_rev(int(yt), rt, ct, yeari)
     graph1JSON = json.dumps(fig_tr, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_ntr, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ext, cls=plotly.utils.PlotlyJSONEncoder)
@@ -43,7 +44,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
     graph9JSON = json.dumps(fig_gauge, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear,year=yeari)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -510,14 +511,14 @@ def generate_fig_rev_ext_cir(excel):
 
 def generate_fig_rev_rb(rt, ct):
     dict1 = {"Year": [], "Receipts": []}
-    for y in dict_scbaa['Year']:
-        i = 0
-        link_init = "SCBAA/" + str(y) + "/" + rt + ".xlsx"
+    year = initialize_dir_year()
+    for y in year:
+        link_init = "SCBAA/" + y + "/" + rt + ".xlsx"
         reg_init = pd.ExcelFile(link_init)
         city_init = pd.read_excel(
             reg_init, ct)
         rev_init = city_init.iloc[34, 4]
-        dict1['Year'].append(y)
+        dict1['Year'].append(int(y))
         dict1['Receipts'].append(rev_init)
     df = pd.DataFrame(data=dict1)
     fig = px.line(df, x="Year", y="Receipts", line_shape="spline",
@@ -531,13 +532,15 @@ def generate_fig_rev_rb(rt, ct):
 
 
 def generate_fig_app(excel, dt, rt, ct, yt):
+    year = initialize_dir_year()
+    yeari = [int(i) for i in year]
     fig_con = generate_fig_app_curr(excel)
     fig_ov = generate_overview_app(excel)
     fig_others_g1 = generate_others_debt(excel)
     fig_others_g2 = generate_others_social(excel)
     fig_others_g3 = generate_others_others(excel)
     fig_cont_app = generate_continuing_app(excel)
-    fig_gauge_rev = gen_gauge_app(int(yt)-1, rt, ct)
+    fig_gauge_rev, prevyear = gen_gauge_app(int(yt), rt, ct, yeari)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_others_g1, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
@@ -545,7 +548,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_gauge_rev, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear,year=yeari)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -933,17 +936,13 @@ def generate_continuing_app(excel):
     return fig
 
 
-def gen_gauge_rev(year, reg, city):
-    global prevyear
+def gen_gauge_rev(year, reg, city, yearlst):
     prevyear = year
-    if(prevyear != 2015):
+    if(prevyear != yearlst[0]):
         prevyearExcel = pd.read_excel(
             'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
         curryearExcel = pd.read_excel(
             'SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1, region=reg), sheet_name=city)
-        df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
-        #currentRevs = df["Revenue"].loc[df["Year"] == year+1].sum()
-        #prevRevs = df["Revenue"].loc[df["Year"] == year].sum()
         prevRevs = prevyearExcel.iloc[35][4]
         currentRevs = curryearExcel.iloc[35][4]
         diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
@@ -967,21 +966,17 @@ def gen_gauge_rev(year, reg, city):
         fig.update_layout(paper_bgcolor="lavender", font={
             'color': "darkblue", 'family': "Arial"})
     else:
-        return None
-    return fig
+        return None, prevyear
+    return fig, prevyear
 
 
-def gen_gauge_app(year, reg, city):
-    global prevyear
+def gen_gauge_app(year, reg, city, yearlst):
     prevyear = year
-    if(prevyear != 2015):
+    if(prevyear != yearlst[0]):
         prevyearExcel = pd.read_excel(
             'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
         curryearExcel = pd.read_excel(
             'SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1, region=reg), sheet_name=city)
-        df = pd.read_excel('SCBAA/Defaultgraph2.xlsx')
-        currentRevs = df["Appropriations"].loc[df["Year"] == year+1].sum()
-        prevRevs = df["Appropriations"].loc[df["Year"] == year].sum()
         prevRevs = prevyearExcel.iloc[110][4]
         currentRevs = curryearExcel.iloc[110][4]
         diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
@@ -1005,5 +1000,5 @@ def gen_gauge_app(year, reg, city):
         fig.update_layout(paper_bgcolor="lavender", font={
             'color': "darkblue", 'family': "Arial"})
     else:
-        return None
-    return fig
+        return None, prevyear
+    return fig, prevyear

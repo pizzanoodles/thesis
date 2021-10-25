@@ -1,4 +1,4 @@
-from flask import render_template, url_for, request, redirect
+from flask import render_template
 from initialize import initialize_dir_year, initialize_dir_region, get_amountallyr
 from statistics import mean
 import pandas as pd
@@ -28,7 +28,7 @@ dict_scbaa = {"Region": {
     "Region 11": ['Digos', 'Davao', 'Samal', 'Panabo', 'Mati', 'Tagum'],
     "Region 12": ['Koronadal', 'Cotabato', 'General Santos', 'Kidapawan', 'Tacurong'],
     "Region 13": ['Bayugan', 'Bislig', 'Butuan', 'Cabadbaran', 'Surigao', 'Tandag']},
-    "Year": [2016, 2017, 2018, 2019, 2020]
+    "Year": initialize_dir_year()
 }
 # GENERATE DEFAULT FIGURES FUNCTION
 
@@ -42,16 +42,10 @@ def generate_default_figs():
     fig2, insights2 = get_reg_app_rev()
     fig3 = reg_app_line()
     fig4 = gauge_surp()
-    # Graph 3 Sample
-    #long_df = px.data.medals_long()
-    #fig3 = px.bar(long_df, x="nation", y="count",color="medal", title="Long-Form Input")
-    #fig4 = dropdownchart()
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    #graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
-    #graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
     return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, chart1insight=insights, chart2insight=insights2, year=year, region=region)
 
 
@@ -158,7 +152,7 @@ def get_reg_app_rev():
 
     fig = px.bar(df, x="Region", y=["Revenue", "Appropriations"],
                  animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#ABDEE6", "#CBAACB"],
-                 title="Revenue and Appropriations per Region 2016 to 2020")
+                 title="Revenue and Appropriations per Region "+year[0]+" to "+year[-1])
     return fig, insights2
 # Pie chart of Revenues and Appropriations 2016 to 2020
 

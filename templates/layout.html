@@ -88,21 +88,12 @@
                         <div id="chart2">
                         </div>
                         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off" checked>
-                            <label class="btn btn-outline-primary" for="btnradio1">2016</label>
-                          
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio2">2017</label>
-                          
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio3">2018</label>
-
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio4">2019</label>
-
-                            <input type="radio" class="btn-check" name="btnradio" id="btnradio5" autocomplete="off">
-                            <label class="btn btn-outline-primary" for="btnradio5">2020</label>
-                          </div>
+                            {%for i in range(year|length)%}
+                            <input type="radio" class="btn-check" name="btnradio" id="btnradio{{i+1}}"
+                                autocomplete="off" {% if i==0 %} checked{% else %}{% endif %}>
+                            <label class="btn btn-outline-primary" for="btnradio{{i+1}}">{{year[i]}}</label>
+                            {%endfor%}
+                        </div>
                         <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
                     </div>
                 </div>
@@ -182,51 +173,26 @@
         Plotly.plot("chart4", graph4, {})
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
-        crossorigin="anonymous">
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+        </script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+    <script>
+        {%for x in range(year | length) %}
+        $("#btnradio" + {{ x+ 1 }}).click(function () {
+            {%for y in range(year | length) %}
+            {% if x == y %}
+            $(".year" + {{ y+ 1 }}).slideDown();
+        {% else %}
+        $(".year" + {{ y+ 1 }}).slideUp();
+        $(".year" + {{ y+ 1 }}).slideUp();
+        $(".year" + {{ y+ 1 }}).slideUp();
+        $(".year" + {{ y+ 1 }}).slideUp();
+        {% endif %}
+        {% endfor %}
+        })
+
+        {% endfor %}
     </script>
-     <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-     <script>
-         $("#btnradio1").click(function(){
-            $(".year1").slideDown();
-            $(".year2").slideUp();
-            $(".year3").slideUp();
-            $(".year4").slideUp();
-            $(".year5").slideUp();
-        })
-
-        $("#btnradio2").click(function(){
-            $(".year1").slideUp();
-            $(".year2").slideDown();
-            $(".year3").slideUp();
-            $(".year4").slideUp();
-            $(".year5").slideUp();
-        })
-
-        $("#btnradio3").click(function(){
-            $(".year1").slideUp();
-            $(".year2").slideUp();
-            $(".year3").slideDown();
-            $(".year4").slideUp();
-            $(".year5").slideUp();
-        })
-
-        $("#btnradio4").click(function(){
-            $(".year1").slideUp();
-            $(".year2").slideUp();
-            $(".year3").slideUp();
-            $(".year4").slideDown();
-            $(".year5").slideUp();
-        })
-
-        $("#btnradio5").click(function(){
-            $(".year1").slideUp();
-            $(".year2").slideUp();
-            $(".year3").slideUp();
-            $(".year4").slideUp();
-            $(".year5").slideDown();
-        })
-     </script>
 </body>
 
 </html>

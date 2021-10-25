@@ -3,7 +3,6 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
-import ast
 from math import *
 from statistics import mean
 from initialize import initialize_dir_year
@@ -22,10 +21,7 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     k = [x+2 for x in range(len(valid_rmse))]
     nbx, nby = get_neighbors(dataset, [float(inp)], n_num)
     optm_predict_output = predict(nby)
-
-    #get_new = check_inp(inp, dict_samp[inptype], dict_samp[forectype])
     allpred = fig1_krange(dataset, [float(inp)], k)
-    #fig_inp = get_figinp(inp, reg, city, inptype, year)
     fig_inp = get_figinp(inp, reg, city, inptype, year, dict_samp)
     fig_preds = get_fig0(allpred, optm_predict_output, n_num, forectype, k)
     fig_bar = get_fig1(optm_predict_output, reg, city,
@@ -43,14 +39,6 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     return render_template("/forecastoutput.html", output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,
                            graph4JSON=graph4JSON, graph5JSON=graph5JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype,
                            forectype=forectype), optm_predict_output
-
-
-"""def check_inp(inp, arr1, arr2):
-    if(float(inp) < min(arr1)):
-        chng_rate = (float(inp)-min(arr1))/min(arr1)
-        newarr2 = [i+(i * chng_rate) for i in arr2]
-        return newarr2
-"""
 
 
 def fig1_krange(dataset, inp, k):
@@ -194,5 +182,3 @@ def get_fig3(rmse, min, k):
     fig.add_trace(fig2.data[0])
     fig.update_traces(mode="markers+lines")
     return fig
-
-
