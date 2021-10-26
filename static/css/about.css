@@ -1,0 +1,76 @@
+body,html{
+    height:100%;
+    width:100%;
+    padding:0;
+    margin:0;
+
+    background-image: url("../images/kena.jpg");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color:black;
+}
+h1{
+    margin:0;
+    text-align: center;
+}
+#aninabout{
+    text-align: center;
+    font-size:32px;
+}
+.aninaw{
+    text-align: center;
+    width:50%;
+    position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%, -50%);
+}
+#jens,#ron,#kelsey,#jovey,#maamresty{
+    height:55%;
+    width:100%;
+    margin:auto;
+    background-color:rgba(150,150,150,0.5);
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+#jens{
+    background-image: url("../images/tree.jpg");
+}
+#ron{
+    background-image: url("../images/mountains.jpg");
+}
+.parallax{
+    background-image: url("../images/kena.jpg");
+    height:100%;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.ppicl{
+    margin:auto;
+    height:80%;
+    width:auto;
+    float: left;
+}
+.ppicr{
+    margin:auto;
+    height:80%;
+    width:auto;
+    float:right;
+}
+footer{
+    background-color: antiquewhite;
+    padding:0;
+    margin:0;
+    width:100%;
+    border-top:1px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom: 0px;
+    border-style: solid;
+}
