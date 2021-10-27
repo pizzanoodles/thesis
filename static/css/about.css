@@ -15,9 +15,29 @@ h1{
     margin:0;
     text-align: center;
 }
+/* li span{
+    position: relative;
+    left:-25px;
+} */
 #aninabout{
     text-align: center;
     font-size:32px;
+}
+#aninaboutl{
+    align-self: center;
+    text-align: left;
+    font-size:32px;
+    width: 50%;
+    height:fit-content;
+    margin:auto
+}
+#aninaboutr{
+    align-self: center;
+    text-align: left;
+    font-size:32px;
+    width: 50%;
+    height:fit-content;
+    margin: auto;
 }
 .aninaw{
     text-align: center;
@@ -42,6 +62,15 @@ h1{
 }
 #ron{
     background-image: url("../images/mountains.jpg");
+}
+#kelsey{
+    background-image: url("../images/tree.jpg");
+}
+#jovey{
+    background-image: url("../images/mountains.jpg");
+}
+#maamresty{
+    background-image: url("../images/tree.jpg");
 }
 .parallax{
     background-image: url("../images/kena.jpg");
@@ -74,3 +103,17 @@ footer{
     border-bottom: 0px;
     border-style: solid;
 }
+.tribimg{
+    height:100px;
+    width:100px;
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+  }
+  .tribimg2{
+    height:100px;
+    width:100px;
+    background-size: cover;
+    background-position: top;
+    background-attachment: fixed;
+  }
