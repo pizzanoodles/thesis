@@ -44,7 +44,7 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
     graph9JSON = json.dumps(fig_gauge, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear,year=yeari)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear, year=yeari)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -548,7 +548,7 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_gauge_rev, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear,year=yeari)
+    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear, year=yeari)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -828,9 +828,22 @@ def generate_fig_app_curr(excel):
         color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5",
                                  "#FFCCB6", "#F3B0C3", "#C6DBDA", "#FEE1E8", "#FED7C3"]
     )
+    fig.update_xaxes(title_text=None)
+    fig.update_yaxes(title_text=None)
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=-0.8,
+        xanchor="right",
+        x=1.2
+    ))
     fig.update_layout(
         updatemenus=[
             dict(
+                x=1.1,
+                y=1.1,
+                xanchor="center",
+                yanchor="bottom",
                 active=0,
                 buttons=list([
                     dict(label="All Categories", method="update", args=[
@@ -892,9 +905,22 @@ def generate_others_social(excel):
         color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5",
                                  "#FFCCB6", "#F3B0C3", "#C6DBDA", "#FEE1E8", "#FED7C3"]
     )
+    fig.update_xaxes(title_text=None)
+    fig.update_yaxes(title_text=None)
+    fig.update_layout(legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=-0.3,
+        xanchor="right",
+        x=1
+    ))
     fig.update_layout(
         updatemenus=[
             dict(
+                x=1.1,
+                y=1.1,
+                xanchor="center",
+                yanchor="bottom",
                 active=0,
                 buttons=list([
                     dict(label="All Categories", method="update", args=[
@@ -909,7 +935,8 @@ def generate_others_social(excel):
                          False, False, False, True]}, {"title": "Allocation for Senior Citizens and PWD"}]),
                 ])
             )
-        ]
+        ],
+
     )
     return fig
 

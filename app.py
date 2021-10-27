@@ -1,6 +1,5 @@
 from flask import render_template, url_for, request, redirect, jsonify
 import pandas as pd
-import matplotlib.ticker as ticker
 from defaultfigure import generate_default_figs, gen_reference
 from initialize import initialize_dir_region, initialize_dir_year, get_cities, get_allapptype, get_allrevtype, get_amountallyr
 from generatefigure import generate_fig_rev, generate_fig_app
@@ -13,15 +12,6 @@ import ast
 from flask import Flask
 
 app = Flask(__name__)
-
-
-@ticker.FuncFormatter
-def million_formatter(x, pos):
-    return "%.1f M" % (x/1E6)
-
-
-def billion_formatter(x, pos):
-    return "%.1f B" % (x/1E9)
 
 
 @app.route("/")
