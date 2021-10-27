@@ -62,6 +62,11 @@ def datavis(dt, rt, ct, yt):
         return app_template
 
 
+@app.route("/about")
+def about():
+    return render_template("about.html")
+
+
 @app.route("/forecast", methods=["POST", "GET"])
 def forecast():
     year = initialize_dir_year()

@@ -19,7 +19,7 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
         <div class="container-fluid">
 
-            <a class="navbar-brand " href="index.html"> <img
+            <a class="navbar-brand " href="/"> <img
                     src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
                     alt="about width=40" height="40" style="float:left">
                 <h6 style="float:right; color:black;">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm
@@ -30,7 +30,7 @@
                     DATA VISUALIZATION</a>
                 <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
                     FORECASTING</a>
-                <a href="about.html" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                <a href="/about" type="button" class="btn btn-outline-dark" style="margin:5px;">
                     ABOUT</a>
             </div>
 
@@ -40,7 +40,7 @@
     <!--<div class="p-3 mb text-black"></div>-->
     <div class="row align-items-center">
         <div class="col-4">
-            <form action="#" method="POST">
+            <form action="#" method="POST" id="searchform">
                 <!-- DATA MENU -->
                 <h5 id="selectcat">VISUALIZATION</h5><br /><br />
                 <h5 id="selectcat">SELECT CATEGORY TO VISUALIZE</h5><br />
@@ -64,7 +64,7 @@
                 <select class="form-select mb-3" name="cit_select" id="city">
                     <option value="default" selected disabled>CITIES</option>
                 </select>
-                <button type="submit" id='btnsubmit'>SUBMIT</button>
+                <button type="submit" id='btnsubmit' disabled='disabled'>SUBMIT</button>
                 <p><br />Disclaimer: The data that is to be visualized is taken from the Commision on Audit's official
                     website: <a href="https://www.coa.gov.ph/"> Click here</a>.<br /></br> The developers created a
                     template for all regional data to conform to our requirements for the Data Visualization and
@@ -172,13 +172,28 @@
         </div>
     </footer>
     <!-- Footer -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
+        </script>
+    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
 
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
+        var graph1 = {{ graph1JSON | safe}};
+        Plotly.plot("chart1", graph1, {})
+        var graph2 = {{ graph2JSON | safe}};
+        Plotly.plot("chart2", graph2, {})
+        var graph3 = {{ graph3JSON | safe}};
+        Plotly.plot("chart3", graph3, {})
+        var graph4 = {{ graph4JSON | safe}};
+        Plotly.plot("chart4", graph4, {})
         reg_select = document.getElementById('idReg');
         year_select = document.getElementById('idyr');
         city_select = document.getElementById('city');
         data_select = document.getElementById('iddt');
+    </script>
+
+    <script>
         data_select.onchange = function () {
             get_city()
         }
@@ -204,7 +219,16 @@
                 });
             });
         }
-
+    </script>
+    <script>
+        searchform.addEventListener("change", function () {
+            if (reg_select.value != "default" && year_select.value != "default" && city_select.value != "default" && data_select.value != "default") {
+                btnsubmit.removeAttribute('disabled');
+            }
+            else {
+                btnsubmit.setAttribute('disabled', 'disabled');
+            }
+        });
         window.addEventListener("pageshow", function (event) {
             var historyTraversal = event.persisted ||
                 (typeof window.performance != "undefined" &&
@@ -214,22 +238,6 @@
                 window.location.reload();
             }
         });
-    </script>
-    <script>
-        var graph1 = {{ graph1JSON | safe}};
-        Plotly.plot("chart1", graph1, {})
-        var graph2 = {{ graph2JSON | safe}};
-        Plotly.plot("chart2", graph2, {})
-        var graph3 = {{ graph3JSON | safe}};
-        Plotly.plot("chart3", graph3, {})
-        var graph4 = {{ graph4JSON | safe}};
-        Plotly.plot("chart4", graph4, {})
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous">
-        </script>
-    <script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <script>
         {%for x in range(year | length) %}
         $("#btnradio" + {{ x+ 1 }}).click(function () {
             {%for y in range(year | length) %}

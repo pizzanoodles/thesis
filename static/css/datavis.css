@@ -74,6 +74,9 @@ div{
   width:100%;
   transition-duration: 0.2s;
 }
+#btnsubmit:disabled{
+  opacity: 0.2;
+}
 #btnsubmit:hover{
   background-color: #9c5d15;
 }
