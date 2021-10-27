@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="wnameth=device-wnameth, initial-scale=1.0">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/datavis.css') }}">
@@ -39,7 +40,7 @@
     <br><br><br>
     <!--<div class="p-3 mb text-black"></div>-->
     <div class="row align-items-center">
-        <div class="col-4">
+        <div class="col-4" data-aos="fade-up">
             <form action="#" method="POST" id="searchform">
                 <!-- DATA MENU -->
                 <h5 id="selectcat">VISUALIZATION</h5><br /><br />
@@ -73,7 +74,7 @@
                     stated.<br /><br /><br /><br /><br /><br /><br /><br /></p>
             </form>
         </div>
-        <div class="col" id="barchart">
+        <div class="col" id="barchart" data-aos="fade-left">
             <div class="col-12">
                 <div class="card mx-10">
                     <div class="card-body">
@@ -92,7 +93,7 @@
             </div>
         </div>
     </div>
-    <main class="row align-items-center" id="btmcharts">
+    <main class="row align-items-center" id="btmcharts" data-aos="fade-left">
         <div class="col">
             <div class="col">
                 <div class="card mx-10">
@@ -253,6 +254,10 @@
         })
 
         {% endfor %}
+    </script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
     </script>
 </body>
 

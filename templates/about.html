@@ -5,16 +5,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>About Aninaw-Tech</title>
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="../static/css/about.css">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/about.css') }}">
 </head>
 
 <body>
     <div class="parallax">
         <div class="aninaw">
-            <h1>ANINAW</h1>
-            <p id="aninabout">
+            <h1 data-aos="fade-up">ANINAW</h1>
+            <p id="aninabout" data-aos="fade-up">
                 Aninaw-Tech is a web-based application with the purpose to help the general Filipino public understand
                 the Appropriations of the Local Government Units.<br>
 
@@ -23,7 +24,7 @@
         </div>
     </div>
     <div class="containerprofs">
-        <div class="aboutsection" id="jens">
+        <div class="aboutsection" id="jens" data-aos="fade-left">
             <h1>Jens Gabriel Jovellano</h1>
             <img class="ppicl" src="../static/images/amogus.png">
             <div id="aninaboutl">
@@ -31,7 +32,7 @@
                 <li>Course: Bachelor of Science in Computer Science specializing in Software Engineering</li>
             </div>
         </div>
-        <div class="aboutsection" id="ron">
+        <div class="aboutsection" id="ron" data-aos="fade-right">
             <h1>Ron Lara</h1>
             <img class="ppicr" src="../static/images/amogus.png">
             <div id="aninaboutr">
@@ -39,7 +40,7 @@
                 <li>Course: Bachelor of Science in Computer Science specializing in Software Engineering</li>
             </div>
         </div>
-        <div class="aboutsection" id="kelsey">
+        <div class="aboutsection" id="kelsey" data-aos="fade-left">
             <h1>Kelsey Lantano</h1>
             <img class="ppicl" src="../static/images/amogus.png">
             <div id="aninaboutl">
@@ -47,15 +48,16 @@
                 <li>Course: Bachelor of Science in Computer Science specializing in Software Engineering</li>
             </div>
         </div>
-        <div class="aboutsection" id="jovey">
+        <div class="aboutsection" id="jovey" data-aos="fade-right">
             <h1>Jovey Ann Erepol</h1>
             <img class="ppicr" src="../static/images/amogus.png">
             <div id="aninaboutr">
                 <li>Role: Lead Researcher</li>
-                <li>Course: Bachelor of Science in Information Technology with specialization in Service Management Business Analytics</li>
+                <li>Course: Bachelor of Science in Information Technology with specialization in Service Management
+                    Business Analytics</li>
             </div>
         </div>
-        <div class="aboutsection" id="maamresty">
+        <div class="aboutsection" id="maamresty" data-aos="fade-left">
             <h1>Ma'am Resty Aldana</h1>
             <img class="ppicl" src="../static/images/amogus.png">
             <div id="aninaboutl">
@@ -65,7 +67,7 @@
         </div>
     </div>
     <!-- Footer -->
-    <footer class="page-footer font-small mdb-color lighten-3 pt-4">
+    <footer class="page-footer font-small mdb-color lighten-3 pt-4" data-aos="fade-right">
         <div class="container text-center text-md-left">
             <div class="row">
                 <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
@@ -110,6 +112,10 @@
         </div>
     </footer>
     <!-- Footer -->
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init();
+    </script>
 </body>
 
 </html>
