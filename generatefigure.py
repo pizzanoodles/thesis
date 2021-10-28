@@ -15,9 +15,11 @@ def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
         fig = px.bar(dataframe, title=title, x="Label", y="Amount", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                              "#FEE1E8", "#FED7C3"])
+        fig.update_layout(height=600)
     else:
         fig = px.pie(dataframe, title=title, names="Label", values="Amount", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                                       "#FEE1E8", "#FED7C3"])
+        fig.update_layout(height=600)
     return fig
 
 # GENERATE FIGURE REVENUES
@@ -420,7 +422,7 @@ def generate_overview_rev(excel):
         tooltip4=tooltips[4],
         tooltip5=tooltips[5]
     )
-
+    fig.update_layout(height=600)
     return fig
 
 
@@ -526,6 +528,7 @@ def generate_fig_rev_rb(rt, ct):
                                            "#FEE1E8", "#FED7C3"])
     fig.update_xaxes(type='category')
     fig.update_traces(mode="markers+lines")
+    fig.update_layout(height=600)
     return fig
 
 # GENERATE APPROPRIATIONS
@@ -798,6 +801,7 @@ def generate_overview_app(excel):
         tooltip4=tooltips[4],
         tooltip5=tooltips[5]
     )
+    fig.update_layout(height=600)
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
@@ -835,7 +839,7 @@ def generate_fig_app_curr(excel):
         yanchor="bottom",
         y=-0.8,
         xanchor="right",
-        x=1.2
+        x=1.1
     ))
     fig.update_layout(
         updatemenus=[
@@ -868,6 +872,7 @@ def generate_fig_app_curr(excel):
             )
         ]
     )
+    fig.update_layout(height=600)
     return fig
 
 
@@ -912,7 +917,7 @@ def generate_others_social(excel):
         yanchor="bottom",
         y=-0.3,
         xanchor="right",
-        x=1
+        x=1.2
     ))
     fig.update_layout(
         updatemenus=[
@@ -938,6 +943,7 @@ def generate_others_social(excel):
         ],
 
     )
+    fig.update_layout(height=600)
     return fig
 
 
@@ -992,6 +998,7 @@ def gen_gauge_rev(year, reg, city, yearlst):
             ]}))
     else:
         return None, prevyear
+    fig.update_layout(height=600)
     return fig, prevyear
 
 
@@ -1024,4 +1031,5 @@ def gen_gauge_app(year, reg, city, yearlst):
             ]}))
     else:
         return None, prevyear
+    fig.update_layout(height=600)
     return fig, prevyear

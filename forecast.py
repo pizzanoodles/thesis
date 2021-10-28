@@ -8,6 +8,7 @@ from statistics import mean
 from initialize import initialize_dir_year
 from knnalgo import *
 from defaultfigure import gen_reference
+from insights import *
 
 
 def forecasting(inp, reg, city, inptype, forectype, dict_samp):
@@ -22,7 +23,7 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     nbx, nby = get_neighbors(dataset, [float(inp)], n_num)
     optm_predict_output = predict(nby)
     allpred = fig1_krange(dataset, [float(inp)], k)
-    fig_inp = get_figinp(inp, reg, city, inptype, year, dict_samp)
+    fig_inp, insight1 = get_figinp(inp, reg, city, inptype, year, dict_samp)
     fig_preds = get_fig0(allpred, optm_predict_output, n_num, forectype, k)
     fig_bar = get_fig1(optm_predict_output, reg, city,
                        forectype, year, dict_samp)
@@ -38,7 +39,7 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     input = "₱{:,.2f}".format(float(inp))
     return render_template("/forecastoutput.html", output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,
                            graph4JSON=graph4JSON, graph5JSON=graph5JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype,
-                           forectype=forectype), optm_predict_output
+                           forectype=forectype, insight=insight1), optm_predict_output
 
 
 def fig1_krange(dataset, inp, k):
@@ -51,6 +52,7 @@ def fig1_krange(dataset, inp, k):
 
 
 def get_figinp(inp, reg, city, inptype, year, dict):
+    insight1 = get_insightinp(year, dict, inptype, inp)
     dict_inp = {"Year": year[-1]+1, "Input "+inptype: [float(inp)]}
     df2 = pd.DataFrame(dict_inp)
     dict_samp = {"Year": [], "Previous Input "+inptype: []}
@@ -74,14 +76,17 @@ def get_figinp(inp, reg, city, inptype, year, dict):
                   text="Input "+inptype, color_discrete_sequence=["#CBAACB"])
     fig2.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name="Input "+inptype, showlegend=True)
-
     fig.add_trace(fig2.data[0])
 
     fig.update_layout(uniformtext_minsize=8,
                       uniformtext_mode='hide', showlegend=True)
     fig.update_yaxes(
         tickprefix="₱", showgrid=True)
-    return fig
+    fig.update_layout(title_text=city+" "+inptype +
+                      " through "+str(year[0])+"-"+str(year[-1]+1))
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
+    return fig, insight1
 
 
 def get_fig0(lst, pred, optm_k, forectype, k):
@@ -92,11 +97,12 @@ def get_fig0(lst, pred, optm_k, forectype, k):
     df = {"K": init_k, "Predicted "+forectype: init_preds}
     df2 = {"K": [optm_k], "Optimal Predicted "+forectype: pred}
     fig = px.bar(df, x="K", y="Predicted "+forectype,
-                 text="Predicted "+forectype,  color_discrete_sequence=["#ABDEE6"])
+                 text="Predicted "+forectype,  color_discrete_sequence=["#ABDEE6"], title="Predicted Outputs w/ different K-values")
     fig.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name="Predicted "+forectype, showlegend=True)
+    fig.update_xaxes(type='category')
     fig2 = px.bar(df2, x="K", y="Optimal Predicted "+forectype,
-                  text="Optimal Predicted "+forectype, color_discrete_sequence=["#CBAACB"])
+                  text="Optimal Predicted "+forectype, color_discrete_sequence=["#CBAACB"], title="Predicted Outputs w/ different K-values")
     fig2.update_traces(
         texttemplate="₱%{y:,.0f}", textposition='outside', name="Optimal Predicted "+forectype, showlegend=True)
 
@@ -107,6 +113,9 @@ def get_fig0(lst, pred, optm_k, forectype, k):
     fig2.update_yaxes(
         tickprefix="₱", showgrid=True
     )
+    fig2.update_xaxes(type='category')
+    fig2.update_layout(height=600)
+    fig2.update_layout(legend_font_size=9)
     return fig2
 
 
@@ -143,6 +152,10 @@ def get_fig1(optm_predict_output, reg, city, forectype, year, dict):
                       uniformtext_mode='hide', showlegend=True)
     fig.update_yaxes(
         tickprefix="₱", showgrid=True)
+    fig.update_layout(title_text=city+" "+forectype +
+                      " through "+str(year[0])+"-"+str(year[-1]+1))
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 
@@ -168,17 +181,24 @@ def get_fig2(df, inp, nbx, nby, inptype, forectype):
     fig.update_xaxes(
         tickprefix="₱", showgrid=True
     )
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
+    fig.update_layout(title_text="Neigbors distance")
     return fig
 
 
 def get_fig3(rmse, min, k):
     df = {"K": k, "RMSE": rmse}
     df2 = {"K": [min], "RMSE": [rmse[min-2]]}
-    fig = px.line(df, x="K", y="RMSE", line_shape="spline")
+    fig = px.line(df, x="K", y="RMSE", line_shape="spline",
+                  title="RMSE check(for optimal K-Neighbors)")
     fig.update_traces(name="K", showlegend=True)
     fig2 = px.scatter(df2, x="K", y="RMSE",
                       color_discrete_sequence=["red"])
     fig2.update_traces(name=" Chosen K", showlegend=True)
     fig.add_trace(fig2.data[0])
     fig.update_traces(mode="markers+lines")
+    fig.update_xaxes(type='category')
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig

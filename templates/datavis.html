@@ -14,12 +14,12 @@
 
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
-        <div class="container-fluid">
+        <div class="container-fluid stickynav">
 
             <a class="navbar-brand " href="/"> <img
                     src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
                     alt="about width=40" height="40" style="float:left">
-                <h6 style="float:right; color:black;">{{dt}} > {{rt}} > {{ct}} > {{yt}}</h6>
+                <h6 style="float:right; color:black;">{{dt}} > {{yt}} > {{rt}} > {{ct}}</h6>
             </a>
             <div class="mr-auto">
                 <a href="/test" type="button" class="btn btn-outline-dark" style="margin:5px;">
@@ -187,14 +187,14 @@
         <div class="col-6 mb-3">
             <div class="col">
                 <div class="card">
-                    <div class="card-body">
+                    <div class="card-body cardmaxheight">
                         <div id="chart1">
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-6">
+        <div class="col-6 mb-3">
             <div class="col">
                 <div class="card">
                     <div class="card-body">

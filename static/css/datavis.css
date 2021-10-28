@@ -25,6 +25,9 @@ div{
   margin-bottom:1em;
 
 }
+.cardmaxheight{
+  height:632px;
+}
 .btndes{
   background-color: white;
   transition-duration: 0.2s;
@@ -85,7 +88,7 @@ form{
   margin-right:2em;
   vertical-align:top;
 }
-.container-fluid{
+.stickynav{
   width:100%;
   padding-bottom:10px;
   padding-top:10px;
