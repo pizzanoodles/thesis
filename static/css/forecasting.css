@@ -46,7 +46,7 @@ body{
 #spinbtn1:disabled,#spinbtn2:disabled{
   opacity: 0.2;
 }
-#spinbtn1:hover,#spinbtn2:hover{
+#spinbtn1:hover,#spinbtn2:hover,.insightbtn:hover{
   background-color: #9c5d15;
 }
 #forecastform{
@@ -146,4 +146,8 @@ footer{
 .insightdiv{
   margin-top: 6em;
   height:87%;
+}
+
+.modalbtns{
+  width:20%;
 }

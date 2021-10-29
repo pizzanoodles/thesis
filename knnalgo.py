@@ -25,7 +25,14 @@ def get_neighbors(train, test_row, num_neighbors):
     for i in range(num_neighbors):
         neighborsx.append(distances[i][0][0])
         neighborsy.append(distances[i][0][1])
-    return neighborsx, neighborsy
+    return neighborsx, neighborsy, distances
+
+
+def get_distances(dist):
+    lst = []
+    for i in range(len(dist)):
+        lst.append(dist[i][1])
+    return lst
 
 
 def predict(nby):
@@ -39,7 +46,7 @@ def get_rmse(X, Y):
     for K in range(len(X_train)):
         K = K+1
         samp = [[X_train[i], Y_train[i]] for i in range(len(X_train))]
-        nbx, nby = get_neighbors(samp, X_test, K)
+        nbx, nby, dist = get_neighbors(samp, X_test, K)
         pred = [predict(nby)[0] for i in range(len(Y_test))]
         error = sqrt(mean_squared_error(pred, Y_test))
         rmse_val.append(error)

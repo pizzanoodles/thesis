@@ -6,135 +6,88 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
-        integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
 </head>
 
 <body>
-    <!-- Button trigger modal -->
-    <button type="button" data-toggle="modal" data-target="#insight1">
-        Launch demo modal
-    </button>
-    <button type="button" data-toggle="modal" data-target="#insight2">
-        Launch demo modal
-    </button>
-
-    <!-- Modal -->
-    <div class="modal fade" id="insight1" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">#</th>
-                                <th scope="col">First</th>
-                                <th scope="col">Last</th>
-                                <th scope="col">Handle</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <th scope="row">2016</th>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">2</th>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                            <tr>
-                                <th scope="row">3</th>
-                                <td>Larry</td>
-                                <td>Maintenance and Other Expenses</td>
-                                <td>₱1,000,000,000.00000000000000</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div class="container-fluid">
-                        <h5>DATA</h5>
-                        <p>REVENUES</p>
-                        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Corporis illum delectus nesciunt
-                            quidem! Asperiores minus quos nobis. Nihil, numquam ratione quae reiciendis molestias in
-                            dolor architecto sapiente. Vitae, provident quos.
-                            Nemo ullam illum repellat harum, voluptas ipsa temporibus! Sint eveniet maxime quisquam
-                            sunt. Ullam adipisci dolores fugit nam voluptatem ipsa, cumque fugiat rem ad corrupti
-                            voluptates blanditiis quidem cum repellat?
-                            Modi, ducimus ad? Quos, et harum hic beatae tempore, minima quibusdam autem, deserunt
-                            eveniet illo quod dolorum cumque doloribus! Corporis error a natus beatae placeat libero
-                            nulla ipsa minima aperiam?
-                            Ipsa sint, magnam vero dolorum obcaecati consequatur unde saepe minima voluptatibus
-                            consectetur, id aspernatur aliquam accusantium. Quas vitae officiis, ea obcaecati eligendi
-                            velit impedit sit. Ullam odit velit mollitia fuga.
-                            Vel dolorem, numquam excepturi cumque quidem debitis laudantium, quae deserunt sit expedita
-                            laborum ab? At ipsa aliquam maiores repellendus, est nostrum rem earum natus eaque laborum
-                            explicabo a soluta sapiente.</p>
-                    </div>
+                    Show a second modal and hide this one with the button below.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Open
+                        second modal</button>
                 </div>
             </div>
         </div>
     </div>
-    <!-- Modal -->
-    <div class="modal fade" id="insight2" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle"
-        aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal fade" id="exampleModalToggle3" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+                    <h5 class="modal-title" id="exampleModalToggleLabel">Modal 1</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    ...
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit cum praesentium molestias, magnam eius
+                    tenetur rerum vero! Rem iusto quidem reiciendis animi iure. Quisquam voluptas quod at? Obcaecati,
+                    magni omnis?
+                    Laboriosam modi veniam ipsam sed architecto sunt at, reprehenderit molestiae, velit quis error!
+                    Laudantium blanditiis vero ad, eveniet illum enim aperiam incidunt a nisi animi, dolores quis
+                    doloremque repellendus cupiditate?
+                    Eos suscipit officia porro corrupti assumenda, ab mollitia ex dolores nihil at natus voluptatem
+                    ullam, dolorum nisi blanditiis neque quas provident fugit, quia expedita distinctio odio? Magni
+                    numquam ducimus natus?
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button class="btn btn-primary" data-bs-target="#exampleModalToggle2" data-bs-toggle="modal">Help</button>
                 </div>
             </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+    <div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2"
+        tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalToggleLabel2">Modal 2</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Hide this modal and show the first with the button below.
+                </div>
+                <div class="modal-footer">
+                    <button id="toggle" class="btn btn-primary" data-bs-target="" data-bs-toggle="modal">Back</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-primary" data-bs-toggle="modal" onclick="mysetcookie('#exampleModalToggle')"
+        href="#exampleModalToggle" role="button">Open first modal</a>
+    <a class="btn btn-primary" data-bs-toggle="modal" onclick="mysetcookie('#exampleModalToggle3')"
+        href="#exampleModalToggle3" role="button">Open third modal</a>
+    <script>
+        function mysetcookie(str) {
+            document.cookie = "lastmodal=" + str;
+            var element = document.getElementById('toggle')
+            element.removeAttribute('data-bs-target')
+            element.setAttribute('data-bs-target', str)
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
+        integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
         crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
-        integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js"
+        integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13"
         crossorigin="anonymous"></script>
 </body>
 

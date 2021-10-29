@@ -14,7 +14,7 @@ def get_cities(reg, yr, dt, page):
     sheets = pd.ExcelFile(link_init)
     cities = sheets.sheet_names
     for c in cities:
-        sum =0 
+        sum = 0
         city_init = pd.read_excel(link_init, c)
         if(dt == "Revenue"):
             sum = city_init.iloc[35, 4]
@@ -183,76 +183,78 @@ def get_amountallyr(r, c, lbl):
         link_init = "SCBAA/" + y + "/" + r + ".xlsx"
         reg_init = pd.ExcelFile(link_init)
         city_init = pd.read_excel(reg_init, c)
-        total = find_typedata(city_init,lbl)
+        total = find_typedata(city_init, lbl)
         locals.append(total)
     return locals
 
-def find_typedata(city_init,lbl):
-        if(lbl == "Local Sources"):
-            total = get_localsources(city_init)
-        elif(lbl == "Tax Revenues"):
-            total = get_taxrevenues(city_init)
-        elif(lbl == "Non-Tax Revenues"):
-            total = get_nontaxrevenues(city_init)
-        elif(lbl == "External Sources"):
-            total = get_externalrevenues(city_init)
-        elif(lbl == "National Internal Revenue Taxes"):
-            total = get_nirat(city_init)
-        elif(lbl == "GOCCs"):
-            total = get_gocc(city_init)
-        elif(lbl == "National Tax Collections"):
-            total = get_ntc(city_init)
-        elif(lbl == "Other Receipts"):
-            total = get_or(city_init)
-        elif(lbl == "Inter-local Transfer"):
-            total = get_interl(city_init)
-        elif(lbl == "Capital/Investment Receipts"):
-            total = get_cir(city_init)
-        elif(lbl == "Receipts from Borrowings"):
-            total = get_rb(city_init)
-        elif(lbl == "Curr. Appropriations"):
-            total = get_currapp(city_init)
-        elif(lbl == "Curr. General Public Services"):
-            total = get_currgps(city_init)
-        elif(lbl == "Curr. Education"):
-            total = get_curredu(city_init)
-        elif(lbl == "Curr. Health Services"):
-            total = get_currheal(city_init)
-        elif(lbl == "Curr. Labor and Employment"):
-            total = get_currlab(city_init)
-        elif(lbl == "Curr. Housing"):
-            total = get_currhous(city_init)
-        elif(lbl == "Curr. Social Services"):
-            total = get_currsoc(city_init)
-        elif(lbl == "Curr. Economic Services"):
-            total = get_curreco(city_init)
-        elif(lbl == "Curr. Other Services"):
-            total = get_currotherss(city_init)
-        elif(lbl == "Curr. Other Purposes"):
-            total = get_currothersp(city_init)
-        elif(lbl == "Cont. Appropriations"):
-            total = get_contapp(city_init)
-        elif(lbl == "Cont. General Public Services"):
-            total = get_contgps(city_init)
-        elif(lbl == "Cont. Education"):
-            total = get_contedu(city_init)
-        elif(lbl == "Cont. Health Services"):
-            total = get_contheal(city_init)
-        elif(lbl == "Cont. Labor and Employment"):
-            total = get_contlab(city_init)
-        elif(lbl == "Cont. Housing"):
-            total = get_conthous(city_init)
-        elif(lbl == "Cont. Social Services"):
-            total = get_contsoc(city_init)
-        elif(lbl == "Cont. Economic Services"):
-            total = get_conteco(city_init)
-        elif(lbl == "Cont. Other Purposes"):
-            total = get_contothers(city_init)
-        elif(lbl == "Total Appropriations"):
-            total = get_totalapp(city_init)
-        elif(lbl == "Total Revenues"):
-            total = get_totalrev(city_init)
-        return total
+
+def find_typedata(city_init, lbl):
+    if(lbl == "Local Sources"):
+        total = get_localsources(city_init)
+    elif(lbl == "Tax Revenues"):
+        total = get_taxrevenues(city_init)
+    elif(lbl == "Non-Tax Revenues"):
+        total = get_nontaxrevenues(city_init)
+    elif(lbl == "External Sources"):
+        total = get_externalrevenues(city_init)
+    elif(lbl == "National Internal Revenue Taxes"):
+        total = get_nirat(city_init)
+    elif(lbl == "GOCCs"):
+        total = get_gocc(city_init)
+    elif(lbl == "National Tax Collections"):
+        total = get_ntc(city_init)
+    elif(lbl == "Other Receipts"):
+        total = get_or(city_init)
+    elif(lbl == "Inter-local Transfer"):
+        total = get_interl(city_init)
+    elif(lbl == "Capital/Investment Receipts"):
+        total = get_cir(city_init)
+    elif(lbl == "Receipts from Borrowings"):
+        total = get_rb(city_init)
+    elif(lbl == "Curr. Appropriations"):
+        total = get_currapp(city_init)
+    elif(lbl == "Curr. General Public Services"):
+        total = get_currgps(city_init)
+    elif(lbl == "Curr. Education"):
+        total = get_curredu(city_init)
+    elif(lbl == "Curr. Health Services"):
+        total = get_currheal(city_init)
+    elif(lbl == "Curr. Labor and Employment"):
+        total = get_currlab(city_init)
+    elif(lbl == "Curr. Housing"):
+        total = get_currhous(city_init)
+    elif(lbl == "Curr. Social Services"):
+        total = get_currsoc(city_init)
+    elif(lbl == "Curr. Economic Services"):
+        total = get_curreco(city_init)
+    elif(lbl == "Curr. Other Services"):
+        total = get_currotherss(city_init)
+    elif(lbl == "Curr. Other Purposes"):
+        total = get_currothersp(city_init)
+    elif(lbl == "Cont. Appropriations"):
+        total = get_contapp(city_init)
+    elif(lbl == "Cont. General Public Services"):
+        total = get_contgps(city_init)
+    elif(lbl == "Cont. Education"):
+        total = get_contedu(city_init)
+    elif(lbl == "Cont. Health Services"):
+        total = get_contheal(city_init)
+    elif(lbl == "Cont. Labor and Employment"):
+        total = get_contlab(city_init)
+    elif(lbl == "Cont. Housing"):
+        total = get_conthous(city_init)
+    elif(lbl == "Cont. Social Services"):
+        total = get_contsoc(city_init)
+    elif(lbl == "Cont. Economic Services"):
+        total = get_conteco(city_init)
+    elif(lbl == "Cont. Other Purposes"):
+        total = get_contothers(city_init)
+    elif(lbl == "Total Appropriations"):
+        total = get_totalapp(city_init)
+    elif(lbl == "Total Revenues"):
+        total = get_totalrev(city_init)
+    return total
+
 
 def get_totalrev(city_init):
     total_rev = city_init.iloc[35, 4]
@@ -427,3 +429,145 @@ def get_cir(city_init):
 def get_rb(city_init):
     tr = city_init.iloc[34, 4]
     return tr
+
+
+def get_actualbel(data):
+    label = ""
+    if(data == "Curr. Appropriations"):
+        label = "Current Appropriations"
+    elif(data == "Curr. General Public Services" or data == "Cont. General Public Services"):
+        label = "General Public Services"
+    elif(data == "Curr. Education" or data == "Cont. Education"):
+        label = "Education"
+    elif(data == "Curr. Health Services" or data == "Cont. Health Services"):
+        label = "Health, Nutrition and Population Control"
+    elif(data == "Curr. Labor and Employment" or data == "Cont. Labor and Employment"):
+        label = "Labor and Employment"
+    elif(data == "Curr. Housing" or data == "Cont. Housing"):
+        label = "Housing and Community Development"
+    elif(data == "Curr. Social Services" or data == "Cont. Social Services"):
+        label = "Social Services and Social Welfare"
+    elif(data == "Curr. Economic Services" or data == "Cont. Economic Services"):
+        label = "Economic Services"
+    elif(data == "Curr. Other Services"):
+        label = "Other Services Sector"
+    elif(data == "Curr. Other Purposes" or data == "Cont. Other Purposes"):
+        label = "Other Purposes"
+    elif(data == "Cont. Appropriations"):
+        label = "Continuing Appropriations"
+    else:
+        label = data
+
+    return label
+
+
+def get_definition(data):
+    ###SOURCE LARGEST###
+    definition = ""
+    # REVENUES
+    if(data == "Total Revenues"):
+        definition = "The full amount of the total revenues garnered"
+    elif(data == "Local Sources"):
+        definition = "Revenue garnered from inside the Local Government Unit"
+    elif(data == "External Sources"):
+        definition = "Revenue garnered from outside the Local Government Unit"
+    elif(data == "Receipts from Borrowings"):
+        definition = "Money from loans/borrowings from both internal/external sources"
+    elif(data == "Tax Revenues"):
+        definition = "Revenue from various local taxes"
+    elif(data == "Non-Tax Revenues"):
+        definition = "Revenue from non-tax sources"
+    elif(data == "Share from the National Internal Revenue Taxes (IRA)"):
+        definition = "Administered by the BIR. Income, Indirect, Excise, and Stamp Taxes"
+    elif(data == "Share from GOCCs"):
+        definition = "Revenue from Government Owned Controlled Corporation"
+    elif(data == "Other Shares from National Tax Collections"):
+        definition = "Revenue from Government Owned Controlled Corporation"
+    elif(data == "Other Receipts"):
+        definition = "Other Revenues from financial transactions of the Local Government Unit"
+    elif(data == "Inter-local Transfer"):
+        definition = "Revenues from other government levels to help the LGU's development"
+    elif(data == "Capital/Investment Receipts"):
+        definition = "Various revenues from investments and capital assets"
+    elif(data == "Tax Revenue - Property"):
+        definition = "Real estate tax from properties of individuals/corporations"
+    elif(data == "Tax Revenue - Goods and Services"):
+        definition = "Value-added tax levied on most goods and services sold for domestic consumption"
+    elif(data == "Other Local Taxes"):
+        definition = "Various taxes from government services"
+    elif(data == "Service Income"):
+        definition = "Income gained from various government Services"
+    elif(data == "Business Income"):
+        definition = "Income gained from various government Businesses"
+    elif(data == "Other Income and Receipts"):
+        definition = "Other sources of income from various sales"
+    elif(data == "Share from Ecozone"):
+        definition = "Revenue from Special Economic Zones(SEZ), an area in a country that is subject to different economic regulations than other regions within the same country"
+    elif(data == "Share from EVAT"):
+        definition = "Revenue from Extended Value added Taxes"
+    elif(data == "Share from National Wealth"):
+        definition = "Local Government's share from the National Government's revenues"
+    elif(data == "Share from Tobacco Excise Tax"):
+        definition = "Tax from Tobacco based products"
+    elif(data == "Grants and Donations"):
+        definition = "Various grants and donations provided to the local government"
+    elif(data == "Other Subsidy Income"):
+        definition = "Grants of money granted to the government or a public body to assist on a certain service"
+    elif(data == "Sale of Capital Assets"):
+        definition = "Revenue from sale of a government owned investment item for government purposes"
+    elif(data == "Sale of Investments"):
+        definition = "Revenue from return of investments"
+    elif(data == "Proceeds from Collections of Loans Receivable"):
+        definition = "Revenue garnered from the collection of various loans"
+    # TOTAL APPROPRIATIONS
+    elif(data == "Total Appropriations"):
+        definition = "The full amount of the budget expended"
+    elif(data == "Current Appropriations"):
+        definition = "Budget that is set aside for various government uses for this current year"
+    elif(data == "Continuing Appropriations"):
+        definition = "Appropriations available to support obligations for a specified purpose or project, even when these obligations are incurred beyond the budget year"
+    elif(data == "General Public Services"):
+        definition = "Budget for General Services that the government provide to the public"
+    elif(data == "Education"):
+        definition = "Budget for education related purposes, (schools,seminars, etc.)"
+    elif(data == "Health, Nutrition and Population Control"):
+        definition = "Budget for public's health-related expenses."
+    elif(data == "Labor and Employment"):
+        definition = "Budget for the public's employment related expenses"
+    elif(data == "Housing and Community Development"):
+        definition = "Budget for the public's local housing development expenses"
+    elif(data == "Social Services and Social Welfare"):
+        definition = "Budget for aiding disadvantaged, distressed, or vulnerable persons or groups."
+    elif(data == "Economic Services"):
+        definition = "Budget for economic utility expenses"
+    elif(data == "Other Services Sector"):
+        definition = "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)"
+    elif(data == "Other Purposes"):
+        definition = "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)"
+    elif(data == "Others"):
+        definition = "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)"
+    elif(data == "Debt Service"):
+        definition = "Budget for payment and repayment of principal capital"
+    elif(data == "LDRRMF"):
+        definition = "Budget invested in disaster risk reductions"
+    elif(data == "20% Development Fund"):
+        definition = "Budget used for expenses in the development of the local government"
+    elif(data == "Share from National Wealth"):
+        definition = "Expenses made for share in the National Wealth"
+    elif(data == "Allocation for Senior Citizens and PWD"):
+        definition = "Budget for expenses used for the programs, projects and activities proportionately divided among senior citizens and persons with disability"
+    elif(data == "Financial Expense"):
+        definition = "Expenses associated with financing the certain sector."
+    elif(data == "Amortization"):
+        definition = "Budget for specifically repaying of debts."
+    elif(data == "Personnel Services"):
+        definition = "Budget for expenses on the personnel (salaries, wages, and other compensation)"
+    elif(data == "Maintenance and Other Operating Expenses"):
+        definition = "Budget for the expenses made for regulation of an operation of a sector."
+
+    elif(data == "Capital Outlay"):
+        definition = "Budget for expenses made to acquire capital assets to be used for a certain sector."
+    else:
+        definition = "Budget for services not classified in other sectors. (Repairs of equipment, promotions, etc.)"
+
+    return definition

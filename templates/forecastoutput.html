@@ -34,10 +34,10 @@
     <br><br><br><br>
     <div class="container-fluid graphsforecast py-4">
         <div class="d-flex justify-content-between p-4">
-            <h5 id="selectcat">INPUT TYPE: {{inptype}}</h5>
-            <h5 id="selectcat">FORECAST TYPE: {{forectype}}</h5>
-            <h5 id="selectcat">INPUT: {{inp}}</h5>
-            <h5 id="selectcat">PREDICTION: {{output}}</h5>
+            <h5 id="selectcat" class="px-2">INPUT TYPE:<br> {{inptype}}</h5>
+            <h5 id="selectcat" class="px-2">FORECAST TYPE:<br> {{forectype}}</h5>
+            <h5 id="selectcat" class="px-2">INPUT:<br> {{inp}}</h5>
+            <h5 id="selectcat" class="px-2">PREDICTION:<br> {{output}}</h5>
         </div>
         <div class="row p-4">
             <div class="col-6">
@@ -45,8 +45,8 @@
                     <div class="card-body">
                         <div id="chart5">
                         </div>
-                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                        <button type="button" class="mb-3 insightbtn" onclick="mysetcookie('#insightinp')"
+                            data-bs-toggle="modal" data-bs-target="#insightinp">
                             ADVANCED DETAILS
                         </button>
 
@@ -58,8 +58,8 @@
                     <div class="card-body">
                         <div id="chart1">
                         </div>
-                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                        <button type="button" class="mb-3 insightbtn" onclick="mysetcookie('#insightfore')"
+                            data-bs-toggle="modal" data-bs-target="#insightfore">
                             ADVANCED DETAILS
                         </button>
                     </div>
@@ -75,8 +75,8 @@
                     <div class="card-body">
                         <div id="chart4">
                         </div>
-                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                        <button type="button" class="mb-3 insightbtn" onclick="mysetcookie('#insightopts')"
+                            data-bs-toggle="modal" data-bs-target="#insightopts">
                             ADVANCED DETAILS
                         </button>
                     </div>
@@ -87,8 +87,8 @@
                     <div class="card-body">
                         <div id="chart3">
                         </div>
-                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                        <button type="button" class="mb-3 insightbtn" onclick="mysetcookie('#insightrmse')"
+                            data-bs-toggle="modal" data-bs-target="#insightrmse">
                             ADVANCED DETAILS
                         </button>
                     </div>
@@ -99,8 +99,8 @@
                     <div class="card-body">
                         <div id="chart2">
                         </div>
-                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
-                            data-bs-target="#exampleModal">
+                        <button type="button" class="mb-3 insightbtn" onclick="mysetcookie('#insightneigh')"
+                            data-bs-toggle="modal" data-bs-target="#insightneigh">
                             ADVANCED DETAILS
                         </button>
                     </div>
@@ -159,7 +159,8 @@
             <a href="https://aninaw-tech.herokuapp.com/"> Aninaw-tech - Tribunal</a>
         </div>
     </footer>
-    {% autoescape false %} {{insight}} {% endautoescape %}
+    {% autoescape false %} {{insight5}} {{insight4}} {{insight2}} {{insight3}} {{insight}} {{ginsight}} {% endautoescape
+    %}
     <!-- Footer -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script>
@@ -190,6 +191,12 @@
                 document.getElementById("spinbtn1").disabled = true;
             }
         });
+        function mysetcookie(str) {
+            document.cookie = "lastmodal=" + str;
+            var element = document.getElementById('generalhelp')
+            element.removeAttribute('data-bs-target')
+            element.setAttribute('data-bs-target', str)
+        }
     </script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"
         integrity="sha384-7+zCNj/IqJ95wo16oMtfsKbZ9ccEh31eOz1HGyDuCQ6wgnyJNSYdrPa03rtR1zdB"
