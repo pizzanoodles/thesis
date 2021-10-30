@@ -21,7 +21,6 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     n_num, valid_rmse = get_optimalK(rmse_lst)
     k = [x+2 for x in range(len(valid_rmse))]
     nbx, nby, distances = get_neighbors(dataset, [float(inp)], n_num)
-
     dist = get_distances(distances)
     optm_predict_output = predict(nby)
     allpred = fig1_krange(dataset, [float(inp)], k)
@@ -97,7 +96,6 @@ def get_figinp(inp, reg, city, inptype, year, dict):
 def get_fig0(lst, pred, optm_k, forectype, k):
     init_preds = list(lst)
     init_k = list(k)
-    print(init_k, optm_k)
     init_k.remove(optm_k)
     init_preds.remove(pred[0])
 

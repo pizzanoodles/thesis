@@ -56,7 +56,10 @@ def get_rmse(X, Y):
 def get_optimalK(rmse):
     initlst = list(rmse)
     initlst.remove(rmse[0])
-    return ((rmse.index(min(initlst)))+1), initlst
+    if(rmse.index(min(initlst))+1) == 1:
+        return 2, initlst
+    else:
+        return ((rmse.index(min(initlst)))+1), initlst
 
 
 def imputearr_lst(arr):
