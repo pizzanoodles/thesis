@@ -88,6 +88,10 @@
                             {%endfor%}
                         </div>
                         <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#insightanim">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
@@ -100,7 +104,12 @@
                     <div class="card-body">
                         <div id="chart1">
                         </div>
-                        <p class='c1insight'> {% autoescape false %} {{chart1insight}} {% endautoescape %}</p>
+                        <p class='c1insight'><strong>{% autoescape false %} {{chart1insight}} {% endautoescape
+                                %}</strong> </p>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#insightsurplus">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
@@ -111,6 +120,10 @@
                     <div class="card-body">
                         <div id="chart3">
                         </div>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#linerevapp">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
@@ -121,14 +134,18 @@
                     <div class="card-body">
                         <div id="chart4">
                         </div>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#insightgauge">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
+    {% autoescape false %} {{chart3insight}} {{chart4insight}} {{chart5insight}}{{chart6insight}}{% endautoescape %}
     <!-- Footer -->
-    <footer class="page-footer font-small mdb-color lighten-3 pt-4">
+    <footer class="page-footer font-small mdb-color lighten-3 pt-4" data-aos="fade-right">
         <div class="container text-center text-md-left">
             <div class="row">
                 <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">

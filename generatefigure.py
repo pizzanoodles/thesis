@@ -7,6 +7,7 @@ import numpy as np
 import plotly.graph_objects as go
 from initialize import initialize_dir_year
 import math
+from insights import *
 
 # EXTRA FUNCTIONS > check list zeros
 
@@ -15,11 +16,11 @@ def check_list_zero(dataframe, arr, title):
     if(np.sum(arr) == 0):
         fig = px.bar(dataframe, title=title, x="Label", y="Amount", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                              "#FEE1E8", "#FED7C3"])
-        fig.update_layout(height=600)
     else:
         fig = px.pie(dataframe, title=title, names="Label", values="Amount", color_discrete_sequence=["#ABDEE6", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                                                       "#FEE1E8", "#FED7C3"])
-        fig.update_layout(height=600)
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 # GENERATE FIGURE REVENUES
@@ -28,12 +29,12 @@ def check_list_zero(dataframe, arr, title):
 def generate_fig_rev(excel, dt, rt, ct, yt):
     year = initialize_dir_year()
     yeari = [int(i) for i in year]
-    fig_tr = generate_fig_rev_tr(excel)
-    fig_ntr = generate_fig_rev_ntr(excel)
-    fig_ext = generate_fig_rev_ext(excel)
-    fig_ext_ntc = generate_fig_rev_ext_ntc(excel)
-    fig_ext_or = generate_fig_rev_ext_or(excel)
-    fig_ext_cir = generate_fig_rev_ext_cir(excel)
+    fig_tr, insight = generate_fig_rev_tr(excel)
+    fig_ntr, insight2 = generate_fig_rev_ntr(excel)
+    fig_ext, insight3 = generate_fig_rev_ext(excel)
+    fig_ext_ntc, insight4 = generate_fig_rev_ext_ntc(excel)
+    fig_ext_or, insight5 = generate_fig_rev_ext_or(excel)
+    fig_ext_cir, insight6 = generate_fig_rev_ext_cir(excel)
     fig_rb = generate_fig_rev_rb(rt, ct)
     fig_ov = generate_overview_rev(excel)
     fig_gauge, prevyear = gen_gauge_rev(int(yt), rt, ct, yeari)
@@ -46,7 +47,10 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     graph7JSON = json.dumps(fig_rb, cls=plotly.utils.PlotlyJSONEncoder)
     graph8JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
     graph9JSON = json.dumps(fig_gauge, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear, year=yeari)
+    return render_template("/datavis.html",
+                           insight=insight, insight2=insight2, insight3=insight3,
+                           insight4=insight4, insight5=insight5,
+                           insight6=insight6, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear, year=yeari)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -423,6 +427,7 @@ def generate_overview_rev(excel):
         tooltip5=tooltips[5]
     )
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 
@@ -437,7 +442,8 @@ def generate_fig_rev_tr(excel):
     dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
-    return fig
+    insight = get_insightlclsrces(dict_fig)
+    return fig, insight
 # GENERATE FIGURE REVENUES > Non-Tax Revenue
 
 
@@ -449,7 +455,8 @@ def generate_fig_rev_ntr(excel):
     dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
-    return fig
+    insight = get_insightntr(dict_fig)
+    return fig, insight
 
 # GENERATE FIGURE REVENUES > External Sources
 
@@ -468,7 +475,8 @@ def generate_fig_rev_ext(excel):
     dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
-    return fig
+    insight = get_insightext(dict_fig)
+    return fig, insight
 
 # GENERATE FIGURE REVENUES > External Sources > National Tax Collections
 
@@ -476,24 +484,26 @@ def generate_fig_rev_ext(excel):
 def generate_fig_rev_ext_ntc(excel):
     dict_fig = {"Label": ["Share from Ecozone", "Share from EVAT",
                           "Share from National Wealth", "Share from Tobacco Excise Tax"]}
-    title = "Other Shares from National Tax Collections"
+    title = "External Sources > Other Shares from National Tax Collections"
     taxrev = excel.iloc[22:26, 4].values.tolist()
     dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
-    return fig
+    insight = get_insightextntc(dict_fig)
+    return fig, insight
 
 # GENERATE FIGURE REVENUES > External Sources > Other Receipts
 
 
 def generate_fig_rev_ext_or(excel):
     dict_fig = {"Label": ["Grants and Donations", "Other Subsidy Income"]}
-    title = "Other Receipts"
+    title = "External Sources > Other Receipts"
     taxrev = excel.iloc[27:29, 4].values.tolist()
     dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
-    return fig
+    insight = get_insightextor(dict_fig)
+    return fig, insight
 
 # GENERATE FIGURE REVENUES > External Sources > Capital/Investment Receipts
 
@@ -501,12 +511,13 @@ def generate_fig_rev_ext_or(excel):
 def generate_fig_rev_ext_cir(excel):
     dict_fig = {"Label": ["Sale of Capital Assets", "Sale of Investments",
                           "Proceeds from Collections of Loans Receivable"]}
-    title = "Capital/Investment Receipts"
+    title = " External Sources > Capital/Investment Receipts"
     taxrev = excel.iloc[31:34, 4].values.tolist()
     dict_fig['Amount'] = taxrev
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, taxrev, title)
-    return fig
+    insight = get_insightextcir(dict_fig)
+    return fig, insight
 
 # GENERATE FIGURE REVENUES > Receipts from Borrowings
 
@@ -529,6 +540,7 @@ def generate_fig_rev_rb(rt, ct):
     fig.update_xaxes(type='category')
     fig.update_traces(mode="markers+lines")
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 # GENERATE APPROPRIATIONS
@@ -802,6 +814,7 @@ def generate_overview_app(excel):
         tooltip5=tooltips[5]
     )
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 # GENERATE FIGURE CURRENT APPROPRIATIONS
@@ -873,6 +886,7 @@ def generate_fig_app_curr(excel):
         ]
     )
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 
@@ -944,6 +958,7 @@ def generate_others_social(excel):
 
     )
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig
 
 
@@ -999,6 +1014,7 @@ def gen_gauge_rev(year, reg, city, yearlst):
     else:
         return None, prevyear
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig, prevyear
 
 
@@ -1032,4 +1048,5 @@ def gen_gauge_app(year, reg, city, yearlst):
     else:
         return None, prevyear
     fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
     return fig, prevyear

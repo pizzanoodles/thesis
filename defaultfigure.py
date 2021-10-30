@@ -1,6 +1,7 @@
 from flask import render_template
 from initialize import initialize_dir_year, initialize_dir_region, get_amountallyr
 from statistics import mean
+from insights import *
 import pandas as pd
 import json
 import plotly
@@ -37,16 +38,16 @@ def generate_default_figs():
     year = initialize_dir_year()
     region = initialize_dir_region()
     # Graph 1 WATERFALL CHART function call
-    fig, insights = get_surplus()
+    fig, insights, insight3 = get_surplus()
     # Graph 2 BAR CHART function call
-    fig2, insights2 = get_reg_app_rev()
-    fig3 = reg_app_line()
-    fig4 = gauge_surp()
+    fig2, insights2, insight6 = get_reg_app_rev()
+    fig3, insight4 = reg_app_line()
+    fig4, insight5 = gauge_surp()
     graph1JSON = json.dumps(fig, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig2, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig3, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig4, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, chart1insight=insights, chart2insight=insights2, year=year, region=region)
+    return render_template("/layout.html", title="Thesis", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, chart1insight=insights, chart2insight=insights2, chart3insight=insight3, chart4insight=insight4, chart5insight=insight5, chart6insight=insight6, year=year, region=region)
 
 
 # GRAPH 1: DEFAULT WATERFALL CHART : SURPLUS(Revenue - Apprpriations) IN 2016 - 2020
@@ -56,12 +57,10 @@ def generate_default_figs():
 def get_surplus():
     df = pd.read_excel('SCBAA/Defaultgraph.xlsx')
     years = initialize_dir_year()
-    surplusperyear = [
-        ((df["Revenue"].loc[df["Year"] == int(years[0])].sum() - df["Appropriations"].loc[df["Year"] == int(years[0])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[1])].sum() - df["Appropriations"].loc[df["Year"] == int(years[1])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[2])].sum() - df["Appropriations"].loc[df["Year"] == int(years[2])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[3])].sum() - df["Appropriations"].loc[df["Year"] == int(years[3])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[4])].sum() - df["Appropriations"].loc[df["Year"] == int(years[4])].sum()))]
+    surplusperyear = []
+    for i in range(len(years)):
+        surplusperyear.append(((df["Revenue"].loc[df["Year"] == int(years[i])].sum(
+        ) - df["Appropriations"].loc[df["Year"] == int(years[i])].sum())))
     surpvals = surplusperyear
     waterfvals = []
     percents = []
@@ -95,15 +94,22 @@ def get_surplus():
                     abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i]) * 100), 2)))
             percents.append(
                 abs(round((((surpvals[i+1] - surpvals[i])/surpvals[i]) * 100), 2)))
-
+    insight2 = get_insightdefsurplus(surplusperyear, percents, years)
+    textv = []
+    for i in range(len(percents)):
+        if(i == 0):
+            textv.append(years[0]+" SURPLUS")
+        else:
+            textv.append(str(percents[i])+'%')
     fig = go.Figure(go.Waterfall(
         orientation="v",
         measure=["relative", "relative", "relative",
                  "relative", "relative", "relative"],
         x=years,
         textposition="outside",
-        text=[years[0]+" SURPLUS", str(percents[1])+'%', str(
-            percents[2])+'%', str(percents[3])+'%', str(percents[4])+'%'],
+        text=textv,
+        # text=[years[0]+" SURPLUS", str(percents[1])+'%', str(
+        #    percents[2])+'%', str(percents[3])+'%', str(percents[4])+'%'],
         y=waterfvals,
         increasing={"marker": {"color": "#ABDEE6"}},
         decreasing={"marker": {"color": "#CBAACB"}},
@@ -121,7 +127,8 @@ def get_surplus():
         yearmin=years[0],
         yearmax=years[-1],
         yeardiff=abs(round((((surpvals[4] - surpvals[0])/surpvals[0]) * 100), 2)))
-    return fig, insights
+    fig.update_layout(legend_font_size=9)
+    return fig, insights, insight2
 
 # GRAPH 2: DEFAULT ANIMATED BAR CHART: ALL OF THE REGION'S APPROPRIATIONS AND REVENUES IN 2016-2020
 # function generate
@@ -138,6 +145,7 @@ def get_styledisp(i):
 def get_reg_app_rev():
     df = pd.read_excel('SCBAA/Defaultgraph.xlsx')
     year = initialize_dir_year()
+    insight = get_insightdefanimch(df, year)
     int_year = [int(i) for i in year]
     valsdf = [df.loc[df['Year'] == y] for y in int_year]
     insights2 = ""
@@ -168,7 +176,8 @@ def get_reg_app_rev():
     fig = px.bar(df, x="Region", y=["Revenue", "Appropriations"],
                  animation_frame="Year", animation_group="Region", barmode='group',  color_discrete_sequence=["#ABDEE6", "#CBAACB"],
                  title="Revenue and Appropriations per Region "+year[0]+" to "+year[-1])
-    return fig, insights2
+    fig.update_layout(legend_font_size=9)
+    return fig, insights2, insight
 # Pie chart of Revenues and Appropriations 2016 to 2020
 
 
@@ -187,6 +196,7 @@ def reg_app_line():
         totaldicts["Appropriations"].append(
             (df["Appropriations"].loc[df["Year"] == i]).sum())
     linedf = pd.DataFrame(totaldicts)
+    insight = get_insightdeflinerevapp(totaldicts)
     fig = px.line(
         data_frame=linedf,
         x="Years", y=["Revenues", "Appropriations"], color_discrete_sequence=["#ABDEE6", "#CBAACB"], markers=True, line_shape="spline",
@@ -194,7 +204,8 @@ def reg_app_line():
         yearstr[0]+" to "+yearstr[-1]
     )
     fig.update_layout(height=600)
-    return fig
+    fig.update_layout(legend_font_size=9)
+    return fig, insight
 # GRAPH 4: DROPDOWN CHART: SAMPLE
 # function generate
 
@@ -203,18 +214,17 @@ def gauge_surp():
     #phsurplusexcel = pd.ExcelFile('SCBAA/Defaultgraph.xlsx')
     df = pd.read_excel('SCBAA/Defaultgraph.xlsx')
     years = initialize_dir_year()
-    df2 = [
-        ((df["Revenue"].loc[df["Year"] == int(years[0])].sum() - df["Appropriations"].loc[df["Year"] == int(years[0])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[1])].sum() - df["Appropriations"].loc[df["Year"] == int(years[1])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[2])].sum() - df["Appropriations"].loc[df["Year"] == int(years[2])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[3])].sum() - df["Appropriations"].loc[df["Year"] == int(years[3])].sum())),
-        ((df["Revenue"].loc[df["Year"] == int(years[4])].sum() - df["Appropriations"].loc[df["Year"] == int(years[4])].sum()))]
+    df2 = []
+    for i in range(len(years)):
+        df2.append((df["Revenue"].loc[df["Year"] == int(years[i])].sum() -
+                    df["Appropriations"].loc[df["Year"] == int(years[i])].sum()))
     lat = df2[-1]
     prev = df2[-2]
     diff = ((lat - prev)/((lat+prev)/2))*100
     diffpercent = abs(((lat - prev)/((lat+prev)/2))*100)
     diffround = abs(math.ceil(diffpercent / 100)*100)
     difflow = -diffround
+    insight = get_insightdefgauge(lat, prev, years, diff)
     fig = go.Figure(go.Indicator(
         domain={'x': [0, 1], 'y': [0, 1]},
         value=diff,
@@ -229,7 +239,8 @@ def gauge_surp():
             {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
         ]}))
     fig.update_layout(height=600)
-    return fig
+    fig.update_layout(legend_font_size=9)
+    return fig, insight
 
 
 def gen_reference(r, c, i):
@@ -253,6 +264,7 @@ def gen_reference(r, c, i):
                        uniformtext_mode='hide', showlegend=True)
     fig2.update_yaxes(
         tickprefix="₱", showgrid=True)
+    fig2.update_layout(legend_font_size=9)
     return fig2
 
 

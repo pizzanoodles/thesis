@@ -80,7 +80,7 @@ div{
 #btnsubmit:disabled{
   opacity: 0.2;
 }
-#btnsubmit:hover{
+#btnsubmit:hover,.insightbtn:hover{
   background-color: #9c5d15;
 }
 form{
@@ -210,9 +210,6 @@ ul{
 #chart1{
   margin-bottom:2em;
 }
-.ext3, .ext4{
-  width:inherit;
-}
 #overview2{
   width:100%;
 }
@@ -230,4 +227,28 @@ footer{
   border-right: 0px;
   border-bottom: 0px;
   border-style: solid;
+}
+
+/*insight input*/
+.insightbtn{
+  font-weight: 500;
+  letter-spacing: 5px;/*5px*/
+  border-style:none;
+  padding-top: 10px;
+  padding-bottom:10px;
+  background-color: #79480f;
+  color:white;
+  border-radius: 5px;
+  width:40%;
+  transition-duration: 0.2s;
+  margin-left: 4%;
+}
+
+.insightdiv{
+  margin-top: 6em;
+  height:87%;
+}
+
+.modalbtns{
+  width:20%;
 }

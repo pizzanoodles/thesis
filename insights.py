@@ -1,4 +1,4 @@
-from initialize import get_actualbel, get_definition
+from initialize import get_actualbel, get_definition, initialize_dir_region, initialize_dir_year
 # FORECASTING
 
 
@@ -316,4 +316,425 @@ def get_insightgeneral():
                     <button id="generalhelp" class="insightbtn modalbtns" data-bs-target="" data-bs-toggle="modal">Back</button>\
                 </div>\
          </div></div></div>'
+    return insight
+# DATAVIS
+
+
+def get_insightdefsurplus(surplusperyear, percents, years):
+    insight = '<div class="modal fade" id="insightsurplus" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Surplus Values on each Year</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                        <thead>\
+                            <tr>\
+                                <th scope="col">Year</th>\
+                                <th scope="col">Surplus Value</th>\
+                                <th scope="col">Surplus Values Compared to Last Year</th>\
+                                <th scope="col">Surplus Compared to Last Year in %</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(surplusperyear)):
+        insight += '<tr>\
+                <th scope="row">{year}</th>\
+                <td>₱{amount:,.2f}</td>'.format(year=years[i], amount=surplusperyear[i])
+        if(i == 0):
+            amount2 = 0
+        else:
+            amount2 = surplusperyear[i]-surplusperyear[i-1]
+        if(amount2 < 0):
+            insight += '<td>-₱{amount2:,.2f}</td>\
+                <td>-{percents}%</td>'.format(amount2=abs(amount2), percents=percents[i])
+        else:
+            insight += '<td>₱{amount2:,.2f}</td>\
+                <td>{percents}%</td>'.format(amount2=amount2, percents=percents[i])
+        insight += '</tr>'
+    insight += '</tbody>\
+                    </table></br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Surplus</strong> - an amount of something left over when requirements have been met; an excess of production or supply over demand. In this case the surplus is calculated by the difference of the total appropriations and revenues.</li>\
+                            <li><strong>Total Appropriations</strong> - {app}</li>\
+                            <li><strong>Total Revenues</strong> - {rev}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(app=get_definition("Total Appropriations"), rev=get_definition("Total Revenues"))
+    return insight
+
+
+def get_insightdeflinerevapp(totaldicts):
+    insight = '<div class="modal fade" id="linerevapp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Total Revenues and Appropriations of all LGUs on each Year </h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                        <thead>\
+                            <tr>\
+                                <th scope="col">Year</th>\
+                                <th scope="col">Total Revenues</th>\
+                                <th scope="col">Total Appropriations</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(totaldicts["Years"])):
+        insight += '<tr>\
+                <th scope="row">{year}</th>\
+                <td>₱{rev:,.2f}</td>\
+                <td>₱{app:,.2f}</td></tr>'.format(year=totaldicts["Years"][i], app=totaldicts["Appropriations"][i], rev=totaldicts["Revenues"][i])
+    insight += '</tbody>\
+                    </table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Total Revenues</strong> - {rev}</li>\
+                            <li><strong>Total Appropriations</strong> - {app}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(rev=get_definition("Total Revenues"), app=get_definition("Total Appropriations"))
+    return insight
+
+
+def get_insightdefgauge(lat, prev, years, diff):
+    insight = '<div class="modal fade" id="insightgauge" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Latest Surplus Difference from Previous Year</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                            <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Latest Surplus ({latyr})</th>\
+                                <th scope="col">Previous Surplus ({prevyr})</th>\
+                                <th scope="col">Difference in %</th>\
+                            </tr>\
+                        </thead><tbody>\
+                            <tr>\
+                            <td>₱{lat:,.2f}</td>\
+                            <td>₱{prev:,.2f}</td>\
+                            <td>{diff:.2f}%</td>\
+                            </tbody></table>\
+                        <br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Surplus</strong> - an amount of something left over when requirements have been met; an excess of production or supply over demand. In this case the surplus is calculated by the difference of the total appropriations and revenues.</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(lat=lat, prev=prev, diff=diff, latyr=years[-1], prevyr=years[-2])
+    return insight
+
+
+def get_insightdefanimch(df, year):
+    region = initialize_dir_region()
+    reg_lst = region["value"]
+    insight = '<div class="modal fade" id="insightanim" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Total Revenues and Appropriations by Region</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">Total Revenues:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Region</th>'
+    for y in year:
+        insight += '<th scope="col">{yr}</th>'.format(yr=y)
+    insight += '</tr>\
+                        </thead><tbody>'
+    for r in reg_lst:
+        insight += '<tr><td>{r}</td>'.format(r=r)
+        lst = list(df["Revenue"].loc[df["Region"] == r])
+        for y in year:
+            insight += '<td>₱{am:,.2f}</td>'.format(am=lst[year.index(y)])
+        insight += '</tr>'
+    insight += '</tbody></table><br>\
+        <h6 class="mb-2">Total Appropriations:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Region</th>'
+    for y in year:
+        insight += '<th scope="col">{yr}</th>'.format(yr=y)
+    insight += '</tr>\
+                        </thead><tbody>'
+    for r in reg_lst:
+        insight += '<tr><td>{r}</td>'.format(r=r)
+        lst = list(df["Appropriations"].loc[df["Region"] == r])
+        for y in year:
+            insight += '<td>₱{am:,.2f}</td>'.format(am=lst[year.index(y)])
+        insight += '</tr>'
+    insight += '         </tbody></table>\
+                        <br><h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Total Revenues</strong> - {rev}</li>\
+                            <li><strong>Total Appropriations</strong> - {app}</li>\
+                            <li><strong>NCR</strong> - National Capital Region</li>\
+                            <li><strong>CAR</strong> - Cordillera Administrative Region</li>\
+                            <li><strong>BARMM</strong> - Bangsamoro Autonomous Region in Muslim Mindanao</li>\
+                            <li><strong>NIR</strong> - Negros Island Region</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(rev=get_definition("Total Revenues"), app=get_definition("Total Appropriations"))
+    return insight
+# DATAVIS GENERATEFIGURE
+# REVENUE
+
+
+def get_insightlclsrces(dict):
+    insight = '<div class="modal fade" id="insightlclsrc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Tax Revenues</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Tax Revenues</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{lbl}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Local Sources</strong> - {def1}</li>\
+                            <li><strong>Tax Revenues</strong> - {def5}</li>\
+                            <li><strong>Tax Revenue - Property</strong> - {def2}</li>\
+                            <li><strong>Tax Revenue - Goods and Services</strong> - {def3}</li>\
+                            <li><strong>Other Local Taxes</strong> - {def4}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def1=get_definition("Local Sources"), def5=get_definition("Tax Revenues"), def2=get_definition("Tax Revenue - Property"), def3=get_definition("Tax Revenue - Goods and Services"), def4=get_definition("Other Local Taxes"))
+    return insight
+
+
+def get_insightntr(dict):
+    insight = '<div class="modal fade" id="insightntr" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Non-Tax Revenues</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Non-Tax Revenues</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{lbl}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Local Sources</strong> - {def0}</li>\
+                            <li><strong>Non-Tax Revenues</strong> - {def1}</li>\
+                            <li><strong>Business Income</strong> - {def2}</li>\
+                            <li><strong>Service Income</strong> - {def3}</li>\
+                            <li><strong>Other Income and Receipts</strong> - {def4}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Local Sources"), def1=get_definition("Non-Tax Revenues"), def2=get_definition("Business Income"), def3=get_definition("Service Income"), def4=get_definition("Other Income and Receipts"))
+    return insight
+
+
+def get_insightext(dict):
+    insight = '<div class="modal fade" id="insightext" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">External Sources</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">External Sources</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{lbl}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>External Sources</strong> - {def0}</li>\
+                            <li><strong>Share from the National Internal Revenue Taxes (IRA)</strong> - {def1}</li>\
+                            <li><strong>Share from GOCCs</strong> - {def2}</li>\
+                            <li><strong>Other Shares from National Tax Collections</strong> - {def3}</li>\
+                            <li><strong>Other Receipts</strong> - {def4}</li>\
+                            <li><strong>Inter-local Transfer</strong> - {def5}</li>\
+                            <li><strong>Capital/Investment Receipts</strong> - {def6}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("External Sources"), def1=get_definition("Share from the National Internal Revenue Taxes (IRA)"),
+                                    def2=get_definition("Share from GOCCs"), def3=get_definition("Other Shares from National Tax Collections"),
+                                    def4=get_definition("Other Receipts"), def5=get_definition("Inter-local Transfer"),
+                                    def6=get_definition("Capital/Investment Receipts"))
+    return insight
+
+
+def get_insightextntc(dict):
+    insight = '<div class="modal fade" id="insightextntc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Shares from National Tax Collections</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Shares from National Tax Collections</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{lbl}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Other Shares from National Tax Collections</strong> - {def0}</li>\
+                            <li><strong>Share from Ecozone</strong> - {def1}</li>\
+                            <li><strong>Share from EVAT</strong> - {def2}</li>\
+                            <li><strong>Share from National Wealth</strong> - {def3}</li>\
+                            <li><strong>Share from Tobacco Excise Tax</strong> - {def4}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Other Shares from National Tax Collections"), def1=get_definition("Share from Ecozone"),
+                                    def2=get_definition("Share from EVAT"), def3=get_definition("Share from National Wealth"),
+                                    def4=get_definition("Share from Tobacco Excise Tax"))
+    return insight
+
+
+def get_insightextor(dict):
+    insight = '<div class="modal fade" id="insightextor" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Other Receipts</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Other Receipts</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{lbl}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Other Receipts</strong> - {def0}</li>\
+                            <li><strong>Grants and Donations</strong> - {def1}</li>\
+                            <li><strong>Other Subsidy Income</strong> - {def2}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Other Receipts"), def1=get_definition("Grants and Donations"),
+                                    def2=get_definition("Other Subsidy Income"))
+    return insight
+
+
+def get_insightextcir(dict):
+    insight = '<div class="modal fade" id="insightextcir" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Capital/Investment Receipts</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Capital/Investment Receipts</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{lbl}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Capital/Investment Receipts</strong> - {def0}</li>\
+                            <li><strong>Sale of Capital Assets</strong> - {def1}</li>\
+                            <li><strong>Sale of Investments</strong> - {def2}</li>\
+                            <li><strong>Proceeds from Collections of Loans Receivable</strong> - {def3}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Capital/Investment Receipts"), def1=get_definition("Sale of Capital Assets"),
+                                    def2=get_definition("Sale of Investments"), def3=get_definition("Proceeds from Collections of Loans Receivable"))
     return insight

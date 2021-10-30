@@ -31,22 +31,6 @@
             </div>
         </div>
     </nav>
-
-    <div class="card">
-        <div class="card-body">
-            {% if dt == "Revenue" %}
-            <a href="#lcl">Local Sources</a>
-            <br>
-            <a href="#ext">External Sources</a>
-            <br>
-            <a href="#rec">Receipts from Borrowings</a>
-            {% else %}
-            <a href="#curapp">Current Appropriations</a>
-            <br>
-            <a href="#conapp">Continuing Appropriations</a>
-            {% endif %}
-        </div>
-    </div>
     <div class="row align-items-center all">
         {% if dt == "Revenue" %}
         <div id="overview" data-aos="fade-up">
@@ -57,7 +41,9 @@
                         <div class="card-body">
                             <div id="chart8">
                             </div>
-                            {% autoescape false %} {{sunbInsightsRev}} {% endautoescape %}
+                            <br>
+                            <p class='c1insight'><strong>{% autoescape false %} {{sunbInsightsRev}} {% endautoescape
+                                    %}</strong></p>
                             <!--<div style="color:black">{% autoescape false %} {{defInsightsRev}} {% endautoescape %}</div>-->
                         </div>
                     </div>
@@ -92,6 +78,10 @@
                         <div class="card-body">
                             <div id="chart1">
                             </div>
+                            <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                                data-bs-target="#insightlclsrc">
+                                ADVANCED DETAILS
+                            </button>
                         </div>
                     </div>
                 </div><br><br>
@@ -100,6 +90,10 @@
                         <div class="card-body">
                             <div id="chart2">
                             </div>
+                            <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                                data-bs-target="#insightntr">
+                                ADVANCED DETAILS
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -108,42 +102,55 @@
     </div>
     <div class="row align-items-center all" id="ext" data-aos="fade-left">
         <h5 id="selectcat">EXTERNAL SOURCES</h5><br />
-        <div class="col">
+        <div class="col-6 mb-4">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <div id="chart3">
                         </div>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#insightext">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col">
+        <div class="col-6 mb-4">
             <div class="col">
                 <div class="card">
                     <div class="card-body">
                         <div id="chart4">
                         </div>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#insightextntc">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
         </div>
-        <div class="row align-items-center all" id="ext">
-            <div class="col ext3">
-                <div class="card">
-                    <div class="card-body">
-                        <div id="chart5">
-                        </div>
+        <div class="col-6">
+            <div class="card">
+                <div class="card-body">
+                    <div id="chart5">
                     </div>
+                    <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal" data-bs-target="#insightextor">
+                        ADVANCED DETAILS
+                    </button>
                 </div>
             </div>
-            <div class="col ext4">
-                <div class="col">
-                    <div class="card">
-                        <div class="card-body">
-                            <div id="chart6">
-                            </div>
+        </div>
+        <div class="col-6">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="chart6">
                         </div>
+                        <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
+                            data-bs-target="#insightextcir">
+                            ADVANCED DETAILS
+                        </button>
                     </div>
                 </div>
             </div>
@@ -181,6 +188,7 @@
             </div>
         </div>
     </div>
+    {% autoescape false %}{{insight}}{{insight2}}{{insight3}}{{insight4}}{{insight5}}{{insight6}}{% endautoescape %}
     {% else %}
     <div class="row align-items-center all" data-aos="fade-left">
         <h5 id="selectcat">CURRENT APPROPRIATIONS</h5>
@@ -254,6 +262,7 @@
         </div>
     </div>
     {% endif %}
+
 
     <!-- Footer -->
     <footer class="page-footer font-small mdb-color lighten-3 pt-4" data-aos="fade-left">
