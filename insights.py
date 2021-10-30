@@ -206,7 +206,7 @@ def get_insightrmse(df, df2):
     return insight
 
 
-def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist):
+def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist, distances):
     insight = '<div class="modal fade" id="insightneigh" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
     <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
         <div class="modal-content">\
@@ -215,36 +215,56 @@ def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist):
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
         </div>\
         <div class="modal-body">\
-                    <h6>INPUT: ₱{inp:,.2f}</h6>\
-                    <br><h6>DATA:</h6>\
+                    <h6>INPUT: ₱{inp:,.2f}</h6><br>\
+                    <h6>NEIGHBORS: {n}</h6><br>\
+                    <h6>DATA IN LOWEST DISTANCE ORDER:</h6>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
-                                <th scope="col">{inptype}</th>\
-                                <th scope="col">{forectype}</th>\
-                                <th scope="col">Distance</th>\
+                                <th scope="col">{inptype}(X)</th>\
+                                <th scope="col">{forectype}(Y)</th>\
+                                <th scope="col">Distance Between X and Input</th>\
                             </tr>\
                         </thead>\
-                        <tbody>'.format(inp=float(inp), inptype=inptype, forectype=forectype)
-    for i in range(len(df[inptype])):
+                        <tbody>'.format(inp=float(inp), inptype=inptype, forectype=forectype, n=len(distances))
+    for i in range(len(distances)):
         insight += '<tr>\
                 <td>₱{inp:,.2f}</td>\
                 <td>₱{fore:,.2f}</td>\
                 <td>{dist:,.2f}</td>\
-            </tr>'.format(inp=df[inptype][i], fore=df[forectype][i], dist=dist[i])
+            </tr>'.format(inp=distances[i][0][0], fore=distances[i][0][1], dist=distances[i][1])
     insight += '</tbody>\
                     </table></br>\
-                    <div class="container-fluid">\
+                    <h6>OPTIMAL NEIGHBORS: {n}</h6><br>\
+                    <h6>NEAREST NEIGHBORS FOUND:</h6>\
+                    <table class="table ml-2">\
+                        <thead>\
+                            <tr>\
+                                <th scope="col">{inptype}(X)</th>\
+                                <th scope="col">{forectype}(Y)</th>\
+                                <th scope="col">Distance Between X and Input</th>\
+                            </tr>\
+                        </thead>'.format(n=len(dict_neigh[inptype]), inp=float(inp), inptype=inptype, forectype=forectype,)
+    for i in range(len(dict_neigh[inptype])):
+        insight += '<tr>\
+                <td>₱{inp:,.2f}</td>\
+                <td>₱{fore:,.2f}</td>\
+                <td>{dist:,.2f}</td>\
+            </tr>'.format(inp=dict_neigh[inptype][i], fore=dict_neigh[forectype][i], dist=distances[i][1])
+    insight += '</tbody>\
+                    </table></br><div class="container-fluid">\
                         <h6 class="mb-2">DEFINITIONS:</h6>\
                         <ul class="list-unstyled">\
+                            <li><strong>Input Type</strong> - is a dictionary variable containing (name,list of values) to be used as a training data set(X) for the forecasting by getting the nearest neighbors using euclidean distance.</li>\
+                            <li><strong>Forecast Type</strong> - is a dictionary variable containing (name,list of values) to be used as a training data set(Y) for the forecasting by averaging the nearest neighbors.</li>\
+                            <li><strong>Input</strong> - the pivotal variable to start the forecasting process and it is only defined by prompting the user\
                             <li><strong>K(Neighbors)</strong> - the number of the nearest neighbors to get in the model based in the input\
-                            <li><strong>RMSE(Root-Mean-Squared-Error)</strong> - is the standard deviation of the residuals (prediction errors)\
-                            <li><strong>Optimal K</strong> - the optimal number of the nearest neighbors with the lowest rmse value\
+                            <li><strong>Euclidean Distance</strong> - the optimal number of the nearest neighbors with the lowest rmse value\
                         </ul>\
                         <br>\
                         <h6 class="mb-2">PURPOSES:</h6>\
-                        <p class="pl-2">The data above shows the rmse values of different K values for the Optimal K. The data can be used to check the other predictions of their rmse values.\
-                        The graph can be used to show the relationship between the K and the rmse values depending on the growing number of K and data traning set that will be used to split train:test ratio of 80:20.</p>\
+                        <p class="pl-2">The data above shows all of the existing neighbors and all of the nearest neighbors found using the Optimal K.\
+                        The graph can be used to show the distances between the points using the Euclidean distance formula. The distance will be calculated using the x and the input only since the y is the missing data that the algorithm has to predict. </p>\
                     </div>\
                 </div>\
                     <div class="modal-footer">\

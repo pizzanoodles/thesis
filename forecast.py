@@ -21,6 +21,7 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     n_num, valid_rmse = get_optimalK(rmse_lst)
     k = [x+2 for x in range(len(valid_rmse))]
     nbx, nby, distances = get_neighbors(dataset, [float(inp)], n_num)
+    print(distances)
     dist = get_distances(distances)
     optm_predict_output = predict(nby)
     allpred = fig1_krange(dataset, [float(inp)], k)
@@ -29,7 +30,8 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
         allpred, optm_predict_output, n_num, forectype, k)
     fig_bar, insight2 = get_fig1(optm_predict_output, reg, city,
                                  forectype, year, dict_samp)
-    fig_scat, insight5 = get_fig2(df, inp, nbx, nby, inptype, forectype,dist)
+    fig_scat, insight5 = get_fig2(
+        df, inp, nbx, nby, inptype, forectype, dist, distances)
     fig_line, insight4 = get_fig3(valid_rmse, n_num, k)
 
     ginsight = get_insightgeneral()
@@ -164,11 +166,12 @@ def get_fig1(optm_predict_output, reg, city, forectype, year, dict):
     return fig, insight2
 
 
-def get_fig2(df, inp, nbx, nby, inptype, forectype,dist):
+def get_fig2(df, inp, nbx, nby, inptype, forectype, dist, distances):
     fig = px.scatter(df, x=inptype, y=forectype, color_discrete_sequence=["blue", "#CBAACB", "#FFFFB5", "#FFCCB6", "#F3B0C3", "#C6DBDA",
                                                                           "#FEE1E8", "#FED7C3"])
     dict_neigh = {inptype: nbx, forectype: nby}
-    insight5 = get_insightneighbors(df,dict_neigh, inptype, forectype,inp,dist)
+    insight5 = get_insightneighbors(
+        df, dict_neigh, inptype, forectype, inp, dist, distances)
     fig.add_vline(x=inp,
                   line_width=2, opacity=0.3, line_dash="dash", line_color="red")
     for i in range(len(nbx)):
@@ -189,7 +192,7 @@ def get_fig2(df, inp, nbx, nby, inptype, forectype,dist):
     fig.update_layout(height=600)
     fig.update_layout(legend_font_size=9)
     fig.update_layout(title_text="Neighbors distance")
-    return fig,insight5
+    return fig, insight5
 
 
 def get_fig3(rmse, min, k):
