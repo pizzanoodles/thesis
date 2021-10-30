@@ -54,10 +54,15 @@ def generate_default_figs():
 
 
 def get_surplus():
-    phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
-    surplusperyear = pd.read_excel(phsurplusexcel, usecols='T')
-    surpvals = surplusperyear.iloc[0:5, 0]
+    df = pd.read_excel('SCBAA/Defaultgraph.xlsx')
     years = initialize_dir_year()
+    surplusperyear = [
+        ((df["Revenue"].loc[df["Year"] == int(years[0])].sum() - df["Appropriations"].loc[df["Year"] == int(years[0])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[1])].sum() - df["Appropriations"].loc[df["Year"] == int(years[1])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[2])].sum() - df["Appropriations"].loc[df["Year"] == int(years[2])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[3])].sum() - df["Appropriations"].loc[df["Year"] == int(years[3])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[4])].sum() - df["Appropriations"].loc[df["Year"] == int(years[4])].sum()))]
+    surpvals = surplusperyear
     waterfvals = []
     percents = []
     pospercent = []
@@ -195,12 +200,17 @@ def reg_app_line():
 
 
 def gauge_surp():
-    phsurplusexcel = pd.ExcelFile('SCBAA/TOTALVALS.xlsx')
-    df = pd.read_excel(phsurplusexcel, usecols='T')
-    latest = df.iloc[-1]
-    previous = df.iloc[-2]
-    lat = latest[0]
-    prev = previous[0]
+    #phsurplusexcel = pd.ExcelFile('SCBAA/Defaultgraph.xlsx')
+    df = pd.read_excel('SCBAA/Defaultgraph.xlsx')
+    years = initialize_dir_year()
+    df2 = [
+        ((df["Revenue"].loc[df["Year"] == int(years[0])].sum() - df["Appropriations"].loc[df["Year"] == int(years[0])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[1])].sum() - df["Appropriations"].loc[df["Year"] == int(years[1])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[2])].sum() - df["Appropriations"].loc[df["Year"] == int(years[2])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[3])].sum() - df["Appropriations"].loc[df["Year"] == int(years[3])].sum())),
+        ((df["Revenue"].loc[df["Year"] == int(years[4])].sum() - df["Appropriations"].loc[df["Year"] == int(years[4])].sum()))]
+    lat = df2[-1]
+    prev = df2[-2]
     diff = ((lat - prev)/((lat+prev)/2))*100
     diffpercent = abs(((lat - prev)/((lat+prev)/2))*100)
     diffround = abs(math.ceil(diffpercent / 100)*100)

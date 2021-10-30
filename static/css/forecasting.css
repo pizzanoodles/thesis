@@ -31,6 +31,16 @@ body{
   letter-spacing: 5px;
   font-size:18px;
 }
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    /* display: none; <- Crashes Chrome on hover */
+    -webkit-appearance: none;
+    margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+}
+
+input[type=number] {
+    -moz-appearance:textfield; /* Firefox */
+}
 #spinbtn1,#spinbtn2{
   font-weight: 500;
   letter-spacing: 5px;
@@ -53,6 +63,10 @@ body{
   width:90%;
   margin:auto;
   margin-left: 4%;
+}
+#disclaimer{
+  font-weight: 500;
+  font-size:18px;
 }
 .stickynav{
   width:100%;

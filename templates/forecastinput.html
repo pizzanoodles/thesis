@@ -91,11 +91,11 @@
                             </select>
                         </div>
                     </div>
-                    <input name="inp1" type="text" class="form-control mb-3" id="inputtext">
+                    <input name="inp1" type="number" class="form-control mb-3" id="inputtext" step="0.01">
                     <div class="row">
                         <div class="col-5">
                             <button type="submit" id="spinbtn1" disabled>
-                                PREDICT</button>
+                                FORECAST</button>
                         </div>
                         <div class="col-1"></div>
                         <div class="col-6">
@@ -114,6 +114,8 @@
                             </div>
                         </div>
                     </div>
+                    <p id = "disclaimer">Disclaimer: The algorithm used to forecast relies on the similarities of the previous years to come up with the output.<br/>
+                    The output can then be used as basis on what to expect for the indicated forecast year.</p>
                 </div>
             </div>
 
