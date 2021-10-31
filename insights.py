@@ -738,3 +738,320 @@ def get_insightextcir(dict):
          </div></div></div>'.format(def0=get_definition("Capital/Investment Receipts"), def1=get_definition("Sale of Capital Assets"),
                                     def2=get_definition("Sale of Investments"), def3=get_definition("Proceeds from Collections of Loans Receivable"))
     return insight
+
+
+def get_insightrec(dict):
+    insight = '<div class="modal fade" id="insightrec" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Receipts from Borrowings on all Years</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Year</th>\
+                                <th scope="col">Receipts from Borrowings</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Receipts'])):
+        insight += '<tr>\
+            <td>{yr}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(yr=dict["Year"][i], amount=dict["Receipts"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Receipts from Borrowings</strong> - {def0}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Receipts from Borrowings"))
+    return insight
+
+
+def get_insightrevgauge(lat, prev, year, diff):
+    insight = '<div class="modal fade" id="insightrevgauge" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Current Revenue Difference from Previous Year</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                            <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Current Revenue ({latyr})</th>\
+                                <th scope="col">Previous Revenue ({prevyr})</th>\
+                                <th scope="col">Difference in %</th>\
+                            </tr>\
+                        </thead><tbody>\
+                            <tr>\
+                            <td>₱{lat:,.2f}</td>\
+                            <td>₱{prev:,.2f}</td>\
+                            <td>{diff:.2f}%</td>\
+                            </tbody></table>\
+                        <br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Revenues</strong> - the money generated from normal business operations, calculated as the average sales price times the number of units sold</li>\
+                            <li><strong>Total Revenues</strong> - {def0}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(lat=lat, prev=prev, diff=diff, latyr=year, prevyr=year-1, def0=get_definition("Total Revenues"))
+    return insight
+
+
+def get_insightappgauge(lat, prev, year, diff):
+    insight = '<div class="modal fade" id="insightappgauge" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Current Appropriation Difference from Previous Year</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                            <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Current Appropriation ({latyr})</th>\
+                                <th scope="col">Previous Appropriation ({prevyr})</th>\
+                                <th scope="col">Difference in %</th>\
+                            </tr>\
+                        </thead><tbody>\
+                            <tr>\
+                            <td>₱{lat:,.2f}</td>\
+                            <td>₱{prev:,.2f}</td>\
+                            <td>{diff:.2f}%</td>\
+                            </tbody></table>\
+                        <br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Appropriations</strong> - when money is set aside money for a specific and particular purpose or purposes</li>\
+                            <li><strong>Total Appropriations</strong> - {def0}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(lat=lat, prev=prev, diff=diff, latyr=year, prevyr=year-1, def0=get_definition("Total Appropriations"))
+    return insight
+
+
+def get_insightcontapp(dict):
+    insight = '<div class="modal fade" id="insightcontapp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Continuing Appropriations</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Continuing Appropriations</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{label}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(label=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Continuing Appropriations</strong> - {def0}</li>\
+                            <li><strong>General Public Services</strong> - {def1}</li>\
+                            <li><strong>Education</strong> - {def2}</li>\
+                            <li><strong>Health, Nutrition and Population Control</strong> - {def3}</li>\
+                            <li><strong>Labor and Employment</strong> - {def4}</li>\
+                            <li><strong>Housing and Community Development</strong> - {def5}</li>\
+                            <li><strong>Social Services and Social Welfare</strong> - {def6}</li>\
+                            <li><strong>Economic Services</strong> - {def7}</li>\
+                            <li><strong>Other Purposes</strong> - {def8}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Continuing Appropriations"), def1=get_definition("General Public Services"),
+                                    def2=get_definition("Education"), def3=get_definition("Health, Nutrition and Population Control"),
+                                    def4=get_definition("Labor and Employment"), def5=get_definition("Housing and Community Development"),
+                                    def6=get_definition("Social Services and Social Welfare"), def7=get_definition("Economic Services"),
+                                    def8=get_definition("Other Purposes"))
+    return insight
+
+
+def get_insightothersoths(dict):
+    insight = '<div class="modal fade" id="insightothersoths" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Other Purposes > Others</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Others</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{label}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(label=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Others</strong> - {def0}</li>\
+                            <li><strong>Maintenance and Other Operating Expenses</strong> - {def1}</li>\
+                            <li><strong>Personnel Services</strong> - {def2}</li>\
+                            <li><strong>Capital Outlay</strong> - {def3}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Others"), def1=get_definition("Maintenance and Other Operating Expenses"),
+                                    def2=get_definition("Personnel Services"), def3=get_definition("Capital Outlay"))
+    return insight
+
+
+def get_insightdebts(dict):
+    insight = '<div class="modal fade" id="insightdebts" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Other Purposes > Debt Services</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Debt Services</th>\
+                                <th scope="col">Amount</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in range(len(dict['Label'])):
+        insight += '<tr>\
+            <td>{label}</td>\
+            <td>₱{amount:,.2f}</td></tr>'.format(label=dict["Label"][i], amount=dict["Amount"][i])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Debt Services</strong> - {def0}</li>\
+                            <li><strong>Financial Expense</strong> - {def1}</li>\
+                            <li><strong>Amortization</strong> - {def2}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("Debt Service"), def1=get_definition("Financial Expense"),
+                                    def2=get_definition("Amortization"))
+    return insight
+
+
+def get_insightsocex(dict):
+    insight = '<div class="modal fade" id="insightsocex" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Other Purposes > Social Expenditures</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Social Expenditures</th>\
+                                <th scope="col">Maintenance and Other Operating Expenses</th>\
+                                <th scope="col">Capital Outlay</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in dict:
+        insight += '<tr>\
+            <th scope="row">{label}</th>\
+            <td>₱{amount:,.2f}</td>\
+                <td>₱{amount2:,.2f}</td></tr>'.format(label=i, amount=dict[i][0], amount2=dict[i][1])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Social Expenditures</strong> - measure of the extent to which countries assume responsibility for supporting the standard of living of disadvantaged or vulnerable groups</li>\
+                            <li><strong>LDRRMF(Local Disaster Risk Reduction and Management Fund)</strong> - {def0}</li>\
+                            <li><strong>20% Development Fund</strong> - {def5}</li>\
+                            <li><strong>Share from National Wealth</strong> - {def1}</li>\
+                            <li><strong>Allocation for Senior Citizens and PWD</strong> - {def2}</li>\
+                            <li><strong>Maintenance and Other Operating Expenses</strong> - {def3}</li>\
+                            <li><strong>Capital Outlay</strong> - {def4}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("LDRRMF"), def1=get_definition("Share from National Wealth"),
+                                    def2=get_definition("Allocation for Senior Citizens and PWD"), def3=get_definition("Maintenance and Other Operating Expenses"),
+                                    def4=get_definition("Capital Outlay"), def5=get_definition("20% Development Fund"))
+    return insight
+def get_insightcurrapp(dict):
+    insight = '<div class="modal fade" id="insightcurrapp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Current Appropriations</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h6 class="mb-2">DATA:</h6>\
+                        <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Current Appropriations</th>\
+                                <th scope="col">Personnel Services</th>\
+                                <th scope="col">Maintenance and Other Operating Expenses</th>\
+                                <th scope="col">Capital Outlay</th>\
+                            </tr>\
+                        </thead><tbody>'
+    for i in dict:
+        insight += '<tr>\
+            <th scope="row">{label}</th>\
+            <td>₱{amount:,.2f}</td>\
+                <td>₱{amount2:,.2f}</td>\
+                    <td>₱{amount3:,.2f}</td></tr>'.format(label=i, amount=dict[i][0], amount2=dict[i][1],amount3=dict[i][2])
+    insight += '</tbody></table><br>\
+                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Social Expenditures</strong> - measure of the extent to which countries assume responsibility for supporting the standard of living of disadvantaged or vulnerable groups</li>\
+                            <li><strong>LDRRMF(Local Disaster Risk Reduction and Management Fund)</strong> - {def0}</li>\
+                            <li><strong>20% Development Fund</strong> - {def5}</li>\
+                            <li><strong>Share from National Wealth</strong> - {def1}</li>\
+                            <li><strong>Allocation for Senior Citizens and PWD</strong> - {def2}</li>\
+                            <li><strong>Maintenance and Other Operating Expenses</strong> - {def3}</li>\
+                            <li><strong>Capital Outlay</strong> - {def4}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+         </div></div></div>'.format(def0=get_definition("LDRRMF"), def1=get_definition("Share from National Wealth"),
+                                    def2=get_definition("Allocation for Senior Citizens and PWD"), def3=get_definition("Maintenance and Other Operating Expenses"),
+                                    def4=get_definition("Capital Outlay"), def5=get_definition("20% Development Fund"))
+    return insight

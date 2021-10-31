@@ -35,9 +35,9 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     fig_ext_ntc, insight4 = generate_fig_rev_ext_ntc(excel)
     fig_ext_or, insight5 = generate_fig_rev_ext_or(excel)
     fig_ext_cir, insight6 = generate_fig_rev_ext_cir(excel)
-    fig_rb = generate_fig_rev_rb(rt, ct)
+    fig_rb, insight7 = generate_fig_rev_rb(rt, ct)
     fig_ov = generate_overview_rev(excel)
-    fig_gauge, prevyear = gen_gauge_rev(int(yt), rt, ct, yeari)
+    fig_gauge, prevyear, insight8 = gen_gauge_rev(int(yt), rt, ct, yeari)
     graph1JSON = json.dumps(fig_tr, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_ntr, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ext, cls=plotly.utils.PlotlyJSONEncoder)
@@ -50,7 +50,8 @@ def generate_fig_rev(excel, dt, rt, ct, yt):
     return render_template("/datavis.html",
                            insight=insight, insight2=insight2, insight3=insight3,
                            insight4=insight4, insight5=insight5,
-                           insight6=insight6, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear, year=yeari)
+                           insight6=insight6, insight7=insight7,
+                           insight8=insight8, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, graph8JSON=graph8JSON, graph9JSON=graph9JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsRev=sunbInsightsRev, prevyear=prevyear, year=yeari)
 
 # GENERATE FIGURE OVERVIEW REVENUES
 
@@ -541,7 +542,8 @@ def generate_fig_rev_rb(rt, ct):
     fig.update_traces(mode="markers+lines")
     fig.update_layout(height=600)
     fig.update_layout(legend_font_size=9)
-    return fig
+    insight = get_insightrec(dict1)
+    return fig, insight
 
 # GENERATE APPROPRIATIONS
 
@@ -549,13 +551,13 @@ def generate_fig_rev_rb(rt, ct):
 def generate_fig_app(excel, dt, rt, ct, yt):
     year = initialize_dir_year()
     yeari = [int(i) for i in year]
-    fig_con = generate_fig_app_curr(excel)
+    fig_con, insight6 = generate_fig_app_curr(excel)
     fig_ov = generate_overview_app(excel)
-    fig_others_g1 = generate_others_debt(excel)
-    fig_others_g2 = generate_others_social(excel)
-    fig_others_g3 = generate_others_others(excel)
-    fig_cont_app = generate_continuing_app(excel)
-    fig_gauge_rev, prevyear = gen_gauge_app(int(yt), rt, ct, yeari)
+    fig_others_g1, insight4 = generate_others_debt(excel)
+    fig_others_g2, insight5 = generate_others_social(excel)
+    fig_others_g3, insight3 = generate_others_others(excel)
+    fig_cont_app, insight2 = generate_continuing_app(excel)
+    fig_gauge_rev, prevyear, insight = gen_gauge_app(int(yt), rt, ct, yeari)
     graph1JSON = json.dumps(fig_con, cls=plotly.utils.PlotlyJSONEncoder)
     graph2JSON = json.dumps(fig_others_g1, cls=plotly.utils.PlotlyJSONEncoder)
     graph3JSON = json.dumps(fig_ov, cls=plotly.utils.PlotlyJSONEncoder)
@@ -563,7 +565,10 @@ def generate_fig_app(excel, dt, rt, ct, yt):
     graph5JSON = json.dumps(fig_others_g3, cls=plotly.utils.PlotlyJSONEncoder)
     graph6JSON = json.dumps(fig_cont_app, cls=plotly.utils.PlotlyJSONEncoder)
     graph7JSON = json.dumps(fig_gauge_rev, cls=plotly.utils.PlotlyJSONEncoder)
-    return render_template("/datavis.html", graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear, year=yeari)
+    return render_template("/datavis.html",
+                           insight=insight, insight2=insight2,
+                           insight3=insight3, insight4=insight4,
+                           insight5=insight5, insight6=insight6, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON, graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, dt=dt, rt=rt, ct=ct, yt=yt, sunbInsightsApp=sunbInsightsApp, prevyear=prevyear, year=yeari)
 
 # GENERATE FIGURE OVERVIEW APPROPRIATIONS
 
@@ -836,6 +841,7 @@ def generate_fig_app_curr(excel):
     for i in range(0, 8):
         appdict[categories[i]] = values[i]
     df = pd.DataFrame(appdict)
+    insight = get_insightcurrapp(appdict)
     fig = px.bar(
         df,
         title="Current Appropriations",
@@ -847,13 +853,6 @@ def generate_fig_app_curr(excel):
     )
     fig.update_xaxes(title_text=None)
     fig.update_yaxes(title_text=None)
-    fig.update_layout(legend=dict(
-        orientation="h",
-        yanchor="bottom",
-        y=-0.8,
-        xanchor="right",
-        x=1.1
-    ))
     fig.update_layout(
         updatemenus=[
             dict(
@@ -885,19 +884,20 @@ def generate_fig_app_curr(excel):
             )
         ]
     )
-    fig.update_layout(height=600)
+    fig.update_layout(height=570)
     fig.update_layout(legend_font_size=9)
-    return fig
+    return fig, insight
 
 
 def generate_others_debt(excel):
     dict_fig = {"Label": ["Financial Expense", "Amortization"]}
-    title = "Debt Services"
+    title = "Other Purposes > Debt Services"
     values = excel.iloc[73:75, 4].values.tolist()
     dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
-    return fig
+    insight = get_insightdebts(dict_fig)
+    return fig, insight
 
 
 def generate_others_social(excel):
@@ -914,10 +914,12 @@ def generate_others_social(excel):
     appdict = {}
     for i in range(0, 4):
         appdict[categories[i]] = values[i]
+    print(appdict)
+    insight = get_insightsocex(appdict)
     df = pd.DataFrame(appdict)
     fig = px.bar(
         df,
-        title="Social Expenditures",
+        title="Other Purposes > Social Expenditures",
         y=categories,
         x=labels,
         barmode='group',
@@ -959,18 +961,19 @@ def generate_others_social(excel):
     )
     fig.update_layout(height=600)
     fig.update_layout(legend_font_size=9)
-    return fig
+    return fig, insight
 
 
 def generate_others_others(excel):
     dict_fig = {"Label": ["Personnel Services",
                           "Maintenance and Other Expenses", "Capital Outlay"]}
-    title = "Other Purposes"
+    title = "Other Purposes > Others"
     values = list(excel.iloc[88:91, 4].values.tolist())
     dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
-    return fig
+    insight = get_insightothersoths(dict_fig)
+    return fig, insight
 
 
 def generate_continuing_app(excel):
@@ -981,16 +984,18 @@ def generate_continuing_app(excel):
     dict_fig['Amount'] = values
     df = pd.DataFrame(data=dict_fig)
     fig = check_list_zero(df, values, title)
-    return fig
+    insight = get_insightcontapp(dict_fig)
+    return fig, insight
 
 
 def gen_gauge_rev(year, reg, city, yearlst):
     prevyear = year
+    insight = ''
     if(prevyear != yearlst[0]):
         prevyearExcel = pd.read_excel(
-            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear-1, region=reg), sheet_name=city)
         curryearExcel = pd.read_excel(
-            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1, region=reg), sheet_name=city)
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
         prevRevs = prevyearExcel.iloc[35][4]
         currentRevs = curryearExcel.iloc[35][4]
         diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
@@ -1002,7 +1007,7 @@ def gen_gauge_rev(year, reg, city, yearlst):
             domain={'x': [0, 1], 'y': [0, 1]},
             value=diff,
             mode="gauge+number",
-            title={'text': "Latest Revenue Difference in %"},
+            title={'text': "Current Revenue Difference in %"},
             gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
                    'steps': [
                 {'range': [difflow, (difflow+diffround)/2],
@@ -1011,20 +1016,23 @@ def gen_gauge_rev(year, reg, city, yearlst):
                  'color': "#FFFFB5"},
                 {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
             ]}))
+        insight = get_insightrevgauge(currentRevs, prevRevs, prevyear, diff)
     else:
-        return None, prevyear
+        return None, prevyear, insight
     fig.update_layout(height=600)
     fig.update_layout(legend_font_size=9)
-    return fig, prevyear
+
+    return fig, prevyear, insight
 
 
 def gen_gauge_app(year, reg, city, yearlst):
     prevyear = year
+    insight = ''
     if(prevyear != yearlst[0]):
         prevyearExcel = pd.read_excel(
-            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear-1, region=reg), sheet_name=city)
         curryearExcel = pd.read_excel(
-            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear+1, region=reg), sheet_name=city)
+            'SCBAA/{year}/{region}.xlsx'.format(year=prevyear, region=reg), sheet_name=city)
         prevRevs = prevyearExcel.iloc[110][4]
         currentRevs = curryearExcel.iloc[110][4]
         diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
@@ -1036,7 +1044,7 @@ def gen_gauge_app(year, reg, city, yearlst):
             domain={'x': [0, 1], 'y': [0, 1]},
             value=diff,
             mode="gauge+number",
-            title={'text': "Latest Approriation Difference in %"},
+            title={'text': "Current Approriation Difference in %"},
             gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
                    'steps': [
                 {'range': [difflow, (difflow+diffround)/2],
@@ -1045,8 +1053,9 @@ def gen_gauge_app(year, reg, city, yearlst):
                  'color': "#FFFFB5"},
                 {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
             ]}))
+        insight = get_insightappgauge(currentRevs, prevRevs, prevyear, diff)
     else:
-        return None, prevyear
+        return None, prevyear, insight
     fig.update_layout(height=600)
     fig.update_layout(legend_font_size=9)
-    return fig, prevyear
+    return fig, prevyear, insight

@@ -128,6 +128,7 @@ def get_surplus():
         yearmax=years[-1],
         yeardiff=abs(round((((surpvals[4] - surpvals[0])/surpvals[0]) * 100), 2)))
     fig.update_layout(legend_font_size=9)
+    fig.update_layout(height=480)
     return fig, insights, insight2
 
 # GRAPH 2: DEFAULT ANIMATED BAR CHART: ALL OF THE REGION'S APPROPRIATIONS AND REVENUES IN 2016-2020

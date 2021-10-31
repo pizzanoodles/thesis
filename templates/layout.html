@@ -9,11 +9,8 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/datavis.css') }}">
-    {% if title %}
-    <title>Thesis1-{{title}}</title>
-    {% else %}
-    <title>DefaultElse</title>
-    {% endif %}
+    <link rel="icon" href="{{ url_for('static', filename='/images/aninaw-tech-logo-brown.png') }}" type="image/x-icon">
+    <title> Data Visualization</title>
 </head>
 
 <body>
@@ -27,7 +24,7 @@
                 </h6>
             </a>
             <div class="mr-auto">
-                <a href="/test" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                <a href="/datavisdefault" type="button" class="btn btn-outline-dark" style="margin:5px;">
                     DATA VISUALIZATION</a>
                 <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
                     FORECASTING</a>
@@ -37,7 +34,7 @@
 
         </div>
     </nav>
-    <br><br><br>
+    <br>
     <!--<div class="p-3 mb text-black"></div>-->
     <div class="row align-items-center">
         <div class="col-4" data-aos="fade-up">
@@ -75,6 +72,7 @@
             </form>
         </div>
         <div class="col" id="barchart" data-aos="fade-left">
+            <br><br><br><br><br>
             <div class="col-12">
                 <div class="card mx-10">
                     <div class="card-body">
@@ -87,7 +85,8 @@
                             <label class="btn btn-outline-dark btndes" for="btnradio{{i+1}}">{{year[i]}}</label>
                             {%endfor%}
                         </div>
-                        <h2> {% autoescape false %} {{chart2insight}} {% endautoescape %}</h2>
+                        <p class='c1insight'><strong>{% autoescape false %} {{chart2insight}} {% endautoescape
+                                %}</strong></p>
                         <button type="button" class="mb-3 insightbtn" data-bs-toggle="modal"
                             data-bs-target="#insightanim">
                             ADVANCED DETAILS
@@ -97,8 +96,9 @@
             </div>
         </div>
     </div>
+    <br><br>
     <main class="row align-items-center" id="btmcharts" data-aos="fade-left">
-        <div class="col">
+        <div class="col cardmaxheight2">
             <div class="col">
                 <div class="card mx-10">
                     <div class="card-body">

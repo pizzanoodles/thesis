@@ -19,8 +19,8 @@ def index():
     return render_template("/index.html")
 
 
-@app.route("/test", methods=["POST", "GET"])
-def test():
+@app.route("/datavisdefault", methods=["POST", "GET"])
+def datavisdefault():
     if request.method == "POST":
         data = request.form["data_select"]
         reg = request.form["reg_select"]
