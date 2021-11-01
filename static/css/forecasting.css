@@ -54,6 +54,7 @@ input[type=number] {
   transition-duration: 0.2s;
 }
 #spinbtn1:disabled,#spinbtn2:disabled{
+  cursor:not-allowed;
   opacity: 0.2;
 }
 #spinbtn1:hover,#spinbtn2:hover,.insightbtn:hover{
@@ -110,7 +111,8 @@ ul{
 }
 /*FOOTER CSS*/
 .footer-copyright{
-  background-color: rgba(246, 240, 233, 1);;
+  background-color: rgba(246, 240, 233, 1);
+  width:100%;
 }
 .tribimg{
   height:100px;
@@ -132,6 +134,7 @@ ul{
 /*FOOTER CSS_____END*/
 
 footer{
+  background-color: white;
   padding:0;
   margin:0;
   width:100%;
@@ -164,4 +167,10 @@ footer{
 
 .modalbtns{
   width:20%;
+}
+.refdiv{
+  margin-left: auto;
+}
+.inputagain{
+  margin:auto;
 }

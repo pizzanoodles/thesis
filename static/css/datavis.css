@@ -1,29 +1,16 @@
 body{
   background-color:rgba(246, 240, 233, 1);
-  background-size:cover;
-  background-position:top;
-  background-attachment:fixed;
-  overflow-x:hidden;
+  padding:0;
+  height:100%;
+  width:100%;
+  margin:0;
 }
-/*html, body {
-    width:100%;
-    height: 100%;
-  }*/
-  
-  /*body{
-  background-image: url("/static/images/BrownPaper.webp");
-  background-size: cover;
-  background-position: top;
-  background-attachment: fixed;
-  }*/
-
 div{
   color:black;
 }
 .btn-group{
   margin-left:2em;
   margin-bottom:1em;
-
 }
 .cardmaxheight{
   height:692px;
@@ -57,16 +44,11 @@ div{
 }
 #btmcharts{
   border-radius: 5px;
-  /*argin:3em;*/
   margin-left: 3em;
   margin-right:3em;
   margin-bottom: 3em;
   margin-top:0em;
   padding:3em;
-  background-color:rgba(229, 236, 246, 0.5);
-}
-.cb{
-  height:75%;
 }
 #btnsubmit{
   font-weight: 500;
@@ -81,6 +63,7 @@ div{
   transition-duration: 0.2s;
 }
 #btnsubmit:disabled{
+  cursor:not-allowed;
   opacity: 0.2;
 }
 #btnsubmit:hover,.insightbtn:hover{
@@ -92,7 +75,6 @@ form{
   vertical-align:top;
 }
 .stickynav{
-  width:100%;
   padding-bottom:10px;
   padding-top:10px;
   background-color:rgba(246, 240, 233, 1);
@@ -114,9 +96,6 @@ form{
 .btn{
   color:black;
 }
-.row{
-  background-color:rgba(246, 240, 233, 1);
-}
 ul{
   font-size: 16px;
 }
@@ -124,32 +103,6 @@ ul{
   text-align: center;
   padding:0;
 }
-.container div{
-  display:-ms-inline-grid;
-}
-/*FOOTER CSS*/
-.footer-copyright{
-  background-color: rgba(246, 240, 233, 1);;
-}
-.tribimg{
-  height:100px;
-  width:100px;
-  background-size: cover;
-  background-position: top;
-  background-attachment: fixed;
-}
-.tribimg2{
-  height:100px;
-  width:100px;
-  background-size: cover;
-  background-position: top;
-  background-attachment: fixed;
-}
-.about{
-  width: 25%;
-}
-/*FOOTER CSS_____END*/
-
 .jtip {
   position: relative;
   display: inline-block;
@@ -221,16 +174,7 @@ ul{
   margin:auto;
   display:-ms-inline-grid;
 }
-footer{
-  padding:0;
-  margin:0;
-  width:100%;
-  border-top:1px;
-  border-left: 0px;
-  border-right: 0px;
-  border-bottom: 0px;
-  border-style: solid;
-}
+
 
 /*insight input*/
 .insightbtn{
@@ -255,3 +199,37 @@ footer{
 .modalbtns{
   width:20%;
 }
+/*FOOTER CSS*/
+.footer-copyright{
+  background-color: rgba(246, 240, 233, 1);
+  width:100%;
+  margin:0%;
+  padding:0%;
+}
+.tribimg{
+  height:100px;
+  width:100px;
+  background-size: cover;
+  background-position: top;
+  background-attachment: fixed;
+}
+.tribimg2{
+  height:100px;
+  width:100px;
+  background-size: cover;
+  background-position: top;
+  background-attachment: fixed;
+}
+footer{
+  background-color: white;
+  padding:0;
+  margin:0;
+  width:100%;
+  border-top:1px;
+  border-left: 0px;
+  border-right: 0px;
+  border-bottom: 0px;
+  border-style: solid;
+}
+/*FOOTER CSS_____END*/
+
