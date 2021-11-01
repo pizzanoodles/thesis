@@ -11,7 +11,7 @@ import plotly.graph_objects as go
 import math
 
 dict_scbaa = {"Region": {
-    "ARMM": ['Isabela', 'Lamitan', 'Marawi'],
+    "BARMM": ['Isabela', 'Lamitan', 'Marawi'],
     "CAR": ['Baguio', 'Tabuk'],
     "NCR": ['Caloocan', 'Las Piñas', 'Makati', 'Malabon', 'Mandaluyong', 'Manila', 'Marikina', 'Muntinlupa', 'Navotas', 'Parañaque', 'Pasay', 'Pasig', 'Quezon', 'San Juan', 'Taguig', 'Valenzuela'],
     "NIR": ['Bacolod', 'Bago', 'Bais', 'Bayawan', 'Cadiz', 'Canlaon', 'Dumaguete', 'Escalante', 'Guihulngan', 'Himamaylan', 'Kabankalan', 'Sagay', 'San Carlos', 'Sipalay', 'Talisay', 'Tanjay', 'Victorias'],

@@ -3,6 +3,7 @@ import pandas as pd
 from defaultfigure import generate_default_figs, gen_reference
 from initialize import initialize_dir_region, initialize_dir_year, get_cities, get_allapptype, get_allrevtype, get_amountallyr
 from generatefigure import generate_fig_rev, generate_fig_app
+from checktest import update_defaultgraph
 from forecast import forecasting
 from knnalgo import imputearr_lst
 import plotly
@@ -12,7 +13,6 @@ import ast
 from flask import Flask
 
 app = Flask(__name__)
-
 
 @app.route("/")
 def index():
