@@ -13,59 +13,86 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <div class="container-fluid stickynav">
+
+            <a class="navbar-brand " href="/"> <img
+                    src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
+                    alt="about width=40" height="40" style="float:left">
+                <h6 style="float:right; color:black;">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm
+                </h6>
+            </a>
+            <div class="mr-auto">
+                <a href="/datavisdefault" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    DATA VISUALIZATION</a>
+                <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    FORECASTING</a>
+                <a href="/about" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    ABOUT</a>
+            </div>
+
+        </div>
+    </nav>
     <div class="parallax">
         <div class="aninaw">
-            <h1 data-aos="fade-up">ANINAW</h1>
+            <h1 data-aos="fade-up" style="color:black;">ANINAW-TECH</h1><br>
             <p id="aninabout" data-aos="fade-up">
                 Aninaw-Tech is a web-based application with the purpose to help the general Filipino public understand
                 the Appropriations of the Local Government Units.<br>
 
-                Aninaw-Tech is the project output of the research done by the students of FEU - Alabang.
+                Aninaw-Tech is the project output of the research done by the <a href="#containerprofs">students</a> of FEU - Alabang.<br><br>
+                -Developers
             </p>
         </div>
     </div>
-    <div class="containerprofs">
-        <div class="aboutsection" id="jens" data-aos="fade-left">
-            <h1>Jens Gabriel Jovellano</h1>
-            <img class="ppicl" src="../static/images/amogus.png">
+    <div class="containerprofs" id = "containerprofs">
+        <div class="aboutsection" id="jens" data-aos="fade-up">
+            <img class="ppicl" src="../static/images/jens.png">
             <div id="aninaboutl">
-                <li>Role: Project Manager</li>
-                <li>Course: Bachelor of Science in Computer Science specializing in Software Engineering</li>
+                <h1>Jens Gabriel Jovellano</h1><br>
+                Role: Project Manager<br>
+                Course: Bachelor of Science in Computer Science<br> Specializing in Software Engineering<br><br>
+                Certifications:<br> MTA: Introduction to Programming Using Java - 2019<br>
+                MTA: Introduction to Programming Using Python - 2021
             </div>
         </div>
-        <div class="aboutsection" id="ron" data-aos="fade-right">
-            <h1>Ron Lara</h1>
-            <img class="ppicr" src="../static/images/amogus.png">
+        <div class="aboutsection" id="ron" data-aos="fade-up">
+            <img class="ppicr" src="../static/images/ron.png">
             <div id="aninaboutr">
-                <li>Role: Lead Programmer</li>
-                <li>Course: Bachelor of Science in Computer Science specializing in Software Engineering</li>
+                <h1>Ron Lara</h1><br>
+                Role: Lead Programmer<br>
+                Course: Bachelor of Science in Computer Science<br> Specializing in Software Engineering<br><br>
+                Certifications:<br> MTA: Introduction to Programming Using Java - 2019<br>
+                MTA: Introduction to Programming Using Python - 2021
             </div>
         </div>
-        <div class="aboutsection" id="kelsey" data-aos="fade-left">
-            <h1>Kelsey Lantano</h1>
-            <img class="ppicl" src="../static/images/amogus.png">
+        <div class="aboutsection" id="kelsey" data-aos="fade-up">
+            <img class="ppicl" src="../static/images/kelsey.png">
             <div id="aninaboutl">
-                <li>Role: Lead Designer</li>
-                <li>Course: Bachelor of Science in Computer Science specializing in Software Engineering</li>
+                <h1>Kelsey Lantano</h1><br>
+                Role: Lead Designer<br>
+                Course: Bachelor of Science in Computer Science<br> Specializing in Software Engineering<br><br>
+                Certifications:<br> MTA: Introduction to Programming Using Java - 2019<br>
+                MTA: Introduction to Programming Using Python - 2021
             </div>
         </div>
-        <div class="aboutsection" id="jovey" data-aos="fade-right">
-            <h1>Jovey Ann Erepol</h1>
-            <img class="ppicr" src="../static/images/amogus.png">
+        <div class="aboutsection" id="jovey" data-aos="fade-up">
+            <img class="ppicr" src="../static/images/jovey.png">
             <div id="aninaboutr">
-                <li>Role: Lead Researcher</li>
-                <li>Course: Bachelor of Science in Information Technology with specialization in Service Management
-                    Business Analytics</li>
+                <h1>Jovey Ann Erepol</h1><br>
+                Role: Lead Researcher<br>
+                Course: Bachelor of Science in Information Technology<br> Specializing in Service Management Business Analytics
             </div>
         </div>
-        <div class="aboutsection" id="maamresty" data-aos="fade-left">
-            <h1>Ma'am Resty Aldana</h1>
-            <img class="ppicl" src="../static/images/amogus.png">
+        <div class="aboutsection" id="maamresty" data-aos="fade-up">
+            <img class="ppicl mamrestybtm" src="../static/images/mamresty.png">
             <div id="aninaboutl">
-                laksd njl;ankldb nahjklsnbdhjklbn ahjklsbdhklabn skldhjbnaskjdbn
-                ajkl;snd;lajwndajkl;sndjklawndja;sdn;ajlwnd;jawln
+                <h1><i>In loving memory...</i></h1><br>
+                <h1>Ma'am Resty Aldana</h1><br>
+                Role: Project Mentor<br>
             </div>
         </div>
+        <div class = "aboutsection"></div>
     </div>
     <!-- Footer -->
     <footer class="page-footer font-small mdb-color lighten-3 pt-4" data-aos="fade-right">
@@ -108,7 +135,7 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright text-center py-3">© 2021 Copyright:
+        <div class="footer-copyright text-center py-3" style="background-color: rgba(246, 240, 233, 1);">© 2021 Copyright:
             <a href="https://aninaw-tech.herokuapp.com/"> Aninaw-tech - Tribunal</a>
         </div>
     </footer>

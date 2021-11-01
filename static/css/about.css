@@ -3,43 +3,75 @@ body,html{
     width:100%;
     padding:0;
     margin:0;
-
-    background-image: url("../images/kena.jpg");
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    color:black;
+    color:white;
 }
+body{
+    background-color:rgba(246, 240, 233, 1);
+    /*background-image: url("../images/Law.webp");*/
+    background-size:cover;
+    background-position:top;
+    background-attachment:fixed;
+    overflow-x:hidden;
+}
+.container div{
+    display:-ms-inline-grid;
+  }
+.stickynav{
+    width:100%;
+    padding-bottom:10px;
+    padding-top:10px;
+    background-color:rgba(246, 240, 233, 1);
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom:0px;
+    border-style: solid;
+    box-shadow: 0px 15px 10px rgb(207, 201, 191);
+}
+.navbar{
+    padding:0;
+    z-index: 9999;
+    width:100%;
+    position: -webkit-sticky;
+    position:sticky;
+    top:0;
+    position: fixed;
+  }
 h1{
     margin:0;
     text-align: center;
 }
-/* li span{
-    position: relative;
-    left:-25px;
-} */
 #aninabout{
     text-align: center;
     font-size:32px;
+    color:black;
 }
 #aninaboutl{
+    position: absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     align-self: center;
-    text-align: left;
-    font-size:32px;
-    width: 50%;
+    text-align: center;
+    font-size:25px;
+    width: 60%;
     height:fit-content;
-    margin:auto
 }
 #aninaboutr{
+    position: absolute;
+    top:50%;
+    left:50%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
     align-self: center;
-    text-align: left;
-    font-size:32px;
-    width: 50%;
+    text-align: center;
+    font-size:25px;
+    width: 60%;
     height:fit-content;
-    margin: auto;
 }
 .aninaw{
+    font-family:'Times New Roman', Times, serif;
     text-align: center;
     width:50%;
     position: absolute;
@@ -51,49 +83,64 @@ h1{
     height:55%;
     width:100%;
     margin:auto;
-    background-color:rgba(150,150,150,0.5);
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
 }
-#jens{
-    background-image: url("../images/tree.jpg");
+.abtoverlay{
+    background-image: url("../images/city.jpg");
+    filter: blur(15px);
+    -webkit-filter: blur(8px);
+    height:100%;
+    width:100%;
+    margin:auto;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
 }
-#ron{
-    background-image: url("../images/mountains.jpg");
-}
-#kelsey{
-    background-image: url("../images/tree.jpg");
-}
-#jovey{
-    background-image: url("../images/mountains.jpg");
-}
-#maamresty{
-    background-image: url("../images/tree.jpg");
+#jens,#ron,#kelsey,#jovey,#maamresty{
+    background-image: url("../images/city-bg.jpg");
 }
 .parallax{
-    background-image: url("../images/kena.jpg");
+    /*background-image: url("../images/Law.webp");*/
+    background-color:rgba(246, 240, 233, 1);
     height:100%;
-    background-attachment: fixed;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
+    background-size:cover;
+    background-position:top;
+    background-attachment:fixed;
+    overflow-x:hidden;
+}
+/* .parallax{
+    height:100%;
+    background-color:rgba(246, 240, 233, 1);
+    background-size:cover;
+    background-position:top;
+    background-attachment:fixed;
+} */
+.aboutsection{
+    overflow: hidden;
 }
 .ppicl{
     margin:auto;
-    height:80%;
+    height:90%;
     width:auto;
     float: left;
+    border-style: solid;
+    border-radius: 300px;
 }
 .ppicr{
     margin:auto;
-    height:80%;
+    height:90%;
     width:auto;
     float:right;
+    border-style: solid;
+    border-radius: 300px;
 }
 footer{
-    background-color: antiquewhite;
+    color:black;
+    background-color: white;
     padding:0;
     margin:0;
     width:100%;
