@@ -33,6 +33,7 @@ def initialize_dir_year():
     for item in init_list:
         if(os.path.isfile(rootdir+"/"+item)):
             directory_contents.remove(item)
+    directory_contents.sort()
     return directory_contents
 
 
