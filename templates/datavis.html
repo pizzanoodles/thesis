@@ -27,6 +27,10 @@
                     DATA VISUALIZATION</a>
                 <a href="/forecast" type="button" class="btn btn-outline-dark" style="margin:5px;">
                     FORECASTING</a>
+                <a type="button" class="btn btn-outline-dark" data-bs-toggle="modal" style="margin:5px;"
+                    data-bs-target="#datavisguide">
+                    HELP
+                </a>
                 <a href="/about" type="button" class="btn btn-outline-dark" style="margin:5px;">
                     ABOUT</a>
             </div>
@@ -297,7 +301,7 @@
             </div>
         </div>
     </div>
-</div>
+    </div>
     {% autoescape false
     %}{{insight}}{{insight2}}{{insight3}}{{insight4}}{{insight5}}{{insight6}}{% endautoescape %}
     {% endif %}
@@ -345,9 +349,68 @@
         integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
         crossorigin="anonymous"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script>
         AOS.init();
     </script>
+    <div class="modal fade" id="datavisguide" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Data Visualization Guide</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-fluid">
+                        <h5 class="mb-2">Hi, Welcome!</h5>
+                        <p class="pl-2">In this section of the application, the features shows the values, comparisons,
+                            and insights by using data visualization of the following:
+                        <ul class="list-unstyled">
+                            <li><strong>Revenues</strong> - the money generated from normal business operations,
+                                calculated as the average sales price times the number of units sold</li>
+                            <li><strong>Appropriations</strong> - when money is set aside money for a specific and
+                                particular purpose or purposes</li>
+                        </ul>
+                        </p>
+
+                        <br>
+                        <h5 class="mb-2">Navigation Bar</h5>
+                        <p class="pl-2">located at the top-right of the page</p>
+                        <img src="{{ url_for('static', filename='/images/guide_navbar.png') }}"
+                            class="rounded img-fluid mb-2" alt="...">
+                        <ul class="list-unstyled">
+                            <li><strong>1</strong> - goes to the Data Visualization input section</li>
+                            <li><strong>2</strong> - goes to the Forecasting input section</li>
+                            <li><strong>3</strong> - shows the pop-up guide of the specific section</li>
+                            <li><strong>4</strong> - goes to the About section of the application</li>
+                        </ul><br>
+                        <h5 class="mb-2">Advanced Details</h5>
+                        <p class="pl-2">located at the bottom-left of every graph displayed</p>
+                        <img src="{{ url_for('static', filename='/images/guide_advdetails.png') }}"
+                            class="rounded img-fluid mb-2" alt="...">
+                        <ul class="list-unstyled">
+                            <li><strong>1</strong> - shows the pop-up of the details of the specific graph containing
+                                the actual amounts and definitions</li>
+                        </ul><br>
+                        <h5 class="mb-2">Dropdown Menu</h5>
+                        <p class="pl-2">located at the top-left of the main page</p>
+                        <img src="{{ url_for('static', filename='/images/guide_dropdown1.png') }}"
+                            class="rounded img-fluid mb-2" alt="...">
+                        <ul class="list-unstyled">
+                            <li><strong>1</strong> - data type(revenues or
+                                appropriations) to be visualized</li>
+                            <li><strong>2</strong> - years that have existing values to
+                                be visualized</li>
+                            <li><strong>3</strong> - regions to be visualized</li>
+                            <li><strong>4</strong> - cities depending on the region
+                                dropdown selected to be visualized</li>
+                            <li><strong>5</strong> - submits all of the selected values in the dropdowns</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Footer -->
     <footer class="page-footer font-small mdb-color lighten-3 pt-4" data-aos="fade-right">
         <div class="container text-center text-md-left">
@@ -389,11 +452,22 @@
                 </div>
             </div>
         </div>
-        <div class="footer-copyright text-center py-3" style="background-color: rgba(246, 240, 233, 1);">© 2021 Copyright:
+        <div class="footer-copyright text-center py-3" style="background-color: rgba(246, 240, 233, 1);">© 2021
+            Copyright:
             <a href="https://aninaw-tech.herokuapp.com/"> Aninaw-tech - Tribunal</a>
         </div>
     </footer>
 
     <!-- Footer -->
+    <script>
+        $(window).on("load", function () {
+            if ($.cookie('datavisguide') == null) {
+                $.cookie('datavisguide', '1');
+                $('#datavisguide').modal('show');
+            }
+        });
+    </script>
+    <script src="{{ url_for('static', filename='/js/jquery.cookie.js') }}"></script>
 </body>
+
 </html>

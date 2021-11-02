@@ -11,8 +11,8 @@ def get_insightinp(year, dict, inptype, inp):
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
         </div>\
         <div class="modal-body">\
-                    <h6>CURRENT INPUT: ₱{inp:,.2f} on {year}</h6>\
-                    <br><h6>DATA:</h6>\
+                    <h5>CURRENT INPUT: ₱{inp:,.2f} on {year}</h5>\
+                    <br><h5>DATA:</h5>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -29,7 +29,7 @@ def get_insightinp(year, dict, inptype, inp):
     insight += '</tbody>\
                     </table></br>\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>{label1}</strong> - {def1}</li>\
                             <li><strong>RMSE(Root-Mean-Squared-Error)</strong> - is the standard deviation of the residuals (prediction errors)\
@@ -38,7 +38,7 @@ def get_insightinp(year, dict, inptype, inp):
                             <li><strong>Test Set</strong> - is a data set used to provide an unbiased evaluation of a final model fit on the training data set.\
                         </ul>\
                         <br>\
-                        <h6 class="mb-2">PURPOSES:</h6><p></p>\
+                        <h5 class="mb-2">PURPOSES:</h5><p></p>\
                         <p class="pl-2">The data above will be used in the following:\
                         <ul>\
                             <li>RMSE(Root-Mean-Square-Error) for getting the Optimal K</li>\
@@ -66,8 +66,8 @@ def get_insightfore(year, dict, forectype, output):
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
         </div>\
         <div class="modal-body">\
-                    <h6>CURRENT PREDICTION: ₱{opt:,.2f} on {year}</h6>\
-                    <br><h6>DATA:</h6>\
+                    <h5>CURRENT PREDICTION: ₱{opt:,.2f} on {year}</h5>\
+                    <br><h5>DATA:</h5>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -84,7 +84,7 @@ def get_insightfore(year, dict, forectype, output):
     insight += '</tbody>\
                     </table></br>\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>{label1}</strong> - {def1}</li>\
                             <li><strong>RMSE(Root-Mean-Squared-Error)</strong> - is the standard deviation of the residuals (prediction errors)\
@@ -93,7 +93,7 @@ def get_insightfore(year, dict, forectype, output):
                             <li><strong>Test Set</strong> - is a data set used to provide an unbiased evaluation of a final model fit on the training data set.\
                         </ul>\
                         <br>\
-                        <h6 class="mb-2">PURPOSES:</h6>\
+                        <h5 class="mb-2">PURPOSES:</h5>\
                         <p class="pl-2">The data above will be used in the following:\
                         <ul>\
                             <li>RMSE(Root-Mean-Squared-Error) for getting the Optimal K</li>\
@@ -123,8 +123,8 @@ def get_insightopts(pred, optm_k, df, forectype):
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
         </div>\
         <div class="modal-body">\
-                    <h6>OPTIMAL PREDICTION: ₱{opt:,.2f} on K={optm_k}</h6>\
-                    <br><h6>DATA:</h6>\
+                    <h5>OPTIMAL PREDICTION: ₱{opt:,.2f} on K={optm_k}</h5>\
+                    <br><h5>DATA:</h5>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -141,14 +141,14 @@ def get_insightopts(pred, optm_k, df, forectype):
     insight += '</tbody>\
                     </table></br>\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>K(Neighbors)</strong> - the number of the nearest neighbors to get in the model based in the input\
                             <li><strong>RMSE(Root-Mean-Squared-Error)</strong> - is the standard deviation of the residuals (prediction errors)\
                             <li><strong>Optimal K</strong> - the optimal number of the nearest neighbors with the lowest rmse value\
                         </ul>\
                         <br>\
-                        <h6 class="mb-2">PURPOSES:</h6>\
+                        <h5 class="mb-2">PURPOSES:</h5>\
                         <p class="pl-2">The data above shows the different outputs with different K values and was gathered during the rmse check for the Optimal K. The data can be used as a range for basis instead of using a single outcome however, the rmse of the data provided must not be ignored since there is a chance that the prediction has an exponentially higher residuals than the optimal value.\
                         The graph can be used to show the relationship between the K and the predicted outputs depending on the growing number of K and data training set for different outcomes.</p>\
                     </div>\
@@ -169,8 +169,8 @@ def get_insightrmse(df, df2):
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
         </div>\
         <div class="modal-body">\
-                    <h6>LOWEST RMSE: {rmse:,.2f} on K={optm_k}</h6>\
-                    <br><h6>DATA:</h6>\
+                    <h5>LOWEST RMSE: {rmse:,.2f} on K={optm_k}</h5>\
+                    <br><h5>DATA:</h5>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -187,14 +187,14 @@ def get_insightrmse(df, df2):
     insight += '</tbody>\
                     </table></br>\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>K(Neighbors)</strong> - the number of the nearest neighbors to get in the model based in the input\
                             <li><strong>RMSE(Root-Mean-Squared-Error)</strong> - is the standard deviation of the residuals (prediction errors)\
                             <li><strong>Optimal K</strong> - the optimal number of the nearest neighbors with the lowest rmse value\
                         </ul>\
                         <br>\
-                        <h6 class="mb-2">PURPOSES:</h6>\
+                        <h5 class="mb-2">PURPOSES:</h5>\
                         <p class="pl-2">The data above shows the rmse values of different K values for the Optimal K. The data can be used to check the other predictions of their rmse values.\
                         The graph can be used to show the relationship between the K and the rmse values depending on the growing number of K and data traning set that will be used to split train:test ratio of 80:20.</p>\
                     </div>\
@@ -215,9 +215,9 @@ def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist, distance
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
         </div>\
         <div class="modal-body">\
-                    <h6>INPUT: ₱{inp:,.2f}</h6><br>\
-                    <h6>NEIGHBORS: {n}</h6><br>\
-                    <h6>DATA IN LOWEST DISTANCE ORDER:</h6>\
+                    <h5>INPUT: ₱{inp:,.2f}</h5><br>\
+                    <h5>NEIGHBORS: {n}</h5><br>\
+                    <h5>DATA IN LOWEST DISTANCE ORDER:</h5>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -235,8 +235,8 @@ def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist, distance
             </tr>'.format(inp=distances[i][0][0], fore=distances[i][0][1], dist=distances[i][1])
     insight += '</tbody>\
                     </table></br>\
-                    <h6>OPTIMAL NEIGHBORS: {n}</h6><br>\
-                    <h6>NEAREST NEIGHBORS FOUND:</h6>\
+                    <h5>OPTIMAL NEIGHBORS: {n}</h5><br>\
+                    <h5>NEAREST NEIGHBORS FOUND:</h5>\
                     <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -253,7 +253,7 @@ def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist, distance
             </tr>'.format(inp=dict_neigh[inptype][i], fore=dict_neigh[forectype][i], dist=distances[i][1])
     insight += '</tbody>\
                     </table></br><div class="container-fluid">\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Input Type</strong> - is a dictionary variable containing (name,list of values) to be used as a training data set(X) for the forecasting by getting the nearest neighbors using euclidean distance.</li>\
                             <li><strong>Forecast Type</strong> - is a dictionary variable containing (name,list of values) to be used as a training data set(Y) for the forecasting by averaging the nearest neighbors.</li>\
@@ -262,7 +262,7 @@ def get_insightneighbors(df, dict_neigh, inptype, forectype, inp, dist, distance
                             <li><strong>Euclidean Distance</strong> - the optimal number of the nearest neighbors with the lowest rmse value\
                         </ul>\
                         <br>\
-                        <h6 class="mb-2">PURPOSES:</h6>\
+                        <h5 class="mb-2">PURPOSES:</h5>\
                         <p class="pl-2">The data above shows all of the existing neighbors and all of the nearest neighbors found using the Optimal K.\
                         The graph can be used to show the distances between the points using the Euclidean distance formula. The distance will be calculated using the x and the input only since the y is the missing data that the algorithm has to predict. </p>\
                     </div>\
@@ -284,7 +284,7 @@ def get_insightgeneral():
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">PROCEDURE:</h6>\
+                        <h5 class="mb-2">PROCEDURE:</h5>\
                         <ol><li>User enters an input along with its input type(X) and the forecast type(Y) to fit in the algorithm</li>\
                             <li>The input type(X) and the forecast type(Y) will be used to get the corresponding types of the existing data from the spreadsheets as training data set for getting the prediction</li>\
                             <li>The training data set will now get the list of the RMSE of different K values through the iteration of KNN Regression </li>\
@@ -295,7 +295,7 @@ def get_insightgeneral():
                                 <li>Average the forecast type(Y) of the nearest neighbors of the input type(X)</li>\
                             </ol>\
                         <br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>KNN Regression</strong> - is a non-parametric method that, in an intuitive manner, approximates the association between independent variables and the continuous outcome by averaging the observations in the same neighbourhood.</li>\
                             <li><strong>Input Type</strong> - is a dictionary variable containing (name,list of values) to be used as a training data set(X) for the forecasting by getting the nearest neighbors using euclidean distance.</li>\
@@ -330,7 +330,7 @@ def get_insightdefsurplus(surplusperyear, percents, years):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -357,7 +357,7 @@ def get_insightdefsurplus(surplusperyear, percents, years):
         insight += '</tr>'
     insight += '</tbody>\
                     </table></br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Surplus</strong> - an amount of something left over when requirements have been met; an excess of production or supply over demand. In this case the surplus is calculated by the difference of the total appropriations and revenues.</li>\
                             <li><strong>Total Appropriations</strong> - {app}</li>\
@@ -380,7 +380,7 @@ def get_insightdeflinerevapp(totaldicts):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                         <thead>\
                             <tr>\
@@ -396,7 +396,7 @@ def get_insightdeflinerevapp(totaldicts):
                 <td>₱{app:,.2f}</td></tr>'.format(year=totaldicts["Years"][i], app=totaldicts["Appropriations"][i], rev=totaldicts["Revenues"][i])
     insight += '</tbody>\
                     </table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Total Revenues</strong> - {rev}</li>\
                             <li><strong>Total Appropriations</strong> - {app}</li>\
@@ -418,7 +418,7 @@ def get_insightdefgauge(lat, prev, years, diff):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                             <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -433,7 +433,7 @@ def get_insightdefgauge(lat, prev, years, diff):
                             <td>{diff:.2f}%</td>\
                             </tbody></table>\
                         <br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Surplus</strong> - an amount of something left over when requirements have been met; an excess of production or supply over demand. In this case the surplus is calculated by the difference of the total appropriations and revenues.</li>\
                         </ul>\
@@ -456,7 +456,7 @@ def get_insightdefanimch(df, year):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">Total Revenues:</h6>\
+                        <h5 class="mb-2">Total Revenues:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -472,7 +472,7 @@ def get_insightdefanimch(df, year):
             insight += '<td>₱{am:,.2f}</td>'.format(am=lst[year.index(y)])
         insight += '</tr>'
     insight += '</tbody></table><br>\
-        <h6 class="mb-2">Total Appropriations:</h6>\
+        <h5 class="mb-2">Total Appropriations:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -488,7 +488,7 @@ def get_insightdefanimch(df, year):
             insight += '<td>₱{am:,.2f}</td>'.format(am=lst[year.index(y)])
         insight += '</tr>'
     insight += '         </tbody></table>\
-                        <br><h6 class="mb-2">DEFINITIONS:</h6>\
+                        <br><h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Total Revenues</strong> - {rev}</li>\
                             <li><strong>Total Appropriations</strong> - {app}</li>\
@@ -516,7 +516,7 @@ def get_insightlclsrces(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -529,7 +529,7 @@ def get_insightlclsrces(dict):
             <td>{lbl}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Local Sources</strong> - {def1}</li>\
                             <li><strong>Tax Revenues</strong> - {def5}</li>\
@@ -554,7 +554,7 @@ def get_insightntr(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -567,7 +567,7 @@ def get_insightntr(dict):
             <td>{lbl}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Local Sources</strong> - {def0}</li>\
                             <li><strong>Non-Tax Revenues</strong> - {def1}</li>\
@@ -592,7 +592,7 @@ def get_insightext(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -605,7 +605,7 @@ def get_insightext(dict):
             <td>{lbl}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>External Sources</strong> - {def0}</li>\
                             <li><strong>Share from the National Internal Revenue Taxes (IRA)</strong> - {def1}</li>\
@@ -635,7 +635,7 @@ def get_insightextntc(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -648,7 +648,7 @@ def get_insightextntc(dict):
             <td>{lbl}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Other Shares from National Tax Collections</strong> - {def0}</li>\
                             <li><strong>Share from Ecozone</strong> - {def1}</li>\
@@ -675,7 +675,7 @@ def get_insightextor(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -688,7 +688,7 @@ def get_insightextor(dict):
             <td>{lbl}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Other Receipts</strong> - {def0}</li>\
                             <li><strong>Grants and Donations</strong> - {def1}</li>\
@@ -712,7 +712,7 @@ def get_insightextcir(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -725,7 +725,7 @@ def get_insightextcir(dict):
             <td>{lbl}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(lbl=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Capital/Investment Receipts</strong> - {def0}</li>\
                             <li><strong>Sale of Capital Assets</strong> - {def1}</li>\
@@ -750,7 +750,7 @@ def get_insightrec(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -763,7 +763,7 @@ def get_insightrec(dict):
             <td>{yr}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(yr=dict["Year"][i], amount=dict["Receipts"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Receipts from Borrowings</strong> - {def0}</li>\
                         </ul>\
@@ -784,7 +784,7 @@ def get_insightrevgauge(lat, prev, year, diff):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                             <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -799,7 +799,7 @@ def get_insightrevgauge(lat, prev, year, diff):
                             <td>{diff:.2f}%</td>\
                             </tbody></table>\
                         <br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Revenues</strong> - the money generated from normal business operations, calculated as the average sales price times the number of units sold</li>\
                             <li><strong>Total Revenues</strong> - {def0}</li>\
@@ -821,7 +821,7 @@ def get_insightappgauge(lat, prev, year, diff):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                             <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -836,7 +836,7 @@ def get_insightappgauge(lat, prev, year, diff):
                             <td>{diff:.2f}%</td>\
                             </tbody></table>\
                         <br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Appropriations</strong> - when money is set aside money for a specific and particular purpose or purposes</li>\
                             <li><strong>Total Appropriations</strong> - {def0}</li>\
@@ -858,7 +858,7 @@ def get_insightcontapp(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -871,7 +871,7 @@ def get_insightcontapp(dict):
             <td>{label}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(label=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Continuing Appropriations</strong> - {def0}</li>\
                             <li><strong>General Public Services</strong> - {def1}</li>\
@@ -904,7 +904,7 @@ def get_insightothersoths(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -917,7 +917,7 @@ def get_insightothersoths(dict):
             <td>{label}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(label=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Others</strong> - {def0}</li>\
                             <li><strong>Maintenance and Other Operating Expenses</strong> - {def1}</li>\
@@ -942,7 +942,7 @@ def get_insightdebts(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -955,7 +955,7 @@ def get_insightdebts(dict):
             <td>{label}</td>\
             <td>₱{amount:,.2f}</td></tr>'.format(label=dict["Label"][i], amount=dict["Amount"][i])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Debt Services</strong> - {def0}</li>\
                             <li><strong>Financial Expense</strong> - {def1}</li>\
@@ -979,7 +979,7 @@ def get_insightsocex(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -994,7 +994,7 @@ def get_insightsocex(dict):
             <td>₱{amount:,.2f}</td>\
                 <td>₱{amount2:,.2f}</td></tr>'.format(label=i, amount=dict[i][0], amount2=dict[i][1])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Social Expenditures</strong> - measure of the extent to which countries assume responsibility for supporting the standard of living of disadvantaged or vulnerable groups</li>\
                             <li><strong>LDRRMF(Local Disaster Risk Reduction and Management Fund)</strong> - {def0}</li>\
@@ -1011,6 +1011,8 @@ def get_insightsocex(dict):
                                     def2=get_definition("Allocation for Senior Citizens and PWD"), def3=get_definition("Maintenance and Other Operating Expenses"),
                                     def4=get_definition("Capital Outlay"), def5=get_definition("20% Development Fund"))
     return insight
+
+
 def get_insightcurrapp(dict):
     insight = '<div class="modal fade" id="insightcurrapp" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
     <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
@@ -1021,7 +1023,7 @@ def get_insightcurrapp(dict):
         </div>\
         <div class="modal-body">\
                     <div class="container-fluid">\
-                        <h6 class="mb-2">DATA:</h6>\
+                        <h5 class="mb-2">DATA:</h5>\
                         <table class="table ml-2">\
                             <thead>\
                             <tr>\
@@ -1036,9 +1038,9 @@ def get_insightcurrapp(dict):
             <th scope="row">{label}</th>\
             <td>₱{amount:,.2f}</td>\
                 <td>₱{amount2:,.2f}</td>\
-                    <td>₱{amount3:,.2f}</td></tr>'.format(label=i, amount=dict[i][0], amount2=dict[i][1],amount3=dict[i][2])
+                    <td>₱{amount3:,.2f}</td></tr>'.format(label=i, amount=dict[i][0], amount2=dict[i][1], amount3=dict[i][2])
     insight += '</tbody></table><br>\
-                        <h6 class="mb-2">DEFINITIONS:</h6>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
                         <ul class="list-unstyled">\
                             <li><strong>Social Expenditures</strong> - measure of the extent to which countries assume responsibility for supporting the standard of living of disadvantaged or vulnerable groups</li>\
                             <li><strong>LDRRMF(Local Disaster Risk Reduction and Management Fund)</strong> - {def0}</li>\

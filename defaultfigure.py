@@ -201,7 +201,7 @@ def reg_app_line():
     fig = px.line(
         data_frame=linedf,
         x="Years", y=["Revenues", "Appropriations"], color_discrete_sequence=["#ABDEE6", "#CBAACB"], markers=True, line_shape="spline",
-        title="Revenues and Appropriations of all Local Government Units from " +
+        title="Revenues & Appropriations of all LGUs from " +
         yearstr[0]+" to "+yearstr[-1]
     )
     fig.update_layout(height=600)
