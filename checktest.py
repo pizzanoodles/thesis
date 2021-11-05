@@ -2,6 +2,7 @@ import pandas as pd
 from numpy import nan
 from defaultfigure import *
 from initialize import initialize_dir_year, initialize_dir_region, get_cities, find_typedata
+import os, shutil
 
 # UPDATE defaultgraph and check missing scbaa in region.xlsx
 def checkrev(city_init):
@@ -79,8 +80,7 @@ def update_defaultgraph():
     df.to_excel("SCBAA/Defaultgraph.xlsx")
     return "Updating Defaultgraph.xlsx Success!", dict_missingscbaa,dict_checknull
 
-x, y,z = update_defaultgraph()
-print(x)
+#x, y,z = update_defaultgraph()
 """
 success = True
 for y in z:
@@ -91,3 +91,20 @@ if success:
     print("Success")
 else:
     print("FAILED")"""
+def delete_year(year):
+    year = str(year)
+    path = "SCBAA/"+year
+    if(os.path.exists(path)):
+        shutil.rmtree(path)
+        print("Folder deleted.")
+    else:
+        print("Folder not found.")
+
+def add_year(year):
+    year = str(year)
+    path = "SCBAA/"+year
+    if(os.path.exists(path)):
+        print("Folder already exists.")
+    else:
+        os.makedirs(path)
+        print("New folder created.")
