@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='/css/admin.css') }}">
+    <link rel="icon" href="{{ url_for('static', filename='/images/aninaw-tech-logo-brown.png') }}" type="image/x-icon">
+    <title> Admin Login</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent">
+        <div class="container-fluid stickynav">
+
+            <a class="navbar-brand " href="/"> <img
+                    src="{{ url_for('static', filename='/images/aninaw-tech-logo-black.png') }}" class="rounded"
+                    alt="about width=40" height="40" style="float:left">
+                <h6 style="float:right; color:black;">Using K-Nearest Neighbor Regression <br>Machine Learning Algorithm
+                </h6>
+            </a>
+            <div class="mr-auto">
+                <a href="/" type="button" class="btn btn-outline-dark" style="margin:5px;">
+                    VISIT PUBLIC PAGE</a>
+            </div>
+        </div>
+    </nav>
+    {% if err == 1 %}
+    <div class="alert alert-danger alert-dismissible p-3" role="alert">
+        Incorrect Key!<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    {% endif %}
+    <div class="container">
+        <figure class="text-center" data-aos="fade-left" id="inpform">
+            <br><br><br><br><br><br><br><br><br><br><br>
+            <form action="#" id="loginform" method="POST">
+                <h5 id="selectcat" class="mb-3">WELCOME ADMIN!</h5>
+                <input placeholder="ENTER KEY" name="passw" type="password" class="form-control mb-3" style="width:70%;"
+                    id="passw">
+                <button type="submit" id="btnsubmit" disabled>
+                    ENTER</button>
+            </form>
+        </figure>
+
+        <br><br><br><br><br><br><br><br><br><br>
+        <footer class="page-footer font-small mdb-color lighten-3 pt-4" data-aos="fade-right">
+            <div class="container text-center text-md-left">
+                <div class="row">
+                    <div class="col-md-4 col-lg-3 mr-auto my-md-4 my-0 mt-4 mb-1">
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class=" about col-md-2 col-lg-2 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-4 col-lg-3 mx-auto my-md-4 my-0 mt-4 mb-1">
+                    </div>
+                    <hr class="clearfix w-100 d-md-none">
+                    <div class="col-md-2 col-lg-2 text-center mx-auto my-4">
+                    </div>
+                </div>
+            </div>
+            <div class="footer-copyright text-center pt-auto pb-0" style="background-color: rgba(246, 240, 233, 1);">
+
+                <h5 id="selectcat" class="mb-3">REMEMBER: TRANSPARENCY IS THE BEST POLICY</h5>
+            </div>
+        </footer>
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ"
+        crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script>
+        loginform.addEventListener("input", function () {
+            if (passw.value != "") {
+                document.getElementById("btnsubmit").disabled = false;
+            }
+            else {
+                document.getElementById("btnsubmit").disabled = true;
+            }
+        });
+    </script>
+    <script>
+        AOS.init();
+    </script>
+
+
+</body>
+
+</html>

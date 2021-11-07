@@ -1,0 +1,135 @@
+body{
+    background-color:rgba(246, 240, 233, 1);
+    padding:0;
+    height:100%;
+    width:100%;
+    margin:0;
+  }
+  div{
+    color:black;
+  }
+  .btn-group{
+    margin-bottom:1em;
+  }
+  .btn-check:checked{
+    background-color: #79480f;
+  }
+  .btndes{
+    background-color: white;
+    transition-duration: 0.2s;
+  }
+  .btndes:hover{
+    background-color: #9c5d15;
+  }
+  .btndes:checked{
+    background-color: #79480f;
+  }
+  .btn:focus, .btn-outline-dark:active, .btn-outline-dark.active, .btn-outline-dark.dropdown-toggle.show, .btn-outline-dark:active, .btn-check:checked+.btn-outline-dark{
+    background-color: #79480f;
+  }
+  .stickynav{
+    padding-bottom:10px;
+    padding-top:10px;
+    background-color:rgba(246, 240, 233, 1);
+    border-top: 0px;
+    border-left: 0px;
+    border-right: 0px;
+    border-bottom:0px;
+    border-style: solid;
+    box-shadow: 0px 15px 10px rgb(207, 201, 191);
+  }
+  .navbar{
+    padding:0;
+    z-index: 9999;
+    width:100%;
+    position: -webkit-sticky;
+    position:sticky;
+    top:0;
+  }
+  .btn{
+    color:black;
+  }
+  #selectcat,#updtxt{
+    font-weight: 500;
+    letter-spacing: 5px;
+    font-size:18px;
+  }
+  #cleanerr:disabled{
+    cursor:not-allowed;
+    opacity: 0.2;
+  }
+  #inpform{
+      margin:auto;
+      width:40%;
+  }
+  #passw{
+      display:inline-block;
+  }
+  #btnsubmit{
+    font-weight: 500;
+    letter-spacing: 4px;
+    border-style:none;
+    padding-top: 0.525em;
+    padding-bottom:0.525em;
+    background-color: #79480f;
+    color:white;
+    border-radius: 5px;
+    width:25%;
+    transition-duration: 0.2s;
+  }
+  #btnsubmit:disabled{
+    cursor:not-allowed;
+    opacity: 0.2;
+  }
+  #btnsubmit:hover,.adminmodbtn:hover{
+    background-color: #9c5d15;
+  }
+  .adminmain{
+      width:80%;
+  }
+  .admincard{
+    border-radius: 1em;
+  }
+  .admincardbody{
+    background-color: #79480f;
+    color:white;
+    border-radius: 1em;
+  }
+  .admincardimg{
+      color:#301c06;
+      padding:5em;
+  }
+  .admincard:hover{
+    background: linear-gradient(rgba(0, 0, 0, 0.25), rgba(0, 0, 0, 0.25));
+  }
+
+  .insightdiv{
+    margin-top: 6em;
+    height:87%;
+  }
+  .spinnerload{
+    height:300px;
+    width:300px;
+}
+.adminmodbtn{
+    font-weight: 500;
+    letter-spacing: 5px;/*5px*/
+    border-style:none;
+    padding-top: 10px;
+    padding-bottom:10px;
+    background-color: #79480f;
+    color:white;
+    border-radius: 5px;
+    width:40%;
+    transition-duration: 0.2s;
+    margin-left: 4%;
+  }
+  .modalbtns{
+    width:20%;
+  }
+  #listmiss{
+    color:#C69605;
+  }
+  #listerrs{
+    color:#A52935;
+  }
