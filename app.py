@@ -5,17 +5,99 @@ from initialize import initialize_dir_region, initialize_dir_year, get_cities, g
 from generatefigure import generate_fig_rev, generate_fig_app
 from forecast import forecasting
 from knnalgo import imputearr_lst
+from checktest import *
 import plotly
 import json
 import ast
+import zipfile
 
 from flask import Flask
 
 app = Flask(__name__)
 
+
 @app.route("/")
 def index():
     return render_template("/index.html")
+
+
+@app.route("/adminlogin", methods=["POST", "GET"])
+def adminlogin():
+    if request.method == "POST":
+        password = request.form["passw"]
+        passw, cookie1, cookie2 = get_adminaccess()
+        if password == passw:
+            return render_template("admingetcookie.html", cok1=cookie1, cok2=cookie2)
+        else:
+            return render_template("adminlogin.html", err=1)
+    else:
+        return render_template("adminlogin.html")
+
+@app.route("/checkcookies/<c1>/<c2>")
+def checkcookies(c1,c2):
+    passw, cookie1, cookie2 = get_adminaccess()
+    bol1 = False
+    if c1 == cookie1 and c2 == cookie2:
+        bol1 = True
+    return jsonify({'check':bol1})
+
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
+
+
+@app.route('/admin', methods=['POST'])
+def upload_file():
+    uploaded_file = request.files['file']
+    add_s = request.form['add_select']
+    print(add_s)
+    if uploaded_file.filename != '':
+        uploaded_file.save("SCBAAsamp/tempuploadzip/"+uploaded_file.filename)
+    x = add_year(add_s)
+    with zipfile.ZipFile("SCBAAsamp/tempuploadzip/"+uploaded_file.filename, 'r') as zip_ref:
+        zip_ref.extractall(x)
+    os.remove("SCBAAsamp/tempuploadzip/"+uploaded_file.filename)
+    return redirect(url_for('admin'))
+
+
+@app.route("/adminupd")
+def adminupd():
+    miss, err = update_scan()
+    return jsonify({'miss': miss, 'lenmiss': len(miss), 'errpath': err['path'], 'errfix': err['fix'], 'lenerr': len(err['path'])})
+
+
+@app.route("/canceladminupd")
+def canceladminupd():
+    x = cancel_upd()
+    y = update_defaultgraph()
+    return jsonify({'none': x, 'none2': y})
+
+
+@app.route("/confirmadminupd")
+def confirmadminupd():
+    x = confirm_upd()
+    y = update_defaultgraph()
+    return jsonify({'none': x, 'none2': y})
+
+
+@app.route("/admindelinit")
+def admindelinit():
+    year = initialize_dir_year()
+    return jsonify({'oldest': year[0], 'newest': year[-1]})
+
+
+@app.route("/delyear/<yr>")
+def delyear(yr):
+    x = delete_year(yr)
+    print("ENDED?")
+    return jsonify({'none': x})
+
+
+@app.route("/adminaddinit")
+def adminaddinit():
+    year = initialize_dir_year()
+    return jsonify({'oldest': int(year[0])-1, 'newest': int(year[-1])+1})
 
 
 @app.route("/datavisdefault", methods=["POST", "GET"])
