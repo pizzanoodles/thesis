@@ -47,6 +47,8 @@ def confirm_upd():
                 os.remove('SCBAA/'+y+'/'+del_file+'.xlsx')
                 os.rename('SCBAA/'+y+'/'+del_file+'-copy.xlsx',
                           'SCBAA/'+y+'/'+del_file+'.xlsx')
+                wb = load_workbook('SCBAA/'+y+'/'+del_file+'.xlsx')
+                wb.save('SCBAA/'+y+'/'+del_file+'.xlsx')
     return None
 
 
@@ -91,6 +93,34 @@ def update_scan():
                                 "SCBAA/"+str(y)+"/"+r+".xlsx/"+c+"/E"+str((i+7)+2))
                             lst_checkerrs['fix'].append(str(val) + " -> nan")
                             ws["E"+str((i+7)+2)] = None
+                try:
+                    ws["E14"] = float(ws["E11"].value) + \
+                        float(ws["E12"].value) + float(ws["E13"].value)
+                    ws["E19"] = float(ws["E16"].value) + \
+                        float(ws["E17"].value) + float(ws["E18"].value)
+                    ws["E37"] = float(ws["E14"].value) + float(ws["E19"].value) + float(ws["E21"].value) + float(ws["E22"].value) + float(ws["E24"].value) + float(ws["E25"].value) + float(ws["E26"].value) + \
+                        float(ws["E27"].value) + float(ws["E29"].value) + float(ws["E30"].value) + float(ws["E31"].value) + \
+                        float(ws["E33"].value) + float(ws["E34"].value) + \
+                        float(ws["E35"].value) + float(ws["E36"].value)
+                    ws["E93"] = float(ws["E42"].value) + float(ws["E43"].value) + float(ws["E44"].value) + float(ws["E46"].value) + float(ws["E47"].value) + float(ws["E48"].value) + float(ws["E50"].value) + float(ws["E51"].value) + float(ws["E52"].value) + \
+                        float(ws["E54"].value) + float(ws["E55"].value) + float(ws["E56"].value) + float(ws["E58"].value) + \
+                        float(ws["E59"].value) + float(ws["E60"].value) + \
+                        float(ws["E62"].value) + float(ws["E63"].value) + float(ws["E64"].value) + float(ws["E66"].value) + float(ws["E67"].value) + float(ws["E68"].value) + float(ws["E70"].value) + float(ws["E71"].value) + float(ws["E72"].value) + \
+                        float(ws["E75"].value) + float(ws["E76"].value) + float(ws["E78"].value) + float(ws["E79"].value) + \
+                        float(ws["E81"].value) + float(ws["E82"].value) + \
+                        float(ws["E84"].value) + float(ws["E85"].value) + float(ws["E87"].value) + \
+                        float(ws["E88"].value) + float(ws["E90"].value) + \
+                        float(ws["E91"].value) + float(ws["E92"].value)
+                    ws["E111"] = float(ws["E96"].value) + float(ws["E98"].value) + float(ws["E100"].value) + float(ws["E102"].value) + \
+                        float(ws["E104"].value) + float(ws["E106"].value) + \
+                        float(ws["E108"].value) + float(ws["E110"].value)
+                    ws["E112"] = float(ws["E93"].value) + \
+                        float(ws["E111"].value)
+                except ValueError:
+                    print(y, r, c, "COPYPASTE")
+                except TypeError:
+                    print(y, r, c, "FORMAT")
+
                 if rev == 0 and app == 0:
                     lst_checkmissingscbaa.append(
                         "SCBAA/"+str(y)+"/"+r+".xlsx/"+c)
@@ -118,6 +148,8 @@ def update_defaultgraph():
                 app = city_excel.iloc[110, 4]
                 totalrev += rev
                 totalapp += app
+                if(r == "NCR" and y == 2021):
+                    print(totalrev, totalapp, "lol")
             dict_revapp["Region"].append(r)
             dict_revapp["Year"].append(y)
             dict_revapp["Revenue"].append(totalrev)
