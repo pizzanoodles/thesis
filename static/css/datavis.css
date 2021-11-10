@@ -153,13 +153,14 @@ ul{
   display:-ms-inline-grid;
   }
 #overview{
-  width:40%;
+  width:100%;
   margin:auto;
+  margin-top:0;
 }
 #lcl{
-  width:35%;
-  margin:auto;
-}
+  overflow: hidden;
+  padding: 0;
+} 
 .extchart{
   width:100%;
 }

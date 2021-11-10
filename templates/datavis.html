@@ -47,8 +47,7 @@
                             <div id="chart8">
                             </div>
                             <br>
-                            <p class='c1insight'><strong>{% autoescape false %} {{sunbInsightsRev}} {% endautoescape
-                                    %}</strong></p>
+                            <p class='c1insight'><strong>{% autoescape false %} {{sunbInsightsRev}} {% endautoescape%}</strong></p>
                             <!--<div style="color:black">{% autoescape false %} {{defInsightsRev}} {% endautoescape %}</div>-->
                         </div>
                     </div>
@@ -77,10 +76,9 @@
         </div>
         {% endif %}
         {% if dt == "Revenue" %}
-        <div id="lcl" data-aos="fade-left">
-            <h5 id="selectcat">LOCAL SOURCES</h5>
+        <div id="lcl" class = "row align-items-center" data-aos="fade-left">
+            <h5 id="selectcat">LOCAL SOURCES</h5><br><br><br>
             <div class="col">
-                <div class="col">
                     <div class="card">
                         <div class="card-body">
                             <div id="chart1">
@@ -91,9 +89,9 @@
                             </button>
                         </div>
                     </div>
-                </div><br><br>
+                </div>
                 <div class="col">
-                    <div class="card mx-10">
+                    <div class="card">
                         <div class="card-body">
                             <div id="chart2">
                             </div>
@@ -106,7 +104,6 @@
                 </div>
             </div>
         </div>
-    </div>
     <div class="row align-items-center all" id="ext" data-aos="fade-left">
         <h5 id="selectcat">EXTERNAL SOURCES</h5><br />
         <div class="col-6 mb-4">
