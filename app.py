@@ -33,13 +33,14 @@ def adminlogin():
     else:
         return render_template("adminlogin.html")
 
+
 @app.route("/checkcookies/<c1>/<c2>")
-def checkcookies(c1,c2):
+def checkcookies(c1, c2):
     passw, cookie1, cookie2 = get_adminaccess()
     bol1 = False
     if c1 == cookie1 and c2 == cookie2:
         bol1 = True
-    return jsonify({'check':bol1})
+    return jsonify({'check': bol1})
 
 
 @app.route("/admin")
@@ -90,7 +91,7 @@ def admindelinit():
 @app.route("/delyear/<yr>")
 def delyear(yr):
     x = delete_year(yr)
-    print("ENDED?")
+    y = update_defaultgraph()
     return jsonify({'none': x})
 
 

@@ -168,13 +168,32 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="addchanges" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <div class="container-fluid text-center p-4">
+                        <h5 id="selectcat" class="mb-4">DATA HAS BEEN ADDED</h5>
+                        <br><br>
+                        <button class="adminmodbtn modalbtns mx-5 mb-4" onclick="updscanbtn()" data-bs-toggle="modal"
+                            style="width:50%">UPDATE & SCAN DATA</button>
+                        <button class="adminmodbtn modalbtns mx-5" data-bs-dismiss="modal">CANCEL</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="delconfirmation" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
             <div class="modal-content">
                 <div class="modal-body">
                     <div class="container-fluid text-center p-4">
-                        <h5 id="selectcat" class="mb-4">ARE YOU SURE YOU WANT DELETE THE YEAR</h5>
+                        <h5 id="selectcat" class="mb-4">ARE YOU SURE YOU WANT TO DELETE THE YEAR</h5>
                         <button class="adminmodbtn modalbtns mx-5" onclick="delyearbtn()"
                             data-bs-dismiss="modal">DELETE</button>
                         <button class="adminmodbtn modalbtns mx-5" data-bs-dismiss="modal">CANCEL</button>
@@ -216,8 +235,7 @@
                 <div class="modal-body">
                     <div class="container-fluid text-center p-4">
                         <h5 id="selectcat" class="mb-4">SELECT YEAR:</h5>
-                        <form method="POST" action="" enctype="multipart/form-data"
-                            onsubmit="return confirm('Are you sure you want to submit?');">
+                        <form method="POST" action="" enctype="multipart/form-data" onsubmit="confaddbtn()">
                             <select class="form-select mb-4 mx-auto" name="add_select" id="add_select"
                                 style="width:40%;" required>
                             </select>
@@ -271,6 +289,7 @@
                 response.json().then(function (data) {
                     $('#loadingmodal').modal('hide');
                     myfunction();
+                    $.removeCookie('changes');
                 });
             });
         }
@@ -280,13 +299,16 @@
                 response.json().then(function (data) {
                     $('#loadingmodal').modal('hide');
                     myfunction();
+                    $.removeCookie('changes');
                 });
             });
         }
         function delyearbtn() {
             var del_select = document.getElementById('del_select')
+            $('#loadingmodal').modal('show');
             fetch('delyear/' + del_select.value).then(function (response) {
                 response.json().then(function (data) {
+                    $('#loadingmodal').modal('hide');
                 });
             });
 
@@ -294,6 +316,36 @@
         function logoutbtn() {
             $.removeCookie('crypt1');
             $.removeCookie('crypt2');
+        }
+        function updscanbtn() {
+            $('#modalupd').modal('show');
+            fetch('adminupd').then(function (response) {
+                response.json().then(function (data) {
+                    tbdlbody = '';
+                    tbdlbody2 = '';
+                    data.miss.forEach(function (item) {
+                        tbdlbody += '<tr> <td>' + item + '</td><td>Missing SCBAA</td></tr>'
+                    });
+                    for (let i = 0; i < data.errpath.length; i++) {
+                        tbdlbody2 += '<tr><td>' + data.errpath[i] + '</td><td>' + data.errfix[i] + '</td></tr>'
+                    }
+                    var lstbodymiss = document.getElementById('listbodymiss')
+                    var badgemiss = document.getElementById('badgemiss')
+                    var lstbodyerrs = document.getElementById('listbodyerrs')
+                    var badgeerrs = document.getElementById('badgeerrs')
+                    lstbodymiss.innerHTML = tbdlbody;
+                    badgemiss.innerHTML = data.lenmiss;
+                    lstbodyerrs.innerHTML = tbdlbody2;
+                    badgeerrs.innerHTML = data.lenerr;
+                    myfunction()
+
+                });
+            });
+        }
+        function confaddbtn() {
+            if (confirm('Are you sure you want to submit?')) {
+                document.cookie = "changes=1";
+            }
         }
         $("div#upd").click(function () {
             $('#modalupd').modal('show');
@@ -363,6 +415,9 @@
                         }
                     });
                 });
+            }
+            if ($.cookie('changes') != null) {
+                $('#addchanges').modal('show');
             }
         });
     </script>
