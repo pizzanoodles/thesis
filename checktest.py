@@ -60,39 +60,61 @@ def update_scan():
     total_amlst = [12, 17, 35, 91]
     region = initialize_dir_region()['value']
     lst_checkmissingscbaa = []
+    dict_errs = {}
     for y in year:
         y = int(y)
+        dict_errs[y] = {}
         for r in region:
             filepath = "SCBAA/" + str(y) + "/" + r + ".xlsx"
-            copyfile(filepath, "SCBAA/" + str(y) + "/" + r + "-copy.xlsx")
-            check_errorfile = False
-            wb = load_workbook("SCBAA/" + str(y) + "/" + r + "-copy.xlsx")
             reg_excel = pd.ExcelFile(filepath)
             for c in dict_scbaa["Region"][r]:
-                ws = wb[c]
                 app, rev = 0, 0
                 city_excel = pd.read_excel(reg_excel, c)
                 rev = city_excel.iloc[35, 4]
                 app = city_excel.iloc[110, 4]
+                cityerrlst = []
+                city = {}
                 for i in range(102):
                     val = city_excel.iloc[i+7, 4]
                     if i+7 in lst_val:
                         if str(val) == "nan":
-                            check_errorfile = True
                             lst_checkerrs['path'].append(
                                 "SCBAA/"+str(y)+"/"+r+".xlsx/"+c+"/E"+str((i+7)+2))
                             lst_checkerrs['fix'].append(
                                 str(val) + " -> float value")
-                            ws["E"+str((i+7)+2)] = 0.0
+                            cityerrlst.append(i)
                     elif i+7 in total_amlst:
                         pass
                     else:
                         if str(val) != "nan":
-                            check_errorfile = True
                             lst_checkerrs['path'].append(
                                 "SCBAA/"+str(y)+"/"+r+".xlsx/"+c+"/E"+str((i+7)+2))
                             lst_checkerrs['fix'].append(str(val) + " -> nan")
-                            ws["E"+str((i+7)+2)] = None
+                            cityerrlst.append(i)
+                if rev == 0 and app == 0:
+                    lst_checkmissingscbaa.append(
+                        "SCBAA/"+str(y)+"/"+r+".xlsx/"+c)
+                if cityerrlst:
+                    city = {c: cityerrlst}
+                    try:
+                        dict_errs[y][r].update(city)
+                    except KeyError:
+                        dict_errs[y] = {r: city}
+    print(dict_errs)
+    for yr in dict_errs:
+        for rg in dict_errs[yr]:
+            filepath = "SCBAA/" + str(yr) + "/" + rg + ".xlsx"
+            copyfile(filepath, "SCBAA/" + str(yr) + "/" + rg + "-copy.xlsx")
+            wb = load_workbook("SCBAA/" + str(yr) + "/" + rg + "-copy.xlsx")
+            for ct in dict_errs[yr][rg]:
+                ws = wb[ct]
+                for error in dict_errs[yr][rg][ct]:
+                    if error+7 in lst_val:
+                        ws["E"+str((error+7)+2)] = 0.0
+                    elif error+7 in total_amlst:
+                        pass
+                    else:
+                        ws["E"+str((error+7)+2)] = None
                 try:
                     ws["E14"] = float(ws["E11"].value) + \
                         float(ws["E12"].value) + float(ws["E13"].value)
@@ -117,16 +139,10 @@ def update_scan():
                     ws["E112"] = float(ws["E93"].value) + \
                         float(ws["E111"].value)
                 except ValueError:
-                    print(y, r, c, "COPYPASTE")
+                    print(yr, rg, ct, "COPYPASTE")
                 except TypeError:
-                    print(y, r, c, "FORMAT")
-
-                if rev == 0 and app == 0:
-                    lst_checkmissingscbaa.append(
-                        "SCBAA/"+str(y)+"/"+r+".xlsx/"+c)
-            wb.save("SCBAA/" + str(y) + "/" + r + "-copy.xlsx")
-            if check_errorfile == False:
-                os.remove("SCBAA/" + str(y) + "/" + r + "-copy.xlsx")
+                    print(yr, rg, ct, "FORMAT")
+            wb.save("SCBAA/" + str(yr) + "/" + rg + "-copy.xlsx")
     return lst_checkmissingscbaa, lst_checkerrs
 
 
@@ -148,8 +164,6 @@ def update_defaultgraph():
                 app = city_excel.iloc[110, 4]
                 totalrev += rev
                 totalapp += app
-                if(r == "NCR" and y == 2021):
-                    print(totalrev, totalapp, "lol")
             dict_revapp["Region"].append(r)
             dict_revapp["Year"].append(y)
             dict_revapp["Revenue"].append(totalrev)
@@ -157,21 +171,6 @@ def update_defaultgraph():
     df = pd.DataFrame(dict_revapp)
     df.to_excel("SCBAA/Defaultgraph.xlsx")
     return None
-
-
-"""y, z = update_defaultgraph()
-print(y)
-print("---------")
-print(z)"""
-"""success = True
-for y in z:
-    for r in z[y]:
-        if r:
-            success = False
-if success:
-    print("Success")
-else:
-    print("FAILED")"""
 
 
 def delete_year(year):
