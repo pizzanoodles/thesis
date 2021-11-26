@@ -57,6 +57,54 @@ def get_insightinp(year, dict, inptype, inp):
     return insight
 
 
+def get_insightacc(k, acc, predmods, y_tst):
+    insight = '<div class="modal fade" id="insightacc" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Accuracy Score from the model</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <br><h5>DATA:</h5>\
+                    <table class="table ml-2">\
+                        <thead>\
+                            <tr>\
+                                <th scope="col">K</th>\
+                                <th scope="col">Predictions</th>\
+                                <th scope="col">Test Set</th>\
+                                <th scope="col">Accuracy Score</th>\
+                            </tr>\
+                        </thead>\
+                        <tbody>'
+    for i in range(len(acc)):
+        insight += '<tr>\
+                <td>{k}</td>\
+                <td>{pred}</td>\
+                <td>{test}</td>\
+                <td>{amount:0.2f}%</td>\
+            </tr>'.format(k=k[i], amount=acc[i], pred=predmods[i], test=y_tst)
+    insight += '</tbody>\
+                    </table></br>\
+                    <div class="container-fluid">\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
+                        <ul class="list-unstyled">\
+                            <li><strong>Accuracy Score</strong> - the number of correctly classified data instances over the total number of data instances</li>\
+                            <li><strong>Predictions</strong> - the value computed using the KNN with the corresponding K-value\
+                            <li><strong>Test Set</strong> - is a data set used to provide an unbiased evaluation of a final model fit on the training data set\
+                        </ul>\
+                        <br>\
+                        <h5 class="mb-2">PURPOSES:</h5><p></p>\
+                        <p class="pl-2">The data above was created when getting the Optimal K. The Accuracy Score was computed by comparing each of the predictions and the test set in % and finally, by averaging all of the scores percentages in % also</p>\
+                    </div>\
+                </div>\
+                    <div class="modal-footer">\
+                    <button class="insightbtn modalbtns" data-bs-target="#generalinsight" data-bs-toggle="modal">Help</button>\
+                </div>\
+         </div></div></div>'
+    return insight
+
+
 def get_insightfore(year, dict, forectype, output):
     insight = '<div class="modal fade" id="insightfore" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
     <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
@@ -808,6 +856,45 @@ def get_insightrevgauge(lat, prev, year, diff):
                     </div>\
         </div>\
          </div></div></div>'.format(lat=lat, prev=prev, diff=diff, latyr=year, prevyr=year-1, def0=get_definition("Total Revenues"))
+    return insight
+
+
+def get_insightforegauge(lat, prev, year, diff, forec):
+    insight = '<div class="modal fade" id="insightforegauge" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">\
+    <div class="modal-dialog modal-dialog-scrollable modal-xl insightdiv">\
+        <div class="modal-content">\
+        <div class="modal-header">\
+            <h5 class="modal-title" id="exampleModalLabel">Current {forec} Difference from Previous Year</h5>\
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>\
+        </div>\
+        <div class="modal-body">\
+                    <div class="container-fluid">\
+                        <h5 class="mb-2">DATA:</h5>\
+                            <table class="table ml-2">\
+                            <thead>\
+                            <tr>\
+                                <th scope="col">Current {forec} ({latyr})</th>\
+                                <th scope="col">Previous {forec} ({prevyr})</th>\
+                                <th scope="col">Difference in %</th>\
+                            </tr>\
+                        </thead><tbody>\
+                            <tr>\
+                            <td>₱{lat:,.2f}</td>\
+                            <td>₱{prev:,.2f}</td>\
+                            <td>{diff:.2f}%</td>\
+                            </tbody></table>\
+                        <br>\
+                        <h5 class="mb-2">DEFINITIONS:</h5>\
+                        <ul class="list-unstyled">\
+                            <li><strong>{forec}</strong> - {def0}</li>\
+                        </ul>\
+                        <br>\
+                    </div>\
+        </div>\
+            <div class="modal-footer">\
+                    <button class="insightbtn modalbtns" data-bs-target="#generalinsight" data-bs-toggle="modal">Help</button>\
+                </div>\
+         </div></div></div>'.format(forec=forec, lat=lat, prev=prev, diff=diff, latyr=year, prevyr=year-1, def0=get_definition(forec))
     return insight
 
 

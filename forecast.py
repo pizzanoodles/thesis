@@ -3,6 +3,7 @@ import pandas as pd
 import json
 import plotly
 import plotly.express as px
+import plotly.graph_objects as go
 from math import *
 from statistics import mean
 from initialize import initialize_dir_year
@@ -17,7 +18,7 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     year = dict_samp["Year"]
     df = pd.DataFrame(dict_samp)
     dataset = [[X[i], Y[i]] for i in range(len(X))]
-    rmse_lst = get_rmse(X, Y)
+    rmse_lst, acc, predmods, y_tst = get_rmse(X, Y)
     n_num, valid_rmse = get_optimalK(rmse_lst)
     k = [x+2 for x in range(len(valid_rmse))]
     nbx, nby, distances = get_neighbors(dataset, [float(inp)], n_num)
@@ -32,6 +33,8 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     fig_scat, insight5 = get_fig2(
         df, inp, nbx, nby, inptype, forectype, dist, distances)
     fig_line, insight4 = get_fig3(valid_rmse, n_num, k)
+    fig_acc, insight7 = get_fig4(acc, n_num, k, predmods, y_tst)
+    fig_diff, insight6 = get_prevgauge(optm_predict_output, Y, year, forectype)
 
     ginsight = get_insightgeneral()
     graph1JSON = json.dumps(fig_bar, cls=plotly.utils.PlotlyJSONEncoder)
@@ -39,11 +42,14 @@ def forecasting(inp, reg, city, inptype, forectype, dict_samp):
     graph3JSON = json.dumps(fig_line, cls=plotly.utils.PlotlyJSONEncoder)
     graph4JSON = json.dumps(fig_preds, cls=plotly.utils.PlotlyJSONEncoder)
     graph5JSON = json.dumps(fig_inp, cls=plotly.utils.PlotlyJSONEncoder)
+    graph6JSON = json.dumps(fig_acc, cls=plotly.utils.PlotlyJSONEncoder)
+    graph7JSON = json.dumps(fig_diff, cls=plotly.utils.PlotlyJSONEncoder)
     predict_output = "₱{:,.2f}".format(optm_predict_output[0])
     input = "₱{:,.2f}".format(float(inp))
-    return render_template("/forecastoutput.html", output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,
-                           graph4JSON=graph4JSON, graph5JSON=graph5JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype,
-                           forectype=forectype, insight=insight1, insight2=insight2, insight3=insight3, insight4=insight4, insight5=insight5, ginsight=ginsight), optm_predict_output
+    accuracy = "{:0.2f}%".format(acc[n_num-2])
+    return render_template("/forecastoutput.html", accy=accuracy, output=predict_output, graph1JSON=graph1JSON, graph2JSON=graph2JSON, graph3JSON=graph3JSON,
+                           graph4JSON=graph4JSON, graph5JSON=graph5JSON, graph6JSON=graph6JSON, graph7JSON=graph7JSON, rt=reg, ct=city, neighbors=nby, rmse_lst=rmse_lst, n=n_num, inp=input, inptype=inptype,
+                           forectype=forectype, insight=insight1, insight2=insight2, insight3=insight3, insight4=insight4, insight7=insight7, insight5=insight5, insight6=insight6, ginsight=ginsight), optm_predict_output
 
 
 def fig1_krange(dataset, inp, k):
@@ -210,3 +216,54 @@ def get_fig3(rmse, min, k):
     fig.update_layout(height=600)
     fig.update_layout(legend_font_size=9)
     return fig, insight4
+
+
+def get_fig4(acc, min, k, predmods, y_tst):
+    df = {"K": k, "Accuracy Score": acc}
+    df2 = {"K": [min], "Accuracy Score": [acc[min-2]]}
+    insight = get_insightacc(k, acc, predmods, y_tst)
+    fig = px.line(df, x="K", y="Accuracy Score", line_shape="spline",
+                  title="Accuracy Score Model")
+
+    fig.update_traces(name="Score", showlegend=True)
+    fig2 = px.scatter(df2, x="K", y="Accuracy Score",
+                      color_discrete_sequence=["red"])
+    fig2.update_traces(name=" Optimal Score", showlegend=True)
+    fig.add_trace(fig2.data[0])
+    fig.update_traces(mode="markers+lines")
+    fig.update_xaxes(type='category')
+    fig.update_yaxes(range=[0, 100])
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
+    return fig, insight
+
+
+def get_prevgauge(output, y, yearlst, forectype):
+    prevyear = yearlst[-1]+1
+    insight = ''
+    prevRevs = y[-1]
+    currentRevs = output[0]
+    diff = ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100
+    diffpercent = abs(
+        ((currentRevs - prevRevs)/((currentRevs+prevRevs)/2))*100)
+    diffround = abs(ceil(diffpercent / 100)*100)
+    difflow = -diffround
+    fig = go.Figure(go.Indicator(
+        domain={'x': [0, 1], 'y': [0, 1]},
+        value=diff,
+        mode="gauge+number",
+        title={'text': "Current "+forectype+" Difference in % Last Year"},
+        gauge={'bar': {'color': "#FED7C3"}, 'axis': {'range': [difflow, diffround]},
+               'steps': [
+            {'range': [difflow, (difflow+diffround)/2],
+                'color': "#CBAACB"},
+            {'range': [(difflow+diffround)/2, (diffround/2)],
+                'color': "#FFFFB5"},
+            {'range': [diffround/2, diffround], 'color': "#ABDEE6"}
+        ]}))
+    insight = get_insightforegauge(
+        currentRevs, prevRevs, prevyear, diff, forectype)
+    fig.update_layout(height=600)
+    fig.update_layout(legend_font_size=9)
+
+    return fig, insight

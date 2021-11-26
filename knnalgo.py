@@ -41,6 +41,8 @@ def predict(nby):
 
 def get_rmse(X, Y):
     rmse_val = []
+    acc = []
+    opt = []
     X_train, X_test, Y_train, Y_test = train_test_split(
         X, Y, test_size=0.2, random_state=0)
     for K in range(len(X_train)):
@@ -50,7 +52,16 @@ def get_rmse(X, Y):
         pred = [predict(nby)[0] for i in range(len(Y_test))]
         error = sqrt(mean_squared_error(pred, Y_test))
         rmse_val.append(error)
-    return rmse_val
+        acclst = []
+        opt.append(pred)
+        for i in range(len(pred)):
+            if pred[i] < Y_test[i]:
+                acclst.append(pred[i]/Y_test[i]*100)
+            else:
+                acclst.append(Y_test[i]/pred[i]*100)
+        acc.append(mean(acclst))
+    acc.remove(acc[0])
+    return rmse_val, acc,opt, Y_test
 
 
 def get_optimalK(rmse):
