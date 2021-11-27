@@ -61,6 +61,7 @@ def get_rmse(X, Y):
                 acclst.append(Y_test[i]/pred[i]*100)
         acc.append(mean(acclst))
     acc.remove(acc[0])
+    opt.remove(opt[0])
     return rmse_val, acc,opt, Y_test
 
 
