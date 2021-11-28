@@ -229,6 +229,9 @@ def get_fig4(acc, min, k, predmods, y_tst):
     fig2 = px.scatter(df2, x="K", y="Accuracy Score",
                       color_discrete_sequence=["red"])
     fig2.update_traces(name=" Optimal Score", showlegend=True)
+    fig.add_hline(y=90,
+                  line_width=2, opacity=0.3, line_dash="dash", line_color="green", annotation_text="Allowable Accuracy 90%",
+                  annotation_position="top", annotation_font_color="green")
     fig.add_trace(fig2.data[0])
     fig.update_traces(mode="markers+lines")
     fig.update_xaxes(type='category')
