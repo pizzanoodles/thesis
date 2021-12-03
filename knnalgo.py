@@ -44,7 +44,7 @@ def get_rmse(X, Y):
     acc = []
     opt = []
     X_train, X_test, Y_train, Y_test = train_test_split(
-        X, Y, test_size=0.2, random_state=0)
+        X, Y, test_size=0.2, random_state=None, shuffle=False)
     for K in range(len(X_train)):
         K = K+1
         samp = [[X_train[i], Y_train[i]] for i in range(len(X_train))]
@@ -54,6 +54,7 @@ def get_rmse(X, Y):
         rmse_val.append(error)
         acclst = []
         opt.append(pred)
+
         for i in range(len(pred)):
             if pred[i] < Y_test[i]:
                 acclst.append(pred[i]/Y_test[i]*100)
@@ -62,7 +63,7 @@ def get_rmse(X, Y):
         acc.append(mean(acclst))
     acc.remove(acc[0])
     opt.remove(opt[0])
-    return rmse_val, acc,opt, Y_test
+    return rmse_val, acc, opt, Y_test
 
 
 def get_optimalK(rmse):
